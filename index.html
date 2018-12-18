@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PCHAIN Wallet</title>
+    <link rel="stylesheet" href="public/css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+
+    <link rel="import" href="public/html/menu.html">
+    <link rel="import" href="public/html/myAccount.html">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" id="angularApp">
+    <div class="popupAlert ipSetting"></div>
+    <div class="leftHideMenu navbar navbar-fixed-top" id="leftMenuDiv">
+
+    </div>
+    <div id="pageContent">
+        <button class="btn btn-default" id="menuBtn"><i class="icon-reorder open"></i> <i class="icon-remove close"></i></button>
+        <div class="subPage first  container">
+
+            <h3>Pchain Wallet</h3>
+        </div>
+
+        <div class="subPage container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 myAccountSubPage">
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        window.$ = window.jQuery = require('./public/js/lib/jquery-2.1.4.min.js')
+        //require('./public/js/lib/ethereumjs-accounts.js');
+        require('./public/js/lib/angular.min.js');
+        require('./public/js/lib/bootstrap.min.js');
+        require('./public/js/menu.js');
+        require('./public/js/common.js');
+        require('./public/js/lib/aes.js');
+        require('./public/js/app.js');
+        
+    </script>
+</body>
+</html>

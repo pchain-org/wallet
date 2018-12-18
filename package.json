@@ -1,0 +1,28 @@
+{
+  "name": "wallet",
+  "version": "1.0.0",
+  "description": "pchain wallet ",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "./node_modules/.bin/electron-rebuild",
+    "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
+    "packager:mac": "electron-packager ./ pwallet --platform=darwin --out ./app --app-version 1.0.1 --overwrite --icon=public/img/logo.hqx "
+  },
+  "keywords": [
+    "pchain wallet"
+  ],
+  "author": "skykingit@aliyun.com",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "cryptojs": "^2.5.3",
+    "electron": "^1.6.2",
+    "electron-rebuild": "^1.5.7",
+    "lodash": "^4.17.4",
+    "sqlite3": "^4.0.4"
+  },
+  "devDependencies": {
+    "electron-packager": "^13.0.1"
+  }
+}

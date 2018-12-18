@@ -1,0 +1,488 @@
+/*样式初始化,解决不同浏览器的差异*/
+body,
+ol,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+th,
+td,
+dl,
+dd,
+form,
+fieldset,
+legend,
+input,
+textarea,
+select {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font: 12px "Courier New", "Arial Narrow", "宋体", HELVETICA;
+  background: #fff;
+  -webkit-text-size-adjust: 100%;
+}
+a {
+  color: #2d374b;
+  text-decoration: none;
+}
+a:hover {
+  color: #cd0200;
+  text-decoration: underline;
+}
+em {
+  font-style: normal;
+}
+li {
+  list-style: none;
+}
+img {
+  border: 0;
+  vertical-align: middle;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+p {
+  word-wrap: break-word;
+}
+@font-face {
+  font-family: 'icomoon';
+  src: url('fonts/icomoon.eot?rretjt');
+  src: url('fonts/icomoon.eot?#iefixrretjt') format('embedded-opentype'), url('fonts/icomoon.woff?rretjt') format('woff'), url('fonts/icomoon.ttf?rretjt') format('truetype'), url('fonts/icomoon.svg?rretjt#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-family: 'icomoon';
+}
+/* 初始化bootstrap样式 */
+.container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.verticalMiddle  > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.verticalMiddle:before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  visibility: hidden;
+}
+img {
+  width: 100%;
+  height: auto;
+}
+.fullArea {
+  width: 100%;
+  height: 100%;
+}
+.fixedWidth {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+.noMargin {
+  margin: 0 !important;
+}
+.noPadding {
+  padding: 0 !important;
+}
+.bitPadding {
+  padding: 4px;
+}
+.bitMarginBottom {
+  margin-bottom: 10px;
+}
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+.marginTop20 {
+  margin-top: 20px;
+}
+.paddingLeftRight10 {
+  padding: 0 10px ;
+}
+.paddingLeftRight20 {
+  padding: 0 20px ;
+}
+.bitMarginBottom {
+  margin-bottom: 8px;
+}
+.marginTop10 {
+  margin-top: 10px;
+}
+.marginTop20 {
+  margin-top: 20px;
+}
+.marginTop50 {
+  margin-top: 50px;
+}
+.marginLeft10 {
+  margin-left: 10px;
+}
+.marginLeft20 {
+  margin-left: 20px;
+}
+.padding10 {
+  padding: 10px !important;
+}
+.paddingTopBottom10 {
+  padding: 10px 0;
+}
+table {
+  width: 100%;
+}
+table tr {
+  width: 100%;
+}
+table tr td {
+  word-break: break-all;
+  min-width: 75px;
+  padding: 4px;
+}
+table tr .minWidth {
+  min-width: 100px;
+}
+table tr .max-width {
+  max-width: 80px;
+}
+.col-50 {
+  width: 50%;
+}
+.imgheight-responsive {
+  height: 100%;
+  width: auto;
+}
+.fixWidth1080 {
+  width: 1080px;
+  margin: 0 auto;
+}
+/** 固定宽度bootstrap menu css start **/
+.fixWidth {
+  width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.fixWidth .navbar-header {
+  float: left;
+}
+.fixWidth .navbar-header .navbar-brand {
+  padding: 4px;
+}
+.fixWidth .navbar-header .navbar-brand img {
+  height: 100%;
+  width: auto;
+}
+.fixWidth .navbar-nav {
+  float: left;
+  margin: 0;
+}
+.fixWidth .navbar-nav li {
+  min-width: 120px;
+  text-align: center;
+  float: left;
+}
+.fixWidth .navbar-nav li a {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.fixWidth .navbar-left {
+  float: left !important;
+}
+.fixWidth .navbar-right {
+  float: right !important;
+  margin-right: -15px;
+}
+.fixWidth .navbar-right ~ .navbar-right {
+  margin-right: 0;
+}
+.navCenter {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.navCenter li {
+  display: table-cell;
+  width: 1%;
+  list-style: none;
+  text-align: center;
+}
+/** 固定宽度bootstrap menu css end **/
+/** leftMenu css  start **/
+.leftMenuArea .leftMenu {
+  float: left;
+  width: 240px;
+  border: 1px solid #333;
+  height: 400px;
+}
+.leftMenuArea .leftMenu ul {
+  list-style: none;
+}
+.leftMenuArea .leftMenu ul li {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+.leftMenuArea .leftMenu ul li a {
+  display: block;
+  padding: 20px 0;
+}
+.leftMenuArea .leftMenu ul .active {
+  background-color: #333;
+}
+.leftMenuArea .leftMenu ul .active a {
+  color: white;
+}
+.leftMenuArea .rightContent {
+  margin-left: 240px;
+  height: 400px;
+  border: 1px solid blue;
+}
+/** leftMenu css  end **/
+/** 表单样式 start **/
+.myform-horizontal {
+  margin-top: 5px;
+  line-height: 30px;
+}
+.myform-horizontal label {
+  font-size: 14px;
+  text-align: center;
+  min-width: 100px;
+  float: left;
+  margin: 0;
+  line-height: 34px;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+}
+.myform-horizontal .input {
+  margin-left: 100px;
+}
+.myform-horizontal .input input,
+.myform-horizontal .input select {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.myform-vertical {
+  margin-top: 5px;
+}
+.myform-vertical label {
+  display: block;
+  font-size: 14px;
+  margin: 0;
+  line-height: 34px;
+}
+.myform-vertical .input input,
+.myform-vertical .input select {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+/** 表单样式 end **/
+/**  leftMenu css end **/
+body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+  font-size: 14px;
+  color: #707070;
+  background: #f8f8f8;
+  color: #666666;
+}
+.divBorder {
+  border: 1px solid #cccccc;
+}
+/**  leftMenu css start **/
+.leftHideMenu {
+  height: 100%;
+  width: 200px;
+  display: none;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  overflow: scroll;
+  line-height: 1.5;
+  background-color: white;
+}
+.leftHideMenu .menuHeadPic {
+  padding: 10px 20px 30px;
+}
+.leftHideMenu .leftMenu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 20px;
+}
+.leftHideMenu .leftMenu li i {
+  margin-right: 3px;
+  color: #2a5fa7;
+}
+.leftHideMenu .leftMenu li:hover {
+  background-color: #5887c7;
+  color: #f5f5f5;
+}
+.leftHideMenu .leftMenu li:hover i {
+  color: #f5f5f5;
+}
+.leftHideMenu .leftMenu .active {
+  background-color: #2a5fa7;
+  color: #f5f5f5;
+}
+.leftHideMenu .leftMenu .active i {
+  color: #f5f5f5;
+}
+#pageContent {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+}
+#pageContent .subPage {
+  padding: 60px;
+  display: none;
+  min-width: 600px;
+}
+#pageContent .first {
+  display: block;
+}
+#menuBtn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 999999;
+  color: #a05136;
+}
+#menuBtn .open {
+  display: block;
+}
+#menuBtn .close {
+  display: none;
+}
+.menu-open .leftHideMenu {
+  display: block;
+}
+.menu-open #pageContent {
+  margin-left: 200px;
+}
+.menu-open #menuBtn {
+  left: 210px;
+}
+.menu-open #menuBtn .open {
+  display: none;
+}
+.menu-open #menuBtn .close {
+  display: block;
+}
+.formArea > div {
+  padding-bottom: 20px;
+}
+.popup {
+  display: none;
+}
+.popupAlert {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.popupAlert .content {
+  position: absolute;
+  top: 40px;
+  padding: 40px;
+  width: 60%;
+  margin-left: 20%;
+  background-color: white;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.bg1 {
+  line-height: 30px;
+  height: 30px;
+  font-size: 18px;
+  text-indent: 1em;
+  border: 1px solid #ccc;
+  cursor: text;
+  background-color: #efefef;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.075);
+}
+.inputBody {
+  padding: 0;
+}
+.inputBody input,
+.inputBody select,
+.inputBody textarea {
+  width: 100%;
+  height: 100%;
+}
+.formError {
+  font-size: 12px;
+  color: red;
+  font-weight: bold;
+}
+.blockInfoShow .infoBlock {
+  border-top: 1px solid #0000ff;
+  border-bottom: 1px solid #0000ff;
+  border-left: 1px solid #0000ff;
+}
+.blockInfoShow .infoBlock p {
+  line-height: 30px;
+}
+.blockInfoShow .infoBlock:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.blockInfoShow .infoBlock:last-child {
+  border-right: 1px solid #0000ff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}

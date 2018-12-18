@@ -1,0 +1,177 @@
+@import "common.less";
+
+/**  leftMenu css end **/
+
+
+body{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+  font-size: 14px;
+  color:#707070;
+  background: #f8f8f8;
+  color:#666666;
+}
+.divBorder{
+  border:1px solid #cccccc;
+}
+/**  leftMenu css start **/
+@logoColor:#2a5fa7;
+.leftHideMenu{
+  height: 100%;
+  width: 200px;
+  display: none;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  overflow: scroll;
+  line-height: 1.5;
+  background-color: white;
+  .menuHeadPic{
+    padding: 10px 20px 30px;
+  }
+  .leftMenu{
+    li{
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size:20px;
+      i{
+        margin-right: 3px;
+        color:@logoColor;
+      }
+    }
+    li:hover{
+      background-color:#5887c7;
+      color:#f5f5f5;
+      i{
+        color:#f5f5f5;
+      }
+    }
+    .active{
+      background-color:@logoColor ;
+      color:#f5f5f5;
+      i{
+        color:#f5f5f5;
+      }
+    }
+  }
+}
+#pageContent{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index:999;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  .subPage{
+    padding: 60px;
+    display: none;
+    min-width: 600px;
+  }
+  .first{
+    display: block;
+  }
+}
+#menuBtn{
+  position: fixed;
+  top:10px;
+  left:10px;
+  z-index:999999;
+  color: #a05136;
+  .open{
+    display: block;
+  }
+  .close{
+    display: none;
+  }
+}
+.menu-open{
+  .leftHideMenu{
+    display: block;
+  }
+  #pageContent{
+    margin-left:200px;
+  }
+  #menuBtn{
+    left:210px;
+    .open{
+      display: none;
+    }
+    .close{
+      display: block;
+    }
+  }
+}
+.formArea{
+
+  > div{
+    padding-bottom: 20px;
+  }
+}
+.popup{
+  display:none;
+}
+.popupAlert{
+  display: none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:99999;
+  background-color:rgba(0,0,0,0.6);
+  .content{
+    position:absolute;
+    top:40px;
+    padding:40px;
+    width:60%;
+    margin-left:20%;
+    background-color:white;
+    .borderRadius;
+
+  }
+}
+.bg1{
+  line-height: 30px;
+  height: 30px;
+  font-size: 18px;
+  text-indent: 1em;
+  border: 1px solid #ccc;
+  cursor: text;
+  background-color: #efefef;
+  box-shadow: inset 1px 1px 1px rgba(0,0,0,.075);
+}
+.inputBody{
+  padding:0;
+  input,select,textarea{
+    width:100%;
+    height:100%;
+  }
+}
+.formError{
+  font-size: 12px;
+  color:red;
+  font-weight: bold;
+}
+.blockInfoShow{
+@borderColor:blue;
+ .infoBlock{
+    border-top:1px solid @borderColor;
+    border-bottom:1px solid @borderColor;
+    border-left:1px solid @borderColor;
+    p{
+      line-height:30px;
+    }
+  }
+  .infoBlock:first-child{
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+  }
+  .infoBlock:last-child{
+    border-right:1px solid @borderColor;
+    border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+  }
+}
+
