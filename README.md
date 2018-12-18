@@ -32,5 +32,5 @@ $ yarn start
 To build binaries for specific platforms, use the following flags:
 
 ```bash
-$ yarn packager:mac. #mac
+$ yarn packager:mac  #mac
 ```
