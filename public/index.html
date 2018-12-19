@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js " lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="The Pchain TESTNET 1.0">
+    <title>PCHAIN TESTNET</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125395049-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-125395049-1');
+    </script>
+
+    <link rel="stylesheet" href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/angular.js/1.5.8/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/plugins/sweetalert/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
+     <link rel="stylesheet" type="text/css" href="assets/css/page.css">
+    <script src="https://cdn.bootcss.com/angular.js/1.7.0/angular.js"></script>
+</head>
+
+<body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
+    <!-- Page Loader -->
+<!--     <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="assets/images/pchain-logo.png" width="48" height="48" alt="sQuare"></div>
+            <p>Please wait...</p>
+        </div>
+    </div> -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <div ng-include="'./head.html'"></div>
+    <section class="content">
+        <div class="container">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="searchArea">
+                                <form name="Form" novalidate>
+                                    <div>
+                                        <select class="form-control form-control-select" ng-model="chainId" ng-options="  chain.id as chain.name  for chain in chainList"></select>
+                                    </div>
+                                    <div class="input-group marginTop10 my-input-group inputRadius">
+                                        <input type="text" class="form-control " name="key" ng-model="key" placeholder="Search by Txhash / Block Number" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-default" ng-disabled="Form.$invalid" type="button" ng-click="search()">
+                                                <i class="icon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix" ng-show="result.data" ng-cloak>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong > <span ng-bind="result.name"></span>   In <span ng-bind="chainList[chainId].name">  </span> </strong>  </h2>
+                        </div>
+                        <div class="body table-responsive">
+                            <table class="table table-striped table-bordered" ng-show="result.data.hash">
+                                <tbody>
+                                    <tr ng-show="result.data && result.data.blockNumber == null && type =='tx' ">
+                                        <td><code class="w3-codespan">Status</code></td>
+                                        <td>Peending</td>
+                                    </tr>
+                                    <tr ng-repeat="(key,value) in result.data" ng-show="value != null" ng-cloak>
+                                        <td><code class="w3-codespan" ng-bind="key"></code></td>
+                                        <td ng-bind="processData(value,key)"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="marginTop10 " ng-show="!result.data.hash">
+                                <h3>Nothing Found</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+         window.$ = window.jQuery = window.jquery = require('jquery');
+    </script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+     <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+   
+    <script type="text/javascript" src="js/web3.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+
+    <script type="text/javascript" src="pageJs/index.js"></script>
+</body>
+
+</html>

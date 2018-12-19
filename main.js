@@ -16,9 +16,9 @@ const initMenu = require('./lib/menu.js');
 let mainWindow;
 
 function createWindow () {
-    mainWindow = new BrowserWindow({width: 800, height: 600,maxWidth:900,mixWidth:500})
+    mainWindow = new BrowserWindow({width: 1000, height: 600,mixWidth:700})
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, 'public/index.html'),
         protocol: 'file:',
         slashes: true,
         icon:path.join(__dirname,"public/img/logo.png")

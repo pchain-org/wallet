@@ -1,0 +1,55 @@
+<!-- Top Bar -->
+<nav class="top_navbar">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="navbar-logo">
+                   
+                    <a href="javascript:void(0);" class="bars myBars">
+                        <i class="icon-list icon-2x"></i>
+                    </a>
+                    <a class="navbar-brand" href="index.html"><img src="img/logo_wbg.png" width="30" alt="pchain"><span class="m-l-10">PCHAIN</span></a>
+                </div>
+                <ul class="nav navbar-nav">
+    
+                    <li class="dropdown app_menu ">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            GAS PRICE <span ng-bind="gasPrice"></span> <i class="icon icon-arrow-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pullDown">
+                           <div class="gasHeader ng-binding">
+                            <div class="range">
+                                 <input type="range" ng-model="gasPrice" id="gasPrice" min="1" max="99" step="1" ng-change="gasChanged()">
+                            </div>
+                             <div class="">
+                                 <span class="pull-left">Slow</span>
+                                 <span class="pull-right">Fast</span>
+                             </div>
+                              <br>
+                              <p class="small ng-scope" style="white-space:normal;font-weight:300;margin: 2rem 0 0;" translate="GAS_PRICE_Desc">Gas Price is the amount you pay per unit of gas. <code>TX fee = gas price * gas limit</code> &amp; is paid to validators for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is <code>10 GWEI</code>.</p>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>        
+    </div>
+</nav>
+
+<aside id="leftsidebar" class="sidebar h_menu">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="menu">
+                    <ul class="list">
+                        <li class="header">MENU</li>
+                        <li> <a href="index.html"><i class="icon-speedometer"></i><span>Explorer</span></a></li>
+                        <li> <a href="wallet.html"><i class="icon-briefcase"></i><span>Wallet</span></a></li>
+                        <li> <a href="send.html"><i class="icon-exchange"></i><span>Send TPAI</span></a></li>
+                        <li> <a href="contract.html"><i class="icon-book"></i><span>Contract</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
