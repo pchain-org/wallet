@@ -138,26 +138,34 @@
              $scope.getBalance();
         }
 
-        $scope.generate = function(){
+        $scope.newPrivateKet = function(){
             var newAccount = Accounts.new();
-            $scope.newPrivate = newAccount.unCryp.private;
+            return newAccount.unCryp.private;
         }
 
         $scope.add = function(){
+
+            var newPrivateKey = $scope.newPrivateKet();
+
             var obj = {};
-            obj.private = $scope.newPrivate;
-            obj.address = priToAddress($scope.newPrivate);
+            
+            obj.address = priToAddress(newPrivateKey);
 
             $scope.accountList.push(obj);
+            console.log(newPrivateKey,obj.address);
 
-            var listStr = JSON.stringify($scope.accountList);
-            $cookieStore.put("account",listStr);
+            var enPri = AESEncrypt(newPrivateKey,$scope.password);
+            console.log(enPri);
+
+            var dePri = AESDecrypt(enPri,$scope.password);
+            console.log(dePri);
+            
             $('#newAccount').modal('hide')
+
             if($scope.accountList.length == 1){
                 $scope.account = $scope.accountList[0];
             }
             $scope.getBalance();
-            $scope.newPrivate = "";
         }
         $scope.getChainNameByid = function (id) {
             var name = "Main Chain";

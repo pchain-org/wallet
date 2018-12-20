@@ -4,7 +4,16 @@
 const Web3 = require("pweb3");
 const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
+const CryptoJS = require("crypto-js");
 window.angularApp = angular.module('myApp',[]);
+
+function AESEncrypt(msg,password){
+    return CryptoJS.AES.encrypt(msg,password).toString();
+}
+
+function AESDecrypt(enMsg,password){
+    return CryptoJS.AES.decrypt(enMsg,password).toString(CryptoJS.enc.Utf8);
+}
 
 function loading(){
     var html = '<div class="loading"><div class="pic"><div class="myloader"></div></div></div>';
