@@ -1,7 +1,9 @@
 /**
  * Created by skykingit on 2017/4/19.
  */
-
+const Web3 = require("pweb3");
+const EthTx = require("pchainjs-tx");
+const TxData = require("txdata");
 window.angularApp = angular.module('myApp',[]);
 
 function loading(){
@@ -69,9 +71,7 @@ function showNotification(colorName, text, placementFrom, placementAlign, animat
 function successNotify(text){
     showNotification("alert-success",text,"bottom","center",400000);
 }
-
 const Clipboard = require("clipboard");
-
 var clipboard = new Clipboard('.copyBtn');
 
 clipboard.on('success', function(e) {
@@ -107,7 +107,8 @@ function priToAddress(pri){
 function signTx(pri,txObj){
 
     //console.log(arguments);
-    var Tx = EthTx;
+    // var Tx = EthTx;
+    var Tx = require("pchainjs-tx");
 
     var privateKey = new Buffer(pri, 'hex')
 
@@ -116,7 +117,7 @@ function signTx(pri,txObj){
     tx.sign(privateKey);
 
     //console.log("get sender address------start--------------");
-    var addressBUf = tx.getSenderAddress();
+    // var addressBUf = tx.getSenderAddress();
     //console.log(addressBUf);
     //console.log(addressBUf.toString('utf8'));
     //console.log("get sender address--------end----------------");
@@ -295,9 +296,33 @@ function initSignRawDeposite3(address,hash,nonce,gasPrice,gasLimit,chainId) {
     return rawTx;
 }
 
+function getChainIdHash(chainId) {
+    var hash = "";
+    switch(chainId){
+        case 0:
+        hash = "pchain";
+        break;
+        case 1:
+        hash = "child_0";
+        break;
+        case 2:
+        hash = "child_1";
+        break;
+        case 3:
+        hash = "child_2";
+        break;
+        case 4:
+        hash = "child_3";
+        break;
+        default:
+        hash = "pchain";
+    }
+
+    return hash;
+}
 
 
-function initSignRawPAI(toAddress,amount,nonce,gasPrice,gasLimit) {
+function initSignRawPAI(toAddress,amount,nonce,gasPrice,gasLimit,chainId) {
     //console.log(toAddress,amount,nonce,gasPrice,gasLimit);
    
     const rawTx = {
@@ -305,20 +330,46 @@ function initSignRawPAI(toAddress,amount,nonce,gasPrice,gasLimit) {
         gasPrice:convert(gasPrice),
         gasLimit: convert(gasLimit),
         to:toAddress,
-        value:convert(amount)
+        value:convert(amount),
+        chainId:getChainIdHash(chainId)
     };
 
     return rawTx;
 }
 
-function initSignRawContract(toAddress,data,nonce,gasPrice,gasLimit,amount) {
+function initSignRawCrosschain(data,nonce,gasPrice,gasLimit,chainId) {
+    const rawTx = {
+        nonce: convert(nonce),
+        gasPrice:convert(gasPrice),
+        gasLimit: convert(gasLimit),
+        data:data,
+        to:"0x0000000000000000000000000000000000000065",
+        chainId:getChainIdHash(chainId)
+    };
+    return rawTx;
+}
+
+function initSignRawContract(toAddress,data,nonce,gasPrice,gasLimit,amount,chainId) {
     const rawTx = {
         nonce: convert(nonce),
         gasPrice:convert(gasPrice),
         gasLimit: convert(gasLimit),
         to:toAddress,
         data:data,
-        value:convert(amount)
+        value:convert(amount),
+        chainId:getChainIdHash(chainId)
+    };
+    return rawTx;
+}
+
+function initSignRawDeployContract(data,nonce,gasPrice,gasLimit,amount,chainId){
+    const rawTx = {
+        nonce: convert(nonce),
+        gasPrice:convert(gasPrice),
+        gasLimit: convert(gasLimit),
+        data:data,
+        value:convert(amount),
+        chainId:getChainIdHash(chainId)
     };
     return rawTx;
 }
@@ -357,6 +408,78 @@ function fliterIPList(list){
     return result;
 }
 
+var crossChainABI = [
+    {
+        "type": "function",
+        "name": "DepositInMainChain",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "DepositInChildChain",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "txHash",
+                "type": "bytes32"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "WithdrawFromChildChain",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "WithdrawFromMainChain",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "name": "txHash",
+                "type": "bytes32"
+            }
+        ],
+        "outputs": []
+    }
+]
+
+var childChainAmount = 2;
 
 
 
