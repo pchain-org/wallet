@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "build:mac": "./node_modules/.bin/electron-rebuild",
-    "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
-    "packager:mac": "electron-packager ./ pwallet --platform=darwin --out ./app --app-version 1.0.1 --overwrite --icon=public/img/logo.hqx "
+    "packager:mac": "electron-packager ./ pwallet --platform=darwin --out ./app --app-version 1.0.1 --overwrite --icon=public/img/logo.hqx",
+    "package:win": "electron-packager ./ pwallet --platform=win32 --arch=x64 --out=./dist --asar --app-version 1.0.1 --overwrite --icon=public/img/logo.ico"
   },
   "keywords": [
     "pchain wallet"
@@ -16,11 +16,9 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "clipboard": "^2.0.4",
     "cryptojs": "^2.5.3",
     "electron": "^1.6.2",
-    "electron-rebuild": "^1.5.7",
-    "jquery": "^3.3.1",
+    "electron-rebuild":"^1.8.2",
     "lodash": "^4.17.4",
     "sqlite3": "^4.0.4"
   },
