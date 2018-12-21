@@ -10,6 +10,11 @@ var db = new sqlite3.Database('./sqlite3/pchainWallet',function(data){
 });
 
 db.serialize(function() {
+
+    // db.run("CREATE TABLE IF NOT EXISTS tb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text)");
+    //
+    // db.run("CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY, blockNumber text,timeStamp text,hash text,nonce text,blockHash text,contractAddress text,fromaddress text,toaddress text,value real,gas text,gasPrice text,gasUsed text, createTime text)");
+
     // db.run("CREATE TABLE  IF NOT EXISTS lorem (info TEXT)");
 
     // var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
