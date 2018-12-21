@@ -129,22 +129,9 @@
             }
         }
 
-       // var SolidityFunction = require("solidityFunction");
-
        $scope.getPlayLoad = function(abi,funName,paramArr) {
 
-          //console.log(typeof abi,funName,paramArr);
-          var funJson = _.find(abi, { name: funName });
-
-          //console.log("funJson",funJson);
-
-
-            var solidityFunction = new SolidityFunction('', funJson, '');
-
-            var payloadData = solidityFunction.toPayload(paramArr).data;
-            //console.log("payloadData");
-            //console.log(payloadData);
-
+          var payloadData = TxData(abi,funName,paramArr);
             return payloadData;
         }
 

@@ -17,28 +17,21 @@
 </script>
 <link rel="icon" href="img/logo.png" type="image/x-icon">
 
-<link rel="stylesheet" href="assets/plugins/bootstrap-select/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <link href="https://cdn.bootcss.com/angular.js/1.5.8/angular-csp.css" rel="stylesheet">
 <link rel="stylesheet" href="css/lib/font-awesome.min.css">
-<link rel="stylesheet" href="assets/plugins/sweetalert/sweetalert.css"/>
+<link rel="stylesheet" href="css/sweetalert.css"/>
  <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
 
-<link rel="stylesheet" href="assets/css/page.css">
+<link rel="stylesheet" href="css/page.css">
 
-<script src="https://cdn.bootcss.com/angular.js/1.7.0/angular.js"></script>
+<script src="js/angular.min.js"></script>
 </head>
 <body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
-<!-- Page Loader -->
-<!-- <div class="page-loader-wrapper">
-    <div class="loader">
-        <div class="m-t-30"><img class="zmdi-hc-spin" src="assets/images/pchain-logo.png" width="48" height="48" alt="sQuare"></div>
-        <p>Please wait...</p>
-    </div>
-</div> -->
-<!-- Overlay For Sidebars -->
+
 <div class="overlay"></div>
 
 <div ng-include="'./head.html'"></div>
@@ -51,15 +44,15 @@
                     <div class="body block-header">
                         <div class="row">
                             <div class="col-lg-6 col-md-8 col-sm-4 col-5">
-                                <h2 class="hidden-sm-down">Welcome To PCHAIN TESTNET1.0</h2>
-                                <h2 class="hidden-sm-up">TESTNET1.0</h2>
+                                <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                 <ul class="breadcrumb p-l-0 p-b-0 ">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="index.html"><i class="icon icon-home"></i></a></li>
                                     <li class="breadcrumb-item active">Wallet</li>
                                 </ul>
                             </div>
                             <div class="col-lg-6 col-md-4 col-sm-7 col-7 text-right">
-                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#newAccount">Create New</button>
+                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#newAccount">Create Wallet</button>
                             </div>
                         </div>
                     </div>
@@ -81,10 +74,10 @@
                             </div>
                         </div>
                         <div class="input-group mb-3 my-input-group">
-                            <span class="input-group-addon">Private Key</span>
-                            <div class="form-control" >
-                                <div class="value" ng-bind="account.private"></div>
+                            <div class="col-lg-12 col-md-12">
+                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#exportPrivateKey">Export Private Key</button>
                             </div>
+                          
                         </div>
                     </div>
                 </div>
@@ -154,36 +147,68 @@
     <div class="modal fade" id="newAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header text-center">
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                   <h4 class="modal-title ">
-                            New Account
+                   <h4 class="modal-title text-center block">
+                            Create Wallet
                         </h4>
 
                 </div>
                 <div class="modal-body">
                     <form name="newAccount" novalidate>
-                        <div class="input-group" ng-class="(newAccount.newPrivate.$invalid && newAccount.newPrivate.$dirty)?'has-danger':( newAccount.newPrivate.$valid?'has-success':'') ">
-                             <span class="input-group-addon">Private Key</span>
-                            <input type="text" class="form-control"  ng-class="(newAccount.newPrivate.$invalid && newAccount.newPrivate.$dirty)?'form-control-danger':(newAccount.newPrivate.$valid?'form-control-success':'') " name="newPrivate" ng-model="newPrivate" ng-pattern="/^[a-fA-F0-9]{64}$/" required >
+                        <div class="input-group" ng-class="(newAccount.password.$invalid && newAccount.password.$dirty)?'has-danger':( newAccount.password.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control"  ng-class="(newAccount.password.$invalid && newAccount.password.$dirty)?'form-control-danger':(newAccount.password.$valid?'form-control-success':'') " name="password" ng-model="password"  required >
                         </div>
 
-                        <div class="marginTop10 text-center">
-                            <button class="btn btn-success" ng-click="generate()">Generate</button>
+                        <div class="input-group" ng-class="((password != repeatPassword) && newAccount.repeatPassword.$dirty)?'has-danger':( newAccount.repeatPassword.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Repeat Password</span>
+                            <input type="password" class="form-control"  ng-class="( (password != repeatPassword) && newAccount.repeatPassword.$dirty)?'form-control-danger':((password == repeatPassword)?'form-control-success':'') " name="repeatPassword" ng-model="repeatPassword" required >
                         </div>
+
                          <div class="alert alert-danger" >
                             <div class="container">
                                 <div class="alert-icon">
                                     <i class="icon icon-warning-sign"></i>
                                 </div>
-                                <strong>Notice:</strong> PCHAIN does not hold your Private Key. Please backup your private key which saved on your browser's cookie
+                                <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
                             </div>
                         </div>
                         <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="newAccount.$invalid" ng-click="add()">
-                                Add
+                            <button type="button" class="btn btn-primary" ng-disabled="newAccount.$invalid || (password != repeatPassword) " ng-click="add()">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export privateKey -->
+    <div class="modal fade" id="exportPrivateKey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Please Enter Password
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="passwordForm" novalidate>
+                        <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control"  ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword"  required >
+                        </div>
+
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                Confirm
                             </button>
                         </div>
                     </div>
@@ -265,11 +290,10 @@
      window.$ = window.jQuery = require('jquery');
 </script>
 <script type="text/javascript" src="js/popper.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script> 
-<script src="assets/plugins/bootstrap-notify/bootstrap-notify.js"></script> 
-
+<script src="js/bootstrap.min.js"></script> 
+<script src="js/bootstrap-notify.js"></script> 
+<script src="js/ethereumjs-accounts.js"></script>
 <script src="js/common.js"></script>
-<script src="js/web3.js"></script>
 <script type="text/javascript" src="pageJs/wallet.js"></script>
 </body>
 </html>

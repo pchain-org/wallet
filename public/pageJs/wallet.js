@@ -1,4 +1,4 @@
-    // var Accounts = new Accounts();
+    var Accounts = new Accounts();
     var web3 = new Web3();
 
      angularApp.controller('myCtrl',function ($scope, $http){
@@ -6,7 +6,7 @@
         $scope.chainList = [
             {name:"Main Chain",id:0}
         ];
-        for(var i=0;i<2;i++){
+        for(var i=0;i<childChainAmount;i++){
             var obj = {};
             obj.name = "Child Chain"+(i+1);
             obj.id = (i+1);
@@ -17,7 +17,7 @@
 
         $scope.chainList2 = new Array();
 
-        for(var i=0;i<2;i++){
+        for(var i=0;i<childChainAmount;i++){
             var obj2 = {};
             obj2.name = "Child Chain"+(i+1);
             obj2.id = (i+1);
@@ -122,7 +122,7 @@
 
             $scope.chainList2 = new Array();
             if($scope.chain == 0){
-                for(var i=0;i<2;i++){
+                for(var i=0;i<childChainAmount;i++){
                     var obj3 = {};
                     obj3.name = "Child Chain"+(i+1);
                     obj3.id = (i+1);
@@ -138,26 +138,34 @@
              $scope.getBalance();
         }
 
-        $scope.generate = function(){
+        $scope.newPrivateKet = function(){
             var newAccount = Accounts.new();
-            $scope.newPrivate = newAccount.unCryp.private;
+            return newAccount.unCryp.private;
         }
 
         $scope.add = function(){
+
+            var newPrivateKey = $scope.newPrivateKet();
+
             var obj = {};
-            obj.private = $scope.newPrivate;
-            obj.address = priToAddress($scope.newPrivate);
+            
+            obj.address = priToAddress(newPrivateKey);
 
             $scope.accountList.push(obj);
+            console.log(newPrivateKey,obj.address);
 
-            var listStr = JSON.stringify($scope.accountList);
-            $cookieStore.put("account",listStr);
+            var enPri = AESEncrypt(newPrivateKey,$scope.password);
+            console.log(enPri);
+
+            var dePri = AESDecrypt(enPri,$scope.password);
+            console.log(dePri);
+            
             $('#newAccount').modal('hide')
+
             if($scope.accountList.length == 1){
                 $scope.account = $scope.accountList[0];
             }
             $scope.getBalance();
-            $scope.newPrivate = "";
         }
         $scope.getChainNameByid = function (id) {
             var name = "Main Chain";
@@ -187,7 +195,7 @@
         }
 
 
-        $scope.checkRecipt = function(txHash,chainId,type){
+        $scope.checkRecipt = function(txHash,chainId,type,childToMainAmount){
 
                 var obj = {};
                 obj.txHash = txHash;
@@ -207,7 +215,7 @@
                             },2000);
                         }else if(type == 2){
                             setTimeout(function(){
-                                 $scope.checkChildTxInMaiChain(txHash,chainId);
+                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount);
                             },3000);
                             
                         }
@@ -224,7 +232,7 @@
                 });
         }
 
-        $scope.checkChildTxInMaiChain = function(txHash,chainId){
+        $scope.checkChildTxInMaiChain = function(txHash,chainId,childToMainAmount){
 
                 var obj = {};
                 obj.txHash = txHash;
@@ -239,10 +247,10 @@
                     console.log(res);
                     if(res.data.result == "error"){
                         setTimeout(function(){
-                            $scope.checkChildTxInMaiChain(txHash,chainId);
+                            $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount);
                         },2000);
                     }else{
-                        $scope.confirmChildToMain(txHash);
+                        $scope.confirmChildToMain(txHash,childToMainAmount);
                     }
             
 
@@ -286,6 +294,11 @@
                 });
         }
 
+       $scope.getPlayLoad = function(abi,funName,paramArr) {
+
+            var payloadData = TxData(abi,funName,paramArr);
+            return payloadData;
+        }
 
 
         $scope.mainToChild = function() {
@@ -302,22 +315,30 @@
                 const childChainId = "child_"+($scope.crossChain - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
 
-                var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
+                // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
+
+                var funcData = $scope.getPlayLoad(crossChainABI,"DepositInMainChain",[childChainId,amount]);
+
+                var signRawObj = initSignRawCrosschain(funcData,$scope.nonce,gasPrice,$scope.gasLimit,0);
+
+
+
                 //console.log("signRawObj _ mainToChild",signRawObj);
                 var signData = signTx($scope.account.private,signRawObj);
-                // //console.log(signData);
+
+                console.log(signData);
 
                 var obj = {};
                 obj.chainId = $scope.chain;
                 obj.signData = signData;
-                // //console.log(obj);
+                console.log(obj);
                 var url = APIHost +"/sendTx";
                 $http({
                     method:'POST',
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
-                    // //console.log(res);
+                    console.log(res);
                     if(res.data.result == "success"){
 
                         var depositeHash = res.data.data;
@@ -343,7 +364,12 @@
         $scope.confirmMainToChild = function(depositeHash){
             const childChainId = "child_"+($scope.crossChain - 1);
             
-            var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
+            // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
+
+            var funcData = $scope.getPlayLoad(crossChainABI,"DepositInChildChain",[childChainId,depositeHash]);
+
+            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,$scope.crossChain);
+
             var signData = signTx($scope.account.private,signRawObj);
 
             // console.log("signRawObj_ confirmMainToChild",signRawObj);
@@ -378,6 +404,7 @@
             });
         }
 
+        $scope.childToMainAmount;
         $scope.childToMain = function() {
 
             try{
@@ -387,7 +414,19 @@
                 const gasPrice = $scope.gasPrice*Math.pow(10,9);
                 const amount = web3.toWei($scope.toAmount,"ether");
 
-                var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
+                $scope.childToMainAmount = amount;
+                // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
+
+
+                const childChainId = "child_"+($scope.chain - 1);
+
+                var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromChildChain",[childChainId,amount]);
+
+                var signRawObj = initSignRawCrosschain(funcData,$scope.nonce,gasPrice,$scope.gasLimit,$scope.chain);
+
+                // var funcData = $scope.getPlayLoad(crossChainABI,"",paramArr);
+
+                // var signRawObj = initSignRawContract();
               
                 var signData = signTx($scope.account.private,signRawObj);
 
@@ -402,11 +441,15 @@
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
+
+                    console.log(res);
                     if(res.data.result == "success"){
 
                         var depositeHash = res.data.data;
 
-                        $scope.checkRecipt(depositeHash,$scope.chain,2);
+                        console.log(amount);
+
+                        $scope.checkRecipt(depositeHash,$scope.chain,2,amount);
 
 
                     }else{
@@ -430,9 +473,22 @@
 
         }
 
-        $scope.confirmChildToMain = function(depositeHash){
+        $scope.confirmChildToMain = function(depositeHash,childToMainAmount){
+
+            console.log(depositeHash,childToMainAmount);
             const childChainId = "child_"+($scope.chain - 1);
-            var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,3);
+
+
+            var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromMainChain",[childChainId,$scope.childToMainAmount,depositeHash]);
+
+            console.log(funcData);
+
+                var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,0);
+
+                console.log(signRawObj);
+
+            // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,3);
+
             var signData = signTx($scope.account.private,signRawObj);
             
 
@@ -441,12 +497,14 @@
             obj2.signData = signData;
              obj2.childId = Number($scope.chain);
             var url = APIHost +"/sendTx";
+
+            console.log(obj2);
             $http({
                 method:'POST',
                 url:url,
                 data:obj2
             }).then(function successCallback(res){
-    
+                console.log(res);
                 removeLoading();
                 if(res.data.result == "success"){
 
