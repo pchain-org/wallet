@@ -85,32 +85,22 @@
 
 
         $scope.accountList = new Array();
-        var accountStr = "";
-        try{
-            if(accountStr){
-                var accountCookieList = JSON.parse(accountStr)
-                for(var i=0;i<accountCookieList.length;i++){
-                    var obj = {};
-                    obj.address = accountCookieList[i].address;
-                    obj.private = accountCookieList[i].private;
-                    $scope.accountList.push(obj);
+         queryAccountList().then(function (resObj) {
+             $scope.accountList = resObj.data;
+            try{
+                if($scope.accountList.length>0){
+                        $scope.account = $scope.accountList[0];
+                        $scope.getBalance();
                 }
-                // //console.log($scope.accountList);
-                if($scope.accountList.length > 0){
-                    $scope.account = $scope.accountList[0];
-                    // //console.log($scope.account);
-                   $scope.getBalance();
+                if($scope.accountList.length == 0){
+                    $('#newAccount').modal('show');
                 }
+            }catch(e){
+                console.log(e);
             }
-        }catch(e){
-            //console.log(e);
-        }
-
-
-
-        if($scope.accountList.length == 0){
-            $('#newAccount').modal('show');
-        }
+         }).catch(function (e) {
+             console.log(e, "error");
+         })
 
         $scope.balance = 0;
         $scope.gasLimit = 42000;
@@ -157,16 +147,46 @@
             var enPri = AESEncrypt(newPrivateKey,$scope.password);
             console.log(enPri);
 
-            var dePri = AESDecrypt(enPri,$scope.password);
-            console.log(dePri);
-            
-            $('#newAccount').modal('hide')
+            // addAccount(obj.address,enPri).then()
 
-            if($scope.accountList.length == 1){
-                $scope.account = $scope.accountList[0];
-            }
-            $scope.getBalance();
+            addAccount(enPri,obj.address).then(function (resObj) {
+                if(resObj.result=="success"){
+                    showPopup("Created successfully",1000);
+                    $('#newAccount').modal('hide')
+
+                    if($scope.accountList.length> 0){
+                        $scope.account = $scope.accountList[$scope.accountList.length-1];
+                    }
+                    $scope.getBalance();
+                }
+                console.log(resObj)
+            }).catch(function (e) {
+                console.log(e, "error");
+            })
+
+            // var dePri = AESDecrypt(enPri,$scope.password);
+            // console.log(dePri);
+            
         }
+         $scope.confirmPassword = function(){
+             if($scope.account==undefined){
+                 swal("Please create a wallet address first");
+                 return;
+             }
+            queryPrivateKey($scope.account.address).then(function (result) {
+                console.log(result)
+                if(result.result=="success"){
+                    var dePri = AESDecrypt(result.data.privateKey,$scope.inputPassword);
+                    $("#privateKeyStr").val(dePri);
+                }else{
+                    swal("Password error");
+                }
+            }).catch(function (e) {
+                swal("Password error");
+            })
+            
+         };
+         
         $scope.getChainNameByid = function (id) {
             var name = "Main Chain";
             if(id > 0){

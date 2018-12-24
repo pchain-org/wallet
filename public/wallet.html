@@ -181,6 +181,7 @@
                                 Create
                             </button>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -211,11 +212,16 @@
                                 Confirm
                             </button>
                         </div>
+                    </form>
+                    <div class="marginTop10 input-group">
+                        <input type="text" placeholder="privateKey" class="form-control"  name="privateKey" ng-model="privateKeyStr"  id="privateKeyStr">
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- confirm transaction -->
     <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -290,10 +296,12 @@
      window.$ = window.jQuery = require('jquery');
 </script>
 <script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/bootstrap-notify.js"></script> 
 <script src="js/ethereumjs-accounts.js"></script>
 <script src="js/common.js"></script>
+<script src="js/sqlUtil.js"></script>
 <script type="text/javascript" src="pageJs/wallet.js"></script>
 </body>
 </html>
