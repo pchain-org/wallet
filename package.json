@@ -17,6 +17,7 @@
   "author": "skykingit@aliyun.com",
   "license": "ISC",
   "dependencies": {
+    "bignumber.js": "^8.0.1",
     "bluebird": "^3.5.0",
     "clipboard": "^2.0.4",
     "cryptojs": "^2.5.3",
@@ -29,7 +30,7 @@
     "txdata": "^1.0.3"
   },
   "devDependencies": {
-    "electron-packager": "^13.0.1",
-    "electron": "^1.6.2"
+    "electron": "^1.6.2",
+    "electron-packager": "^13.0.1"
   }
 }

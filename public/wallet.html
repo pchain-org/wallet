@@ -74,8 +74,11 @@
                             </div>
                         </div>
                         <div class="input-group mb-3 my-input-group">
-                            <div class="col-lg-12 col-md-12">
-                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#exportPrivateKey">Export Private Key</button>
+                            <div class="col-lg-6 col-md-6">
+                                <button class="btn btn-primary btn-round btn-simple float-left  m-l-10" ng-click="openAccountDetail()" >Receive PAI</button>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" ng-click="enterPassword(1)">Export Private Key</button>
                             </div>
                           
                         </div>
@@ -134,7 +137,7 @@
 
                         <div class="clearfix"></div>
                         <div class="marginTop20 text-center">
-                            <button class="btn btn-info" ng-disabled="Form.$invalid" ng-click="submit()">Submit</button>
+                            <button class="btn btn-info" ng-disabled="Form.$invalid" ng-click="enterPassword(0)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -189,7 +192,7 @@
     </div>
 
     <!-- Export privateKey -->
-    <div class="modal fade" id="exportPrivateKey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -213,9 +216,66 @@
                             </button>
                         </div>
                     </form>
-                    <div class="marginTop10 input-group">
-                        <input type="text" placeholder="privateKey" class="form-control"  name="privateKey" ng-model="privateKeyStr"  id="privateKeyStr">
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Detail -->
+    <div class="modal fade" id="accountDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Wallet Address
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <span ng-bind="account.address"></span>
+                    </div>
+                    <div class="marginTop10">
+                        <div id='qrcode' class="text-center">
+                            
+                        </div>
+                    </div>
+                    <div class="marginTop10 text-center">
+                        <button type="button" class="btn btn-primary copyBtn2"  data-clipboard-text="{{account.address}}">
+                                Copy Wallet Address
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Private key -->
+    <div class="modal fade" id="exportPrivateKey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Your Private Key
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="dangerArea">
+                             <span ng-bind="currentPrivateKey"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="marginTop10 text-center">
+                        <button type="button" class="btn btn-primary copyBtn3"  data-clipboard-text="{{currentPrivateKey}}">
+                                Copy
+                        </button>
                     </div>
                 </div>
             </div>
@@ -232,7 +292,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title">
-                        Cross-chain transfer between Main Chain and Child Chain
+                        Cross-chain transfer 
                     </h4>
 
                 </div>
@@ -302,6 +362,7 @@
 <script src="js/ethereumjs-accounts.js"></script>
 <script src="js/common.js"></script>
 <script src="js/sqlUtil.js"></script>
+<script src="js/qrcode.js"></script>
 <script type="text/javascript" src="pageJs/wallet.js"></script>
 </body>
 </html>

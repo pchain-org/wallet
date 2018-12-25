@@ -5,6 +5,7 @@ const Web3 = require("pweb3");
 const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
 const CryptoJS = require("crypto-js");
+const BigNumber = require('bignumber.js');
 window.angularApp = angular.module('myApp',[]);
 
 function AESEncrypt(msg,password){
