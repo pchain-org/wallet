@@ -52,8 +52,8 @@
                     <div class="body block-header">
                         <div class="row">
                             <div class="col-12">
-                                <h2 class="hidden-sm-down">Welcome To PCHAIN TESTNET1.0</h2>
-                                <h2 class="hidden-sm-up">TESTNET1.0</h2>
+                                <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                 <ul class="breadcrumb p-l-0 p-b-0 ">
                                     <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
                                     <li class="breadcrumb-item active">Contract</li>
@@ -234,7 +234,7 @@
                                                         </div>
 
                                                         <div class="marginTop10 text-center" ng-show="!funcObj.constant" ng-cloak>
-                                                            <button class="btn btn-primary" ng-disabled="contractForm.$invalid" ng-click="write()">Write</button>
+                                                            <button class="btn btn-primary" ng-disabled="contractForm.$invalid" ng-click="enterPassword(0)">Write</button>
                                                         </div>
                                                     </form>
 
@@ -328,7 +328,7 @@
                                          <input type="number"  class="form-control"  name="deployGas" ng-model="deployGas" placeholder="300000" ng-class="(deployForm.deployGas.$invalid && deployForm.deployGas.$dirty)?'form-control-danger':(deployForm.deployGas.$valid?'form-control-success':'') "  required>
                                     </div>
                                     <div class="marginTop10 text-center">
-                                        <button class="btn btn-primary" ng-disabled="deployForm.$invalid || nonce == -1" ng-click="deploy()">Deploy</button>
+                                        <button class="btn btn-primary" ng-disabled="deployForm.$invalid || nonce == -1" ng-click="enterPassword(1)">Deploy</button>
                                     </div>
                                 </form>
                             </div>
@@ -341,6 +341,37 @@
     </div>
 </section>
 
+    <!-- enterPassword -->
+    <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Please Enter Password
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="passwordForm" novalidate>
+                        <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control"  ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword"  required >
+                        </div>
+
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- confirm transaction -->
     <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -349,7 +380,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title text-center">
+                    <h4 class="modal-title text-center block">
                         PCHAIN Contract
                     </h4>
 
@@ -373,10 +404,10 @@
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
-                            <div class="form-control" ng-bind="amount+' TPAI'"></div>
+                            <div class="form-control" ng-bind="amount+' PAI'"></div>
                             <!-- <div class="form-control" id="modalToAmount"></div> -->
                         </div>
-
+<!-- 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Limit</span>
                             <div class="form-control" ng-bind="gasLimit"></div>
@@ -385,11 +416,11 @@
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Price</span>
                             <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
-                        </div>
+                        </div> -->
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Max TX Fee</span>
-                            <div class="form-control" ng-bind="txFee+' TPAI'"></div>
+                            <div class="form-control" ng-bind="txFee+' PAI'"></div>
                         </div>
 
                         <div class="input-group marginTop10">
@@ -423,11 +454,13 @@
      window.$ = window.jQuery = require('jquery');
 </script>
 <script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
 
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/bootstrap-notify.js"></script> 
 
 <script src="js/common.js"></script>
+<script src="js/sqlUtil.js"></script>
 <script type="text/javascript" src="pageJs/contract.js"></script>
 </body>
 </html>

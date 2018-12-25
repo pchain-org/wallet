@@ -72,31 +72,23 @@
         $scope.gasLimitTx = 3000000;
 
          $scope.accountList = new Array();
-        var accountStr = "";
-        try{
-            if(accountStr){
-
-                 var accountCookieList = JSON.parse(accountStr)
-                for(var i=0;i<accountCookieList.length;i++){
-                    var obj = {};
-                    obj.address = accountCookieList[i].address;
-                    obj.private = accountCookieList[i].private;
-                    $scope.accountList.push(obj);
+          queryAccountList().then(function (resObj) {
+             $scope.accountList = resObj.data;
+            try{
+                if($scope.accountList.length>0){
+                        $scope.account = $scope.accountList[0];
+                        $scope.getBalance();
                 }
-                //console.log($scope.accountList);
-                if($scope.accountList.length > 0){
-                    $scope.account = $scope.accountList[0];
-                    //console.log($scope.account);
-                   $scope.getBalance();
-                }else{
-                    // window.location.href = "wallet.html"
+                if($scope.accountList.length == 0){
+                    window.location.href = "wallet.html";
                 }
-            }else{
-                // window.location.href = "wallet.html"
+            }catch(e){
+                console.log(e);
             }
-        }catch(e){
-            //console.log(e);
-        }
+         }).catch(function (e) {
+             console.log(e, "error");
+         })
+
 
         $scope.gasChanged = function(){
             $scope.gasPrice = jQuery("#gasPrice").val();
@@ -135,6 +127,47 @@
             return payloadData;
         }
 
+        $scope.pwdFormtype = 0;
+        $scope.enterPassword = function(type){
+            $scope.pwdFormtype = type;
+            $('#enterPassword').modal('show');
+        }
+
+         $scope.currentPrivateKey = "";
+         $scope.confirmPassword = function(){
+             if($scope.account==undefined){
+                 swal("Please create a wallet address at first");
+                 return;
+             }
+            queryPrivateKey($scope.account.address).then(function (result) {
+
+                if(result.result=="success"){
+                    var dePri = AESDecrypt(result.data.privateKey,$scope.inputPassword);
+                    if(dePri){
+                        $scope.currentPrivateKey = dePri;
+                        $scope.inputPassword = "";
+                        $scope.$apply();
+                        $('#enterPassword').modal('hide');
+
+                        if($scope.pwdFormtype == 1){  //deploy contract
+                            
+                            $scope.deploy();
+                        }else{   //send contract tx
+                            $scope.write();
+                        }
+                    }else{
+                        swal("Password error");
+                    }
+                }else{
+                    swal("Password error");
+                }
+            }).catch(function (e) {
+
+                swal("Password error");
+            })
+            
+         };
+
         $scope.deploy = function(){
             $scope.getNonce();
             var gas = $scope.deployGas;
@@ -167,8 +200,6 @@
                 $scope.byteCode = funcData;
 
                 $scope.gasLimit = jQuery("#gasLimit").val();
-                // var gas = $scope.gasLimitTx
-                // $scope.gasLimit = gas;
 
                 var txFee = $scope.gasLimit*$scope.gasPrice*Math.pow(10,9);
                 $scope.txFee = web3.fromWei(txFee,'ether');
@@ -272,12 +303,12 @@
                 const amount = web3.toWei($scope.amount,"ether");
                 // console.log(amount);
 
-                var signRawObj = initSignRawContract($scope.contractAddr,$scope.byteCode,$scope.nonce,gasPrice,$scope.gasLimit,amount);
-                // console.log(signRawObj);
+                var signRawObj = initSignRawContract($scope.contractAddr,$scope.byteCode,$scope.nonce,gasPrice,$scope.gasLimit,amount,$scope.chainId);
+                console.log(signRawObj);
 
-                var signData = signTx($scope.account.private,signRawObj);
+                var signData = signTx($scope.currentPrivateKey,signRawObj);
 
-                //console.log(signData);
+                console.log(signData);
 
                 var obj = {};
                 obj.chainId = $scope.chainId;
@@ -290,14 +321,14 @@
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
-                    //console.log(res);
+                    console.log(res);
                     removeLoading();
                     if(res.data.result == "success"){
 
                         $('#transaction').modal('hide');
                         var hash = res.data.data;
                         var url =   "index.html?key="+hash+"&chain="+$scope.chainId;
-                        var html = '<a href="'+url+'" target="_blank">Transaction hash:'+hash+'</a>';
+                        var html = '<a href="'+url+'" >Transaction hash:'+hash+'</a>';
                        successNotify(html);
                        $scope.checkRecipt(hash,$scope.chainId);
                     }else{

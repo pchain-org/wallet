@@ -51,8 +51,8 @@
                     <div class="body block-header">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h2 class="hidden-sm-down">Welcome To PCHAIN TESTNET1.0</h2>
-                                <h2 class="hidden-sm-up">TESTNET1.0</h2>
+                                <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                 <ul class="breadcrumb p-l-0 p-b-0 ">
                                     <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
                                     <li class="breadcrumb-item active">SendPAI</li>
@@ -112,7 +112,7 @@
            <div class="col-xl-12">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Send TPAI</strong> <small>Notice : you will send TPai in <span ng-bind="chainList[chainId].name"></span></span></small></h2>
+                        <h2><strong>Send PAI</strong> <small>Notice : you will send PAI in <span ng-bind="chainList[chainId].name"></span></span></small></h2>
                     </div>
                     <div class="body">
                         <form name="Form" novalidate="" class="row clearfix">
@@ -147,7 +147,7 @@
                         </form>
                          <div class="clearfix"></div>
                         <div class="marginTop20 text-center">
-                            <button class="btn btn-info" ng-disabled="Form.$invalid" ng-click="submit()">Submit</button>
+                            <button class="btn btn-info" ng-disabled="Form.$invalid" data-toggle="modal" data-target="#enterPassword">Submit</button>
                         </div>
 
 
@@ -158,6 +158,37 @@
     </div>
 </section>
 
+    <!-- enterPassword -->
+    <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Please Enter Password
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="passwordForm" novalidate>
+                        <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control"  ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword"  required >
+                        </div>
+
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- confirm transaction -->
     <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -166,8 +197,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title text-center">
-                        Send TPAI To Address
+                    <h4 class="modal-title text-center block">
+                        Send PAI To Address
                     </h4>
 
                 </div>
@@ -190,11 +221,11 @@
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
-                            <div class="form-control" ng-bind="toAmount+' TPAI'"></div>
+                            <div class="form-control" ng-bind="toAmount+' PAI'"></div>
                             <!-- <div class="form-control" id="modalToAmount"></div> -->
                         </div>
 
-                        <div class="input-group marginTop10">
+  <!--                       <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Limit</span>
                             <div class="form-control" ng-bind="gasLimit"></div>
                         </div>
@@ -202,7 +233,7 @@
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Price</span>
                             <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
-                        </div>
+                        </div> -->
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Max TX Fee</span>
@@ -223,7 +254,7 @@
                     </div>
                 </div>
                 <div class="modal-footer text-center">
-                    <div class="block">
+                    <div class="block text-center">
                         <button type="button" class="btn btn-primary"   ng-disabled="!nonceFlag" ng-click="sendTx()">
                             Make transaction
                         </button>
@@ -239,10 +270,12 @@
      window.$ = window.jQuery = require('jquery');
 </script>
 <script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/bootstrap-notify.js"></script> 
 
 <script src="js/common.js"></script>
+<script src="js/sqlUtil.js"></script>
 <script type="text/javascript" src="pageJs/send.js"></script>
 </body>
 </html>

@@ -199,7 +199,7 @@
          $scope.currentPrivateKey = "";
          $scope.confirmPassword = function(){
              if($scope.account==undefined){
-                 swal("Please create a wallet address first");
+                 swal("Please create a wallet address at first");
                  return;
              }
             queryPrivateKey($scope.account.address).then(function (result) {

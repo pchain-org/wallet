@@ -1,5 +1,5 @@
 /**
- * Created by skykingit on 2017/3/30.
+ * Created by skykingit on 2018/12/01.
  */
 
 
@@ -12,11 +12,10 @@ const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
 
-
 let mainWindow;
 
 function createWindow () {
-    mainWindow = new BrowserWindow({width: 1000, height: 600,mixWidth:700})
+    mainWindow = new BrowserWindow({width: 1000, height: 700,mixWidth:700,minHeight:700})
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'public/index.html'),
         protocol: 'file:',

@@ -126,24 +126,13 @@ function signTx(pri,txObj){
 
     tx.sign(privateKey);
 
-    //console.log("get sender address------start--------------");
-    // var addressBUf = tx.getSenderAddress();
-    //console.log(addressBUf);
-    //console.log(addressBUf.toString('utf8'));
-    //console.log("get sender address--------end----------------");
-
     var serializedTx = tx.serialize();
 
     var txData = "0x" +serializedTx.toString('hex');
-    //console.log(txObj);
-    //console.log(txData);
+
     return txData;
 }
 
-// function convert(num){
-//     //console.log(num);
-//     return "0x"+ num.toString("16")
-// }
 
 function convert(num){
     var x = new BigNumber(num);
