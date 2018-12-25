@@ -156,7 +156,7 @@
 
                         $('#transaction').modal('hide');
                         var hash = res.data.data;
-                        var url =   "/index.html?key="+hash+"&chain="+$scope.chainId;
+                        var url =   "index.html?key="+hash+"&chain="+$scope.chainId;
                         var html = '<a href="'+url+'"   target="_blank">Transaction hash:'+hash+'</a>';
                        successNotify(html);
                     }else{
