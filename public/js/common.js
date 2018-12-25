@@ -25,6 +25,10 @@ function removeLoading(){
     $('body').find('.loading').remove();
 }
 
+function removePageLoader(){
+    $(".page-loader-wrapper").hide();
+}
+
 function showPopup(str,time,callback){
     if(!time) time = 3000;
     var html = '<div class="popup"><div class="pContent"><p>'+str+'</p></div></div>';

@@ -13,6 +13,7 @@
                 data:obj
             }).then(function successCallback(res){
                 //console.log(res);
+                removePageLoader();
                 if(res.data.result == "success"){
                     $scope.balance = res.data.data;
                 }else{

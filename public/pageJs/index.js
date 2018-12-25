@@ -116,4 +116,5 @@
     });
     $(function() {
         menuActive(1);
+        removePageLoader();
     });
