@@ -401,6 +401,9 @@ button[disabled] {
     display: block;
   }
 }
+.no-frame {
+  overflow: hidden;
+}
 /**  leftMenu css end **/
 html {
   height: 100%;
@@ -457,5 +460,25 @@ body {
   color: white;
 }
 .menu .list a {
+  color: white;
+}
+.loadingPage {
+  background-color: black;
+}
+.loadingPage .appLoading {
+  padding: 50px 10px;
+}
+.loadingPage .appLoading .logo {
+  width: 100px;
+  margin: 0 auto;
+}
+.loadingPage .appLoading .logo img {
+  width: 100%;
+  height: auto;
+}
+.loadingPage .word {
+  padding: 20px;
+  font-size: 30px;
+  font-weight: bold;
   color: white;
 }

@@ -401,3 +401,6 @@ button[disabled] {
     display: block;
   }
 }
+.no-frame {
+  overflow: hidden;
+}

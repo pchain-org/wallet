@@ -24,14 +24,39 @@ function createWindow () {
         icon:path.join(__dirname,"public/img/logo.png")
     }))
 
-
     initMenu();
     mainWindow.on('closed', function () {
         mainWindow = null
     })
 }
 
-app.on('ready', createWindow)
+let loadingWindow;
+function showLoadingWindow(){
+    loadingWindow = new BrowserWindow({width:500,height:300,resizable:false,frame:false});
+    loadingWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'public/loading.html'),
+        protocol: 'file:',
+        slashes: true,
+        icon:path.join(__dirname,"public/img/logo.png")
+    }));
+
+    loadingWindow.on('closed', function () {
+        loadingWindow = null;
+        createWindow();
+    })
+}
+
+function init(){
+    setTimeout(function(){
+        console.log("init success,launch app");
+        loadingWindow.close();
+    },3000)
+}
+
+app.on('ready', function(){
+    showLoadingWindow();
+    init();
+})
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
