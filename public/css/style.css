@@ -453,3 +453,9 @@ body {
 .fadeInput {
   height: 42px;
 }
+.white {
+  color: white;
+}
+.menu .list a {
+  color: white;
+}
