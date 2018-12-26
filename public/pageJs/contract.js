@@ -81,6 +81,7 @@
                         $scope.getBalance();
                 }
                 if($scope.accountList.length == 0){
+                    removePageLoader();
                     window.location.href = "wallet.html";
                 }
             }catch(e){

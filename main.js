@@ -11,7 +11,7 @@ const Menu = electron.Menu;
 const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
-// const DB = require("./sqlite3/dbInit.js");
+const DB = require("./sqlite3/dbInit.js");
 
 let mainWindow;
 
@@ -47,6 +47,7 @@ function showLoadingWindow(){
 }
 
 function init(){
+    DB.init();
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();

@@ -4,8 +4,6 @@
 
 
 var sqlite3 = require('sqlite3').verbose();
-const path = require('path')
-var Promise = require("bluebird");
 var Setting = require("../lib/setting.js");
 const DBPath = Setting.DBPath;
 
@@ -20,7 +18,16 @@ class DB{
 	}
 
 	init(){
-		console.log("init code is here");
+        db.serialize(function() {
+        	let sql="CREATE TABLE IF NOT EXISTS tb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY, blockNumber text,timeStamp text,hash text,nonce text,blockHash text,contractAddress text,fromaddress text,toaddress text,value real,gas text,gasPrice text,gasUsed text, createTime text);"
+                db.run(sql,function (err) {
+                    if(!err){
+                        console.log("init db complete");
+                    }else{
+                      console.log("init db error: "+err);
+                    }
+                });
+        });
 	}
 
 }

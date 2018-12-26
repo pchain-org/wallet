@@ -112,6 +112,7 @@
                         $scope.getBalance();
                 }
                 if($scope.accountList.length == 0){
+                    removePageLoader();
                     $('#newAccount').modal('show');
                 }
             }catch(e){
