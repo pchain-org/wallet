@@ -40,7 +40,7 @@ function showLoadingWindow(){
         icon:path.join(__dirname,"public/img/logo.png")
     }));
 
-    loadingWindow.on('closed', function () {
+    loadingWindow.on('hide', function () {
         loadingWindow = null;
         createWindow();
     })
@@ -49,7 +49,7 @@ function showLoadingWindow(){
 function init(){
     setTimeout(function(){
         console.log("init success,launch app");
-        loadingWindow.close();
+        loadingWindow.hide();
     },3000)
 }
 
