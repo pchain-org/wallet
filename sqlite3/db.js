@@ -5,13 +5,13 @@
 
 var sqlite3 = require('sqlite3').verbose();
 var Promise = require("bluebird");
-const path = require('path')
 var Setting = require("../lib/settingRemote.js");
 const DBPath = Setting.DBPath;
 
+
 console.log(DBPath);
 
-var db = new sqlite3.Database('./sqlite3/pchainWallet',function(data){
+var db = new sqlite3.Database(DBPath,function(data){
     // console.log(data);
 });
 
