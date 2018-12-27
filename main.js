@@ -18,7 +18,7 @@ let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({width: 1000, height: 700,mixWidth:700,minHeight:700})
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'public/wallet.html'),
+        pathname: path.join(__dirname, 'public/index.html'),
         protocol: 'file:',
         slashes: true,
         icon:path.join(__dirname,"public/img/logo.png")

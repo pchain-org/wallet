@@ -112,7 +112,6 @@
                         $scope.getBalance();
                 }
                 if($scope.accountList.length == 0){
-                    removePageLoader();
                     $('#newAccount').modal('show');
                 }
             }catch(e){
@@ -171,10 +170,8 @@
 
             addAccount(enPri,obj.address).then(function (resObj) {
                 if(resObj.result=="success"){
-                    showPopup("Created Successfully",1000);
-                    $('#newAccount').modal('hide');
-                    $scope.password = "";
-                    $scope.repeatPassword = "";
+                    showPopup("Created successfully",1000);
+                    $('#newAccount').modal('hide')
 
                     if($scope.accountList.length> 0){
                         $scope.account = $scope.accountList[$scope.accountList.length-1];
@@ -188,37 +185,6 @@
 
             // var dePri = AESDecrypt(enPri,$scope.password);
             // console.log(dePri);
-            
-        }
-
-        $scope.importPrivateKey = function(){
-
-            var newPrivateKey = $scope.newPrivate;
-
-            var obj = {};
-            
-            obj.address = priToAddress(newPrivateKey);
-
-            $scope.accountList.push(obj);
-
-            var enPri = AESEncrypt(newPrivateKey,$scope.password2);
-
-            addAccount(enPri,obj.address).then(function (resObj) {
-                if(resObj.result=="success"){
-                    showPopup("Import Successfully",1000);
-                    $('#importAccount').modal('hide');
-                    $scope.password2 = "";
-                    $scope.repeatPassword2 = "";
-                    $scope.newPrivate = "";
-
-                    if($scope.accountList.length> 0){
-                        $scope.account = $scope.accountList[$scope.accountList.length-1];
-                    }
-                    $scope.getBalance();
-                }
-            }).catch(function (e) {
-                console.log(e, "error");
-            })
             
         }
 
