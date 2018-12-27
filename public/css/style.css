@@ -482,3 +482,6 @@ body {
   font-weight: bold;
   color: white;
 }
+.maxModal {
+  max-width: 600px;
+}
