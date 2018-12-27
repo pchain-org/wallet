@@ -61,6 +61,7 @@
                             </div>
                             <div class="col-lg-6 col-md-4 col-sm-7 col-7 text-right">
                                 <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#newAccount">Create Wallet</button>
+                                <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
                             </div>
                         </div>
                     </div>
@@ -190,6 +191,56 @@
                         <div class="marginTop10 text-center">
                             <button type="button" class="btn btn-primary" ng-disabled="newAccount.$invalid || (password != repeatPassword) " ng-click="add()">
                                 Create
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- import account -->
+    <div class="modal fade" id="importAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog maxModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                   <h4 class="modal-title text-center block">
+                            Import Wallet
+                        </h4>
+
+                </div>
+                <div class="modal-body">
+                    <form name="importAccount" novalidate>
+                        <div class="input-group" ng-class="(importAccount.newPrivate.$invalid && importAccount.newPrivate.$dirty)?'has-danger':( importAccount.newPrivate.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Private Key</span>
+                            <input type="text" class="form-control"  ng-class="(importAccount.newPrivate.$invalid && importAccount.newPrivate.$dirty)?'form-control-danger':(importAccount.newPrivate.$valid?'form-control-success':'') " name="newPrivate" ng-model="newPrivate" ng-pattern="/^[a-fA-F0-9]{64}$/" required >
+                        </div>
+
+                        <div class="input-group" ng-class="(importAccount.password2.$invalid && importAccount.password2.$dirty)?'has-danger':( importAccount.password2.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control"  ng-class="(importAccount.password2.$invalid && importAccount.password2.$dirty)?'form-control-danger':(importAccount.password2.$valid?'form-control-success':'') " name="password2" ng-model="password2"  required >
+                        </div>
+
+                        <div class="input-group" ng-class="((password2 != repeatPassword2) && importAccount.repeatPassword2.$dirty)?'has-danger':( importAccount.repeatPassword2.$valid?'has-success':'') ">
+                             <span class="input-group-addon">Repeat Password</span>
+                            <input type="password" class="form-control"  ng-class="( (password2 != repeatPassword2) && importAccount.repeatPassword2.$dirty)?'form-control-danger':((password2 == repeatPassword2)?'form-control-success':'') " name="repeatPassword2" ng-model="repeatPassword2" required >
+                        </div>
+
+                         <div class="alert alert-danger" >
+                            <div class="container">
+                                <div class="alert-icon">
+                                    <i class="icon icon-warning-sign"></i>
+                                </div>
+                                <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
+                            </div>
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="importAccount.$invalid || (password2 != repeatPassword2) " ng-click="importPrivateKey()">
+                                Import
                             </button>
                         </div>
                     </form>
