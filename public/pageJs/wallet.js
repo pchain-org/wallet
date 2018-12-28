@@ -1,7 +1,35 @@
     var Accounts = new Accounts();
     var web3 = new Web3();
+    $('.collapse').collapse();
 
      angularApp.controller('myCtrl',function ($scope, $http){
+
+
+        $scope.txList = [
+        {id:1,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",tx:[
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain"},
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1"}
+        ]},
+         {id:2,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",tx:[
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain"},
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1"}
+        ]},
+         {id:3,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",tx:[
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain"},
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1"}
+        ]},
+         {id:4,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",tx:[
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain"},
+        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1"}
+        ]}
+        ];
+
+        $scope.showTxDetail = (e,index)=>{
+            
+            jQuery('#txDetail'+index).collapse("toggle");
+
+        }
+
         //chain list
         $scope.chainList = [
             {name:"Main Chain",id:0}

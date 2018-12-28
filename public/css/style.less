@@ -13,9 +13,6 @@ body{
   backgroud-color:white;
   padding-bottom:50px;
 }
-.hide{
-  opacity: 0;
-}
 .myHead{
   height: 60px;
   backgroud-color:white !important;
@@ -90,3 +87,43 @@ body{
 .maxModal{
   max-width:600px;
 }
+.hide{
+    display:none;
+}
+@tableBorder: #dee2e6;
+.complexTable{
+  .head{
+    padding:10px;
+    border-top:1px solid @tableBorder; 
+    > div{
+      text-algin:center;
+      font-size:20px;
+      font-weight:bold;
+      padding:4px;
+    }
+  }
+  .tBody{
+    padding:4px 0px;
+    .tItem{
+      padding:8px;
+      border-top:1px solid @tableBorder;
+      .iTitle{
+        padding:8px 0px;
+      }
+      .iBody{
+        background-color:black;
+        overflow:hidden;
+        .borderRadius(10px);
+        table{
+          color:white;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+

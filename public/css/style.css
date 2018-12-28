@@ -416,9 +416,6 @@ body {
   backgroud-color: white;
   padding-bottom: 50px;
 }
-.hide {
-  opacity: 0;
-}
 .myHead {
   height: 60px;
   backgroud-color: white !important;
@@ -484,4 +481,39 @@ body {
 }
 .maxModal {
   max-width: 600px;
+}
+.hide {
+  display: none;
+}
+.complexTable .head {
+  padding: 10px;
+  border-top: 1px solid #dee2e6;
+}
+.complexTable .head > div {
+  text-algin: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 4px;
+}
+.complexTable .tBody {
+  padding: 4px 0px;
+}
+.complexTable .tBody .tItem {
+  padding: 8px;
+  border-top: 1px solid #dee2e6;
+}
+.complexTable .tBody .tItem .iTitle {
+  padding: 8px 0px;
+}
+.complexTable .tBody .tItem .iBody {
+  background-color: black;
+  overflow: hidden;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.complexTable .tBody .tItem .iBody table {
+  color: white;
 }

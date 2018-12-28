@@ -152,6 +152,131 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="row clearfix">
+            <div class="card">
+                    <div class="header">
+                        <h2><strong>Transaction Log</strong></h2>
+                    </div>
+                    <div class="body">
+
+                        <div class="complexTable">
+                            <div class="head row">
+                                <div class="col-md-1 col-lg-1 col-xs-1">
+                                    #
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xs-3">
+                                    From
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xs-3">
+                                    To
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xs-3">
+                                    Value
+                                </div>
+                                <div class="col-md-2 col-lg-2 col-xs-2">
+                                    Operation
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                                
+                            </div>
+                            <div class="tBody">
+                                <div class="tItem" ng-repeat="item in txList">
+                                    <div class="iTitle row">
+                                        <div class="col-md-1 col-lg-1 col-xs-1" ng-bind="$index+1">
+                                            
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.from">
+                                            
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.to">
+                                            
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value">
+                                            
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xs-2">
+                                            <button class="btn badge badge-info" ng-click="showTxDetail($event,$index)">Detail</button>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                        
+                                    </div>
+                                    <div class="iBody collapse hide" id="{{'txDetail'+$index}}">
+                                        <div class="table-responsive">
+                                            <table class="table table-filter table-hover m-b-0">                                
+                                                <tbody>
+                                                    <tr data-status="suspended">
+                                                        <td ng-bind="item.tx[0].chain"></td>
+                                                        <td ng-bind="item.tx[0].from"></td>
+                                                        <td ng-bind="item.tx[0].to"></td>
+                                                        <td><a href="index.html?key=0x23f80af3b69b74fbf02621570dcbce93e63b16c134aa2a0cc45a75e27f94e423&chain=0" class="badge badge-info">Detail</a></td>
+                                                    </tr>
+                                                    <tr data-status="suspended">
+                                                        <td ng-bind="item.tx[1].chain"></td>
+                                                        <td ng-bind="item.tx[1].from"></td>
+                                                        <td ng-bind="item.tx[1].to"></td>
+                                                        <td><a href="index.html?key=0x23f80af3b69b74fbf02621570dcbce93e63b16c134aa2a0cc45a75e27f94e423&chain=0" class="badge badge-info">Detail</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>                
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="tItem">
+                                    <div class="iTitle row">
+                                        <div class="col-md-1 col-lg-1 col-xs-1">
+                                            1
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            Main Chain
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            Child Chain 1
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            1.234567894562123
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xs-2">
+                                            <button class="badge badge-info" ng-click="showDetail()">Detail</button>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                        
+                                    </div>
+                                    <div class="iBody">
+                                        <div class="table-responsive">
+                                            <table class="table table-filter table-hover m-b-0">                                
+                                                <tbody>
+                                                    <tr data-status="suspended">
+                                                        <td>0xea674fdde714fd979de3edf0f56aa9716b898ec8</td>
+                                                        <td>0x0d768fac80be6f12ad9c66dd240c960f4722f873</td>
+                                                        <td>
+                                                           1.234
+                                                        </td>
+                                                        <td><a href="#" class="badge badge-info">Detail</a></td>
+                                                    </tr>
+                                                    <tr data-status="suspended">
+                                                        <td>0xea674fdde714fd979de3edf0f56aa9716b898ec8</td>
+                                                        <td>0x0d768fac80be6f12ad9c66dd240c960f4722f873</td>
+                                                        <td>
+                                                           1.234
+                                                        </td>
+                                                        <td><a href="#" class="badge badge-info">Detail</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>                
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                            
+                        </div>    
+                    </div>
+            </div>
+        </div>
     </div>
 </section>
 
