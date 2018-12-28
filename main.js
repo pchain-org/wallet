@@ -31,10 +31,13 @@ function createWindow () {
     }))
 
     initMenu();
-
+    
+    let checkFlag = false;
     mainWindow.on('show',()=>{
-        console.log("ready to show update");
-        UpdateUtil.checkUpdate(0);
+        if(!checkFlag){
+            UpdateUtil.checkUpdate(0);
+            checkFlag = true;
+        }
     });
 
     mainWindow.on('closed', ()=> {
@@ -68,6 +71,7 @@ function init(){
     }).catch(function (reason) {
         console.log("reason"+reason)
     });
+
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();
