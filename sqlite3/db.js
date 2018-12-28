@@ -9,7 +9,7 @@ var Setting = require("../lib/settingRemote.js");
 const DBPath = Setting.DBPath;
 
 
-console.log(DBPath);
+// console.log(DBPath);
 
 var db = new sqlite3.Database(DBPath,function(data){
     // console.log(data);
@@ -119,6 +119,32 @@ sqliteObj.queryByParam = function (sql,param) {
 //     });
 // });
 
+
+
+// tb_chain table
+// db.serialize(function() {
+    //CREATE TABLE IF NOT EXISTS tb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);
+    //CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY, blockNumber text,timeStamp text,hash text,nonce text,blockHash text,contractAddress text,fromaddress text,toaddress text,value real,gas text,gasPrice text,gasUsed text, createTime text);
+    //"CREATE TABLE IF NOT EXISTS tb_chain(id integer PRIMARY KEY, chainId text,chainName text,createTime text);";
+    //db.run("CREATE TABLE IF NOT EXISTS tb_chain(id integer PRIMARY KEY, chainId text,chainName text,createTime text);");
+//
+//
+//     var sqlone1 = "INSERT INTO tb_chain(id,chainId,chainName,createTime) VALUES (?,?,?,?)";
+//     var array1=[null,"1","Child Chain1",new Date()];
+//     var results1 = sqliteObj.execute(sqlone1, array1);
+//     console.log(results1);
+//
+//
+//     var sqlone2 = "INSERT INTO tb_chain(id,chainId,chainName,createTime) VALUES (?,?,?,?)";
+//     var array2=[null,"2","Child Chain2",new Date()];
+//     var results2 = sqliteObj.execute(sqlone2, array2);
+//     console.log(results2);
+//
+//     db.each("select * from tb_chain order by chainId asc", function(err, row) {
+//         console.log(row.id + ": " + row.chainId + " : " + row.chainName);
+//     });
+// });
+//
 // db.close();
 
 module.exports = sqliteObj;

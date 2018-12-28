@@ -63,12 +63,23 @@
         $scope.chainList = [
             {name:"Main Chain",id:0}
             ];
-            for(var i=0;i<2;i++){
-                var obj = {};
-                obj.name = "Child Chain"+(i+1);
-                obj.id = (i+1);
-                $scope.chainList.push(obj);
-            }
+            // for(var i=0;i<2;i++){
+            //     var obj = {};
+            //     obj.name = "Child Chain"+(i+1);
+            //     obj.id = (i+1);
+            //     $scope.chainList.push(obj);
+            // }
+
+         queryChainList().then(function (resData) {
+             for(var i=0;i<resData.data.length;i++){
+                 var obj = {};
+                 obj.name = "Child Chain "+resData.data[i].chainId;
+                 obj.id = resData.data[i].chainId;
+                 $scope.chainList.push(obj);
+             }
+         }).catch(function (e) {
+             console.log(e, "queryChainList error.");
+         });
 
         $scope.chainId = 0;
 
