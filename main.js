@@ -16,6 +16,7 @@ const url = require('url')
 const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
 const query = require("./sqlite3/queryInit.js");
+const UpdateUtil = require("./utils/update");
 
 
 let mainWindow;
@@ -30,7 +31,16 @@ function createWindow () {
     }))
 
     initMenu();
-    mainWindow.on('closed', function () {
+    
+    let checkFlag = false;
+    mainWindow.on('show',()=>{
+        if(!checkFlag){
+            UpdateUtil.checkUpdate(0);
+            checkFlag = true;
+        }
+    });
+
+    mainWindow.on('closed', ()=> {
         mainWindow = null
     })
 }
@@ -45,7 +55,7 @@ function showLoadingWindow(){
         icon:path.join(__dirname,"public/img/logo.png")
     }));
 
-    loadingWindow.on('hide', function () {
+    loadingWindow.on('hide', () => {
         loadingWindow = null;
         createWindow();
     })
@@ -61,6 +71,7 @@ function init(){
     }).catch(function (reason) {
         console.log("reason"+reason)
     });
+
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();
