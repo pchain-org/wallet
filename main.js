@@ -16,6 +16,7 @@ const url = require('url')
 const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
 const query = require("./sqlite3/queryInit.js");
+const UpdateUtil = require("./utils/update");
 
 
 let mainWindow;
@@ -30,7 +31,13 @@ function createWindow () {
     }))
 
     initMenu();
-    mainWindow.on('closed', function () {
+
+    mainWindow.on('show',()=>{
+        console.log("ready to show update");
+        UpdateUtil.checkUpdate(0);
+    });
+
+    mainWindow.on('closed', ()=> {
         mainWindow = null
     })
 }
@@ -45,7 +52,7 @@ function showLoadingWindow(){
         icon:path.join(__dirname,"public/img/logo.png")
     }));
 
-    loadingWindow.on('hide', function () {
+    loadingWindow.on('hide', () => {
         loadingWindow = null;
         createWindow();
     })
