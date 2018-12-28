@@ -31,13 +31,9 @@ function createWindow () {
     }))
 
     initMenu();
-    
-    let checkFlag = false;
-    mainWindow.on('show',()=>{
-        if(!checkFlag){
-            UpdateUtil.checkUpdate(0);
-            checkFlag = true;
-        }
+
+    mainWindow.once('show',()=>{
+        UpdateUtil.checkUpdate(0);
     });
 
     mainWindow.on('closed', ()=> {
