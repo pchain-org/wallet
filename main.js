@@ -8,10 +8,15 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu;
 
+var Promise = require("bluebird");
+
+
 const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
+const query = require("./sqlite3/queryInit.js");
+
 
 let mainWindow;
 
@@ -47,7 +52,15 @@ function showLoadingWindow(){
 }
 
 function init(){
-    DB.init();
+    DB.init().then(function (result) {
+        if(result=="ok"){
+            return query.queryChild(result);
+        }
+    }).then(function (result) {
+        console.log(result);
+    }).catch(function (reason) {
+        console.log("reason"+reason)
+    });
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();
