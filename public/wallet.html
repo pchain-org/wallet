@@ -198,27 +198,27 @@
                                             
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xs-2">
-                                            <button class="btn badge badge-info" ng-click="showTxDetail($event,$index)">Detail</button>
+                                            <button class="btn badge badge-info" ng-click="showTxDetail($index)">Detail</button>
                                         </div>
                                     </div>
                                     <div class="clearfix">
                                         
                                     </div>
-                                    <div class="iBody collapse hide" id="{{'txDetail'+$index}}">
+                                    <div class="iBody"  ng-show="item.showDetail" ng-cloak>
                                         <div class="table-responsive">
                                             <table class="table table-filter table-hover m-b-0">                                
                                                 <tbody>
                                                     <tr data-status="suspended">
                                                         <td ng-bind="item.tx[0].chain"></td>
                                                         <td ng-bind="item.tx[0].from"></td>
-                                                        <td ng-bind="item.tx[0].to"></td>
-                                                        <td><a href="index.html?key=0x23f80af3b69b74fbf02621570dcbce93e63b16c134aa2a0cc45a75e27f94e423&chain=0" class="badge badge-info">Detail</a></td>
+                                                        <td ng-bind="item.tx[0].hash"></td>
+                                                        <td><a href="{{'index.html?key='+item.tx[0].hash+'&chain='+item.tx[0].id}}" class="badge badge-info">Detail</a></td>
                                                     </tr>
                                                     <tr data-status="suspended">
                                                         <td ng-bind="item.tx[1].chain"></td>
                                                         <td ng-bind="item.tx[1].from"></td>
-                                                        <td ng-bind="item.tx[1].to"></td>
-                                                        <td><a href="index.html?key=0x23f80af3b69b74fbf02621570dcbce93e63b16c134aa2a0cc45a75e27f94e423&chain=0" class="badge badge-info">Detail</a></td>
+                                                        <td ng-bind="item.tx[1].hash"></td>
+                                                        <td><a href="{{'index.html?key='+item.tx[1].hash+'&chain='+item.tx[1].id}}" class="badge badge-info">Detail</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>                
