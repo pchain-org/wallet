@@ -1,15 +1,19 @@
 {
- "childCount" : "2",
-  "child_0" :
+  "name":"child",
+  "version": "1.0",
+  "chain" :
     [
-    "1",
-    "child_0",
-    "Chain child 1"
-    ],
-  "child_1" :
-  [
-    "1",
-    "child_0",
-    "Chain child 1"
-  ]
+      {
+      "id":"1",
+      "chainId":"child_0",
+      "chainName":"Chain child 1"
+      },
+      {
+        "id":"2",
+        "chainId":"child_1",
+        "chainName":"Chain child 2"
+      }
+    ]
 }
+
+
