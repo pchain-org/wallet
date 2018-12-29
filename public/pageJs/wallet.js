@@ -35,8 +35,8 @@
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].chainId;
-                 obj.id = resData.data[i].chainId;
+                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.id = resData.data[i].id;
                  $scope.chainList.push(obj);
              }
          }).catch(function (e) {
@@ -58,8 +58,8 @@
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj2 = {};
-                 obj2.name = "Child Chain "+resData.data[i].chainId;
-                 obj2.id = resData.data[i].chainId;
+                 obj2.name = "Child Chain "+resData.data[i].id;
+                 obj2.id = resData.data[i].id;
                  $scope.chainList2.push(obj2);
              }
          }).catch(function (e) {
@@ -185,8 +185,8 @@
                 queryChainList().then(function (resData) {
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
-                        obj3.name = "Child Chain "+resData.data[i].chainId;
-                        obj3.id = resData.data[i].chainId;
+                        obj3.name = "Child Chain "+resData.data[i].id;
+                        obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
                     }
                 }).catch(function (e) {
