@@ -5,25 +5,15 @@
         $scope.gasPrice = 10;
         $scope.nonce = 0;
         $scope.balance = 0;
-        // $scope.chain.id = 0;
 
         $scope.showAddData = function(){
             $scope.addDataFlag = true;
         }
-         $scope.chainList = [
-             {name:"Main Chain",id:0}
-         ];
-         for(var i=0;i<2;i++){
-             var obj = {};
-             obj.name = "Child Chain"+(i+1);
-             obj.id = (i+1);
-             $scope.chainList.push(obj);
-         }
         $scope.getBalance = function () {
             var obj = {};
             obj.chainId = $scope.chain.id;
             obj.address = $scope.account.address;
-            //console.log(obj);
+            console.log(obj);
             var url = APIHost +"/getBalance";
             $http({
                 method:'POST',
@@ -70,18 +60,21 @@
         }
                 //chain list
 
-
-
-         // queryChainList().then(function (resData) {
-         //     for(var i=0;i<resData.data.length;i++){
-         //         var obj = {};
-         //         obj.name = "Child Chain "+resData.data[i].id;
-         //         obj.id = resData.data[i].id;
-         //         $scope.chainList.push(obj);
-         //     }
-         // }).catch(function (e) {
-         //     console.log(e, "queryChainList error.");
-         // });
+     $scope.chainList = new Array();
+     $scope.chainList = [
+             {name:"Main Chain",id:0}
+         ];
+         queryChainList().then(function (resData) {
+             for(var i=0;i<resData.data.length;i++){
+                 var obj = {};
+                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.id = resData.data[i].id;
+                 $scope.chainList.push(obj);
+                 $scope.chain=$scope.chainList[0];
+             }
+         }).catch(function (e) {
+             console.log(e, "queryChainList error.");
+         });
 
 
 
@@ -191,7 +184,7 @@
                     if(res.data.result == "success"){
                         $('#transaction').modal('hide');
                         var hash = res.data.data;
-                        var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
+                        var url =   "index.html?key="+hash+"&chain="+$scope.chain;
                         var html = '<a href="'+url+'"  >Transaction hash:'+hash+'</a>';
                        successNotify(html);
                         var objt = {};

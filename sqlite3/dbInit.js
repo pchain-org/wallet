@@ -40,6 +40,16 @@ class DB{
                     console.log("init db error: "+err);
                 }
             });
+
+            db.run("CREATE TABLE IF NOT EXISTS tb_chain(id text, chainId text,chainName text);",function (err) {
+                if(!err){
+                    resolve("ok");
+                    console.log("init db_chain complete");
+                }else{
+                    reject(err);
+                    console.log("init db_chain error: ", err);
+                }
+            });
             });
         });
 	}

@@ -166,6 +166,7 @@
                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                     <thead>
                     <tr>
+                        <th>CHAIN</th>
                         <th>Hash</th>
                         <th>To</th>
                         <th>Value</th>
@@ -173,6 +174,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in transactionList">
+                        <td ng-bind="item.chainName"></td>
                         <td ng-bind="item.hash"></td>
                         <td ng-bind="item.toaddress"></td>
                         <td ng-bind="item.value"></td>
@@ -233,7 +235,7 @@
                     <div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">CHAIN</span>
-                            <div class="form-control" ng-bind="chainList[chainId].name"></div>
+                            <div class="form-control" ng-bind="chainList[chain]"></div>
                         </div>
 
                         <div class="input-group marginTop10">

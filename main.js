@@ -63,7 +63,13 @@ function init(){
     }).catch(function (reason) {
         console.log("reason"+reason)
     });
-
+    setTimeout(function() {
+        query.queryChild().then(function (data) {
+            console.log("Init Child:", data);
+        }).catch(function (e) {
+            console.log("Init Child:", e)
+        });
+    },1000);
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();
