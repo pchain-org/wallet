@@ -59,6 +59,10 @@ function showLoadingWindow(){
 
 function init(){
     DB.init().then(function (result) {
+        if(result=="ok"){
+            return query.queryChild(result);
+        }
+    }).then(function (result) {
         console.log(result);
     }).catch(function (reason) {
         console.log("reason"+reason)
