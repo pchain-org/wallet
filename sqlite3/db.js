@@ -87,6 +87,21 @@ sqliteObj.queryByParam = function (sql,param) {
     });
 }
 
+sqliteObj.queryAllByParam = function (sql,param) {
+    return new Promise(function (accept,reject) {
+        db.all(sql,param, function(err, row) {
+            if(!err){
+                responseObj.data = row;
+                accept(responseObj);
+            }else{
+                responseObj.result = "error";
+                responseObj.error = err;
+                reject(responseObj);
+            }
+        });
+    });
+
+}
 
 // db.serialize(function() {
 
