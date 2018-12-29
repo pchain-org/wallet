@@ -35,47 +35,47 @@
             {name:"Main Chain",id:0}
         ];
 
-        // for(var i=0;i<childChainAmount;i++){
-        //     var obj = {};
-        //     obj.name = "Child Chain"+(i+1);
-        //     obj.id = (i+1);
-        //     $scope.chainList.push(obj);
-        // }
+        for(var i=0;i<childChainAmount;i++){
+            var obj = {};
+            obj.name = "Child Chain"+(i+1);
+            obj.id = (i+1);
+            $scope.chainList.push(obj);
+        }
 
          // $scope.chainList = new Array();
-         queryChainList().then(function (resData) {
-             for(var i=0;i<resData.data.length;i++){
-                 var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].id;
-                 obj.id = resData.data[i].id;
-                 $scope.chainList.push(obj);
-             }
-         }).catch(function (e) {
-             console.log(e, "queryChainList error.");
-         })
+         // queryChainList().then(function (resData) {
+         //     for(var i=0;i<resData.data.length;i++){
+         //         var obj = {};
+         //         obj.name = "Child Chain "+resData.data[i].id;
+         //         obj.id = resData.data[i].id;
+         //         $scope.chainList.push(obj);
+         //     }
+         // }).catch(function (e) {
+         //     console.log(e, "queryChainList error.");
+         // })
 
 
          $scope.chain = 0;
 
         $scope.chainList2 = new Array();
+         //
+         for(var i=0;i<2;i++){
+                     var obj2 = {};
+                     obj2.name = "Child Chain"+(i+1);
+                     obj2.id = (i+1);
+                     $scope.chainList2.push(obj2);
+                 }
 
-         // for(var i=0;i<resData.length;i++){
-         //             var obj2 = {};
-         //             obj2.name = "Child Chain"+(i+1);
-         //             obj2.id = (i+1);
-         //             $scope.chainList2.push(obj2);
-         //         }
-
-         queryChainList().then(function (resData) {
-             for(var i=0;i<resData.data.length;i++){
-                 var obj2 = {};
-                 obj2.name = "Child Chain "+resData.data[i].id;
-                 obj2.id = resData.data[i].id;
-                 $scope.chainList2.push(obj2);
-             }
-         }).catch(function (e) {
-             console.log(e, "queryChainList error.");
-         });
+         // queryChainList().then(function (resData) {
+         //     for(var i=0;i<resData.data.length;i++){
+         //         var obj2 = {};
+         //         obj2.name = "Child Chain "+resData.data[i].id;
+         //         obj2.id = resData.data[i].id;
+         //         $scope.chainList2.push(obj2);
+         //     }
+         // }).catch(function (e) {
+         //     console.log(e, "queryChainList error.");
+         // });
 
          $scope.crossChain = 1;
 
@@ -186,23 +186,23 @@
             $scope.chainList2 = new Array();
             if($scope.chain == 0){
 
-                // for(var i=0;i<childChainAmount;i++){
-                //     var obj3 = {};
-                //     obj3.name = "Child Chain"+(i+1);
-                //     obj3.id = (i+1);
-                //     $scope.chainList2.push(obj3);
-                // }
+                for(var i=0;i<childChainAmount;i++){
+                    var obj3 = {};
+                    obj3.name = "Child Chain"+(i+1);
+                    obj3.id = (i+1);
+                    $scope.chainList2.push(obj3);
+                }
 
-                queryChainList().then(function (resData) {
-                    for(var i=0;i<resData.data.length;i++){
-                        var obj3 = {};
-                        obj3.name = "Child Chain "+resData.data[i].id;
-                        obj3.id = resData.data[i].id;
-                        $scope.chainList2.push(obj3);
-                    }
-                }).catch(function (e) {
-                    console.log(e, "queryChainList error.");
-                });
+                // queryChainList().then(function (resData) {
+                //     for(var i=0;i<resData.data.length;i++){
+                //         var obj3 = {};
+                //         obj3.name = "Child Chain "+resData.data[i].id;
+                //         obj3.id = resData.data[i].id;
+                //         $scope.chainList2.push(obj3);
+                //     }
+                // }).catch(function (e) {
+                //     console.log(e, "queryChainList error.");
+                // });
 
                 $scope.crossChain = 1;
             }else{

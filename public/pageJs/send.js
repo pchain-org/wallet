@@ -5,14 +5,23 @@
         $scope.gasPrice = 10;
         $scope.nonce = 0;
         $scope.balance = 0;
+        // $scope.chain.id = 0;
 
         $scope.showAddData = function(){
             $scope.addDataFlag = true;
         }
-
+         $scope.chainList = [
+             {name:"Main Chain",id:0}
+         ];
+         for(var i=0;i<2;i++){
+             var obj = {};
+             obj.name = "Child Chain"+(i+1);
+             obj.id = (i+1);
+             $scope.chainList.push(obj);
+         }
         $scope.getBalance = function () {
             var obj = {};
-            obj.chainId = $scope.chainId;
+            obj.chainId = $scope.chain.id;
             obj.address = $scope.account.address;
             //console.log(obj);
             var url = APIHost +"/getBalance";
@@ -38,7 +47,7 @@
         $scope.getNonce = function(){
             $scope.nonceFlag = false;
             var obj = {};
-            obj.chainId = $scope.chainId;
+            obj.chainId = $scope.chain.id;
             obj.address = $scope.account.address;
             //console.log(obj);
             var url = APIHost +"/getNonce";
@@ -60,28 +69,21 @@
             });
         }
                 //chain list
-        $scope.chainList = [
-            {name:"Main Chain",id:0}
-            ];
-            // for(var i=0;i<2;i++){
-            //     var obj = {};
-            //     obj.name = "Child Chain"+(i+1);
-            //     obj.id = (i+1);
-            //     $scope.chainList.push(obj);
-            // }
 
-         queryChainList().then(function (resData) {
-             for(var i=0;i<resData.data.length;i++){
-                 var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].id;
-                 obj.id = resData.data[i].id;
-                 $scope.chainList.push(obj);
-             }
-         }).catch(function (e) {
-             console.log(e, "queryChainList error.");
-         });
 
-        $scope.chainId = 0;
+
+         // queryChainList().then(function (resData) {
+         //     for(var i=0;i<resData.data.length;i++){
+         //         var obj = {};
+         //         obj.name = "Child Chain "+resData.data[i].id;
+         //         obj.id = resData.data[i].id;
+         //         $scope.chainList.push(obj);
+         //     }
+         // }).catch(function (e) {
+         //     console.log(e, "queryChainList error.");
+         // });
+
+
 
         $scope.accountList = new Array();
 
@@ -91,6 +93,10 @@
                 if($scope.accountList.length>0){
                         $scope.account = $scope.accountList[0];
                         $scope.getBalance();
+                        queryTransactionList($scope.account.address).then(function (robj) {
+                            $scope.transactionList = new Array();
+                            $scope.transactionList=robj.data;
+                        })
                 }
                 if($scope.accountList.length == 0){
                     removePageLoader();
@@ -102,6 +108,8 @@
          }).catch(function (e) {
              console.log(e, "error");
          })
+
+
 
         $scope.currentPrivateKey = "";
         $scope.confirmPassword = function(){
@@ -152,8 +160,6 @@
             $scope.gasPrice = jQuery("#gasPrice").val();
 
         }
-
-         
          $scope.sendTx = function () {
 
             try{
@@ -164,14 +170,14 @@
                  // const amount = web3.toWei(toAmountValue,"ether");            
 
                 var nonce = $scope.nonce;
-                var signRawObj = initSignRawPAI($scope.toAddress, amount,nonce,gasPrice,$scope.gasLimit,$scope.chainId);
+                var signRawObj = initSignRawPAI($scope.toAddress, amount,nonce,gasPrice,$scope.gasLimit,$scope.chain.id);
 
                 if($scope.data) signRawObj.data = $scope.data;
 
                 var signData = signTx($scope.currentPrivateKey,signRawObj);
 
                 var obj = {};
-                obj.chainId = $scope.chainId;
+                obj.chainId = $scope.chain.id;
                 obj.signData = signData;
                 
                 loading();
@@ -183,12 +189,31 @@
                 }).then(function successCallback(res){
                     removeLoading();
                     if(res.data.result == "success"){
-
                         $('#transaction').modal('hide');
                         var hash = res.data.data;
-                        var url =   "index.html?key="+hash+"&chain="+$scope.chainId;
+                        var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
                         var html = '<a href="'+url+'"  >Transaction hash:'+hash+'</a>';
                        successNotify(html);
+                        var objt = {};
+                        objt.hash = hash;
+                        objt.nonce = nonce;
+                        objt.fromaddress = $scope.account.address;
+                        objt.toaddress = $scope.toAddress;
+                        objt.value = $scope.toAmount;
+                        objt.gas = $scope.gasLimit;
+                        objt.gasPrice = gasPrice;
+                        objt.type = 1;
+                        objt.chainId = $scope.chain.id;
+                        objt.chainName = $scope.chain.name;
+                        console.log(objt)
+                        addTransaction(objt).then(function (aobj) {
+                            if(aobj.result=="success"){
+                                queryTransactionList($scope.account.address).then(function (robj) {
+                                    $scope.transactionList=robj.data;
+                                    $scope.$apply();
+                                })
+                            }
+                        })
                     }else{
                         swal(res.data.error);
                     }

@@ -81,4 +81,36 @@ function queryChainByTime() {
         })
     });
 }
+/*
+   save transaction record
+ */
+function addTransaction(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,data,type,chainName,pid,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.nonce,obj.fromaddress,obj.toaddress,obj.value,obj.gas,obj.gasPrice,obj.data,obj.type,obj.chainName,0, new Date()];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save addTransaction error:", e);
+        })
+    });
+}
 
+/*
+ query transactions
+ */
+
+function queryTransactionList(address) {
+    return new Promise(function (accept,reject) {
+        console.log(address)
+        var sql = "select * from tb_transaction where type =1 and fromaddress=? order by createTime desc limit 10";
+        var array = [address]
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}

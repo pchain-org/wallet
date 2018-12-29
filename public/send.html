@@ -94,7 +94,7 @@
                         <div class="input-group mb-3 my-input-group">
                             <span class="input-group-addon">CHAIN</span>
                             <div class="form-control">
-                                <select  class="mySelect" ng-model="chainId" ng-options="  chain.id as chain.name  for chain in chainList" ng-change="getBalance()"></select>
+                                <select  class="mySelect" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList" ng-change="getBalance()"></select>
                             </div>
                         </div>
                         <div class="input-group mb-3 my-input-group">
@@ -155,6 +155,31 @@
 
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="header">
+                    <h2><strong>Latest 10 transaction records</strong></h2>
+                </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>To</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in transactionList">
+                        <td ng-bind="item.hash"></td>
+                        <td ng-bind="item.toaddress"></td>
+                        <td ng-bind="item.value"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             </div>
         </div>
     </div>
