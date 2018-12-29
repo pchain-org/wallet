@@ -1,8 +1,8 @@
 {
   "name":"child",
-  "version": "2",
-  "chain" :
-    [
+  "version": "1",
+  "version_latest": "1",
+  "chain":[
       {
       "id":"1",
       "chainId":"child_0",

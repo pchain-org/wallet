@@ -59,15 +59,17 @@ function showLoadingWindow(){
 
 function init(){
     DB.init().then(function (result) {
-        if(result=="ok"){
-            return query.queryChild(result);
-        }
-    }).then(function (result) {
         console.log(result);
     }).catch(function (reason) {
         console.log("reason"+reason)
     });
-
+    setTimeout(function() {
+        query.queryChild().then(function (data) {
+            console.log("Init Child:", data);
+        }).catch(function (e) {
+            console.log("Init Child:", e)
+        });
+    },1000);
     setTimeout(function(){
         console.log("init success,launch app");
         loadingWindow.hide();
