@@ -10,18 +10,7 @@
         {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain",id:0},
         {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1",id:1}
         ]},
-         {id:1,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",showDetail:false,tx:[
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain",id:0},
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1",id:1}
-        ]},
-        {id:1,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",showDetail:false,tx:[
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain",id:0},
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1",id:1}
-        ]},
-        {id:1,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",showDetail:false,tx:[
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain",id:0},
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1",id:1}
-        ]}
+      
         ];
 
         $scope.showTxDetail = (index)=>{
