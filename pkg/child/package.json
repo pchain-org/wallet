@@ -1,0 +1,15 @@
+{
+ "childCount" : "2",
+  "child_0" :
+    [
+    "1",
+    "child_0",
+    "Chain child 1"
+    ],
+  "child_1" :
+  [
+    "1",
+    "child_0",
+    "Chain child 1"
+  ]
+}

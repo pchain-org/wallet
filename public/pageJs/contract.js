@@ -63,8 +63,8 @@
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].chainId;
-                 obj.id = resData.data[i].chainId;
+                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.id = resData.data[i].id;
                  $scope.chainList.push(obj);
              }
          }).catch(function (e) {
