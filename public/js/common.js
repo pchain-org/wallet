@@ -334,7 +334,7 @@ function initSignRawPAI(toAddress,amount,nonce,gasPrice,gasLimit,chainId) {
         gasLimit: convert(gasLimit),
         to:toAddress,
         value:convert(amount),
-        chainId:getChainIdHash(chainId)
+        chainId:chainId
     };
 
     return rawTx;

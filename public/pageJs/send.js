@@ -62,13 +62,17 @@
 
      $scope.chainList = new Array();
      $scope.chainList = [
-             {name:"Main Chain",id:0}
+             {name:"Main Chain",id:0,chainId:"pchain"}
          ];
+
+    $scope.chain=$scope.chainList[0]
+
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
                  obj.name = resData.data[i].chainName;
                  obj.id = resData.data[i].id;
+                 obj.chainId = resData.data[i].chainId;
                  $scope.chainList.push(obj);
                  $scope.chain=$scope.chainList[0];
              }
@@ -76,7 +80,7 @@
              console.log(e, "queryChainList error.");
          });
 
-     $scope.crossChain = 1;
+        $scope.crossChain = 1;
 
         $scope.accountList = new Array();
 
@@ -163,7 +167,7 @@
                  // const amount = web3.toWei(toAmountValue,"ether");            
 
                 var nonce = $scope.nonce;
-                var signRawObj = initSignRawPAI($scope.toAddress, amount,nonce,gasPrice,$scope.gasLimit,$scope.chain.id);
+                var signRawObj = initSignRawPAI($scope.toAddress, amount,nonce,gasPrice,$scope.gasLimit,$scope.chain.chainId);
 
                 if($scope.data) signRawObj.data = $scope.data;
 

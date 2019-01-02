@@ -21,16 +21,19 @@
          $scope.chainList = new Array();
          $scope.chainList2 = new Array();
          $scope.chainList = [
-             {name:"Main Chain",id:0}
+             {name:"Main Chain",id:0,chainId:"pchain"}
          ];
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
                  obj.name = resData.data[i].chainName;
                  obj.id = resData.data[i].id;
+                 obj.chainId = resData.data[i].chainId;
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
              }
+             $scope.crossChain = "1";
+             $scope.$apply();
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
          })
@@ -136,7 +139,8 @@
         $scope.gasPrice = 10;
         $scope.nonce = 0;
         $scope.nonce2 = 0;
-         $scope.crossChain = 1;
+
+        $scope.crossChain = "1";
 
         $scope.selectChain = function () {
             if($scope.chain == 0){
@@ -155,7 +159,7 @@
                 });
 
             }else{
-                var obj4 = {name:"Main Chain",id:0};
+                var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
                 $scope.crossChain = 0;
             }
@@ -391,7 +395,7 @@
 
                 // console.log(amount);
 
-                const childChainId = "child_"+($scope.crossChain - 1);
+                const childChainId = "child_"+(Number($scope.crossChain) - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
 
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
@@ -441,14 +445,14 @@
         }
 
         $scope.confirmMainToChild = function(depositeHash){
-            const childChainId = "child_"+($scope.crossChain - 1);
+            const childChainId = "child_"+(Number($scope.crossChain) - 1);
             console.log(childChainId)
             
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
 
             var funcData = $scope.getPlayLoad(crossChainABI,"DepositInChildChain",[childChainId,depositeHash]);
 
-            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,$scope.crossChain);
+            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,Number($scope.crossChain));
 
             var signData = signTx($scope.currentPrivateKey,signRawObj);
 
@@ -500,7 +504,7 @@
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
 
 
-                const childChainId = "child_"+($scope.chain - 1);
+                const childChainId = "child_"+(Number( $scope.chain) - 1);
 
                 var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromChildChain",[childChainId,amount]);
 
