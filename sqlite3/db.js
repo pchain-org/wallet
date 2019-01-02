@@ -38,6 +38,11 @@ sqliteObj.createTable = function (sql) {
 }
 
 sqliteObj.execute = function (sql,varArr) {
+    var responseObj ={
+        result:'success',
+        data:{},
+        error:{}
+    };
     return new Promise(function (accept,reject) {
         var stmt = db.prepare(sql);
         var flag = false;
@@ -46,6 +51,7 @@ sqliteObj.execute = function (sql,varArr) {
         }
         stmt.finalize();
         if(flag){
+            console.log(responseObj)
             accept(responseObj);
         }else{
             responseObj.result = "error";

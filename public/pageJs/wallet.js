@@ -17,12 +17,13 @@
            $scope.txList[index].showDetail = !$scope.txList[index].showDetail;
 
         }
-         $scope.chain = 0;
+         // $scope.chain.id = 0;
          $scope.chainList = new Array();
          $scope.chainList2 = new Array();
          $scope.chainList = [
              {name:"Main Chain",id:0,chainId:"pchain"}
          ];
+         $scope.chain=$scope.chainList[0];
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
@@ -32,7 +33,8 @@
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
              }
-             $scope.crossChain = "1";
+             // $scope.crossChain.id = "1";
+             $scope.crossChain=$scope.chainList2[0];
              $scope.$apply();
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
@@ -40,7 +42,7 @@
 
         $scope.getBalance = function () {
             var obj = {};
-            obj.chainId = $scope.chain;
+            obj.chainId = $scope.chain.id;
             obj.address = $scope.account.address;
             // //console.log(obj);
             var url = APIHost +"/getBalance";
@@ -99,7 +101,7 @@
             }).then(function successCallback(res){
                 if(res.data.result == "success"){
                     // //console.log(res);
-                    if(chainId == $scope.chain){
+                    if(chainId == $scope.chain.id){
                         $scope.nonce = Number(res.data.data);
                     }else{
                         $scope.nonce2 = Number(res.data.data);
@@ -140,10 +142,11 @@
         $scope.nonce = 0;
         $scope.nonce2 = 0;
 
-        $scope.crossChain = "1";
+        // $scope.crossChain.id = "1";
+         $scope.crossChain=$scope.chainList2[0];
 
         $scope.selectChain = function () {
-            if($scope.chain == 0){
+            if($scope.chain.id == 0){
                 $scope.chainList2 = new Array();
                 queryChainList().then(function (resData) {
                     for(var i=0;i<resData.data.length;i++){
@@ -151,7 +154,7 @@
                         obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
-                        $scope.crossChain = 0;
+                        $scope.crossChain.id = 0;
 
                     }
                 }).catch(function (e) {
@@ -161,7 +164,7 @@
             }else{
                 var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
-                $scope.crossChain = 0;
+                $scope.crossChain.id = 0;
             }
              $scope.getBalance();
         }
@@ -262,14 +265,14 @@
             var txFee = $scope.gasLimit*$scope.gasPrice*Math.pow(10,9);
             $scope.txFee = web3.fromWei(txFee,'ether');
 
-            $scope.getNonce($scope.chain);
+            $scope.getNonce($scope.chain.id);
 
             $('#transaction').modal('show');
         }
 
         $scope.sendTx = function () {
             loading();
-            if($scope.chain == 0){
+            if($scope.chain.id == 0){
                     $scope.mainToChild();
             }else{
 
@@ -347,7 +350,8 @@
 
         
 
-        $scope.checkMainTxInChildChain = function(txHash,chainId){
+        $scope.checkMainTxInChildChain = function(txHash,chainId,pid){
+                console.log("pid==="+pid)
 
                 var obj = {};
                 obj.txHash = txHash;
@@ -362,16 +366,16 @@
                     
                     if(!res.data.data){
                         setTimeout(function(){
-                            $scope.checkMainTxInChildChain(txHash,chainId);
+                            $scope.checkMainTxInChildChain(txHash,chainId,pid);
                         },2000);
                     }else{
-                        $scope.confirmMainToChild(txHash);
+                        $scope.confirmMainToChild(txHash,pid);
                     }
             
 
                 },function errorCallback(res){
                     setTimeout(function(){
-                        $scope.checkMainTxInChildChain(txHash,chainId);
+                        $scope.checkMainTxInChildChain(txHash,chainId,pid);
                     },2000);
 
                 });
@@ -388,14 +392,14 @@
 
             try{
 
-                $scope.getNonce($scope.crossChain);
+                $scope.getNonce($scope.crossChain.id);
 
                 const gasPrice = $scope.gasPrice*Math.pow(10,9);
                 const amount = web3.toWei($scope.toAmount,"ether");
 
                 // console.log(amount);
 
-                const childChainId = "child_"+(Number($scope.crossChain) - 1);
+                const childChainId = "child_"+(Number($scope.crossChain.id) - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
 
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
@@ -412,7 +416,7 @@
                 // console.log(signData);
 
                 var obj = {};
-                obj.chainId = $scope.chain;
+                obj.chainId = $scope.chain.id;
                 obj.signData = signData;
                 // console.log(obj);
                 var url = APIHost +"/sendTx";
@@ -425,8 +429,25 @@
                     if(res.data.result == "success"){
 
                         var depositeHash = res.data.data;
+                        var objt = {};
+                        objt.hash = depositeHash;
+                        objt.nonce = $scope.nonce;
+                        objt.fromaddress = $scope.account.address;
+                        objt.value = $scope.toAmount;
+                        objt.gas = $scope.gasLimit;
+                        objt.gasPrice = gasPrice;
+                        objt.chainId = $scope.chain.id;
+                        objt.chainName = $scope.chain.name;
+                        objt.crossChainId=$scope.crossChain.id;
+                        objt.crossChainName=$scope.crossChain.name;
+                        console.log(objt)
+                        addMultiChainTransaction(objt).then(function (aobj) {
+                            console.log(aobj.data)
+                            if(aobj.result=="success"){
+                                $scope.checkMainTxInChildChain(depositeHash,$scope.crossChain.id,aobj.data);
+                            }
+                        })
                         // $scope.checkRecipt(depositeHash,$scope.chain,1);
-                        $scope.checkMainTxInChildChain(depositeHash,$scope.crossChain);
 
                     }else{
                         swal(res.data.error);
@@ -444,22 +465,22 @@
 
         }
 
-        $scope.confirmMainToChild = function(depositeHash){
-            const childChainId = "child_"+(Number($scope.crossChain) - 1);
+        $scope.confirmMainToChild = function(depositeHash,pid){
+            const childChainId = "child_"+(Number($scope.crossChain.id) - 1);
             console.log(childChainId)
             
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
 
             var funcData = $scope.getPlayLoad(crossChainABI,"DepositInChildChain",[childChainId,depositeHash]);
 
-            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,Number($scope.crossChain));
+            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,Number($scope.crossChain.id));
 
             var signData = signTx($scope.currentPrivateKey,signRawObj);
 
             // console.log("signRawObj_ confirmMainToChild",signRawObj);
 
             var obj2 = {};
-            obj2.chainId =  Number($scope.crossChain);
+            obj2.chainId =  Number($scope.crossChain.id);
             obj2.signData = signData;
 
             console.log(obj2)
@@ -478,9 +499,26 @@
                     // var hash = res.data.data;;
                     // var url =   "/index.html?key="+hash+"&chain="+$scope.crossChain;
                     var hash = depositeHash;
-                    var url =   "index.html?key="+hash+"&chain="+$scope.chain;
+                    var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
                     var html = '<a href="'+url+'" >Transaction hash:'+hash+'</a>';
                     successNotify(html);
+                    var objt = {};
+                    objt.hash = res.data.data;
+                    objt.nonce = $scope.nonce;
+                    objt.fromaddress = $scope.account.address;
+                    objt.value = $scope.toAmount;
+                    objt.gas = $scope.gasLimit;
+                    objt.gasPrice = $scope.gasLimit;
+                    objt.chainId = $scope.chain.id;
+                    objt.chainName = $scope.chain.name;
+                    objt.crossChainId=$scope.crossChain.id;
+                    objt.crossChainName=$scope.crossChain.name;
+                    objt.pid=pid;
+                    console.log(objt)
+                    saveMultiChainChild3(objt).then(function (aobj) {
+                        console.log(aobj)
+                    })
+
                 }else{
                     swal(res.data.error);
                 }
@@ -495,7 +533,7 @@
 
             try{
 
-                $scope.getNonce($scope.crossChain);
+                $scope.getNonce($scope.crossChain.id);
 
                 const gasPrice = $scope.gasPrice*Math.pow(10,9);
                 const amount = web3.toWei($scope.toAmount,"ether");
@@ -504,11 +542,11 @@
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
 
 
-                const childChainId = "child_"+(Number( $scope.chain) - 1);
+                const childChainId = "child_"+(Number( $scope.chain.id) - 1);
 
                 var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromChildChain",[childChainId,amount]);
 
-                var signRawObj = initSignRawCrosschain(funcData,$scope.nonce,gasPrice,$scope.gasLimit,$scope.chain);
+                var signRawObj = initSignRawCrosschain(funcData,$scope.nonce,gasPrice,$scope.gasLimit,$scope.chain.id);
 
                 // var funcData = $scope.getPlayLoad(crossChainABI,"",paramArr);
 
@@ -517,7 +555,7 @@
                 var signData = signTx($scope.currentPrivateKey,signRawObj);
 
                 var obj = {};
-                obj.chainId = $scope.chain;
+                obj.chainId = $scope.chain.id;
                 obj.signData = signData;
                
 
@@ -535,7 +573,7 @@
 
                         console.log(amount);
 
-                        $scope.checkRecipt(depositeHash,$scope.chain,2,amount);
+                        $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount);
 
 
                     }else{
@@ -561,7 +599,7 @@
 
         $scope.confirmChildToMain = function(depositeHash,childToMainAmount){
 
-            const childChainId = "child_"+($scope.chain - 1);
+            const childChainId = "child_"+($scope.chain.id - 1);
 
 
             var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromMainChain",[childChainId,$scope.childToMainAmount,depositeHash]);
@@ -578,9 +616,9 @@
             
 
             var obj2 = {};
-            obj2.chainId =  Number($scope.crossChain);
+            obj2.chainId =  Number($scope.crossChain.id);
             obj2.signData = signData;
-             obj2.childId = Number($scope.chain);
+             obj2.childId = Number($scope.chain.id);
             var url = APIHost +"/sendTx";
 
             // console.log(obj2);
@@ -597,7 +635,7 @@
                     // var hash = res.data.data;
                     // var url =   "/index.html?key="+hash+"&chain="+$scope.crossChain;
                     var hash = depositeHash;
-                    var url =   "index.html?key="+hash+"&chain="+$scope.chain;
+                    var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
                     var html = '<a href="'+url+'">Transaction hash:'+hash+'</a>';
                     successNotify(html);
                 }else{

@@ -90,7 +90,7 @@
                 if($scope.accountList.length>0){
                         $scope.account = $scope.accountList[0];
                         $scope.getBalance();
-                        queryTransactionList($scope.account.address).then(function (robj) {
+                        queryTransactionList($scope.account.address,$scope.chain.id).then(function (robj) {
                             $scope.transactionList = new Array();
                             $scope.transactionList=robj.data;
                         })
@@ -201,13 +201,13 @@
                         objt.value = $scope.toAmount;
                         objt.gas = $scope.gasLimit;
                         objt.gasPrice = gasPrice;
-                        objt.type = 1;
                         objt.chainId = $scope.chain.id;
+                        objt.data=$scope.data;
                         objt.chainName = $scope.chain.name;
                         console.log(objt)
                         addTransaction(objt).then(function (aobj) {
                             if(aobj.result=="success"){
-                                queryTransactionList($scope.account.address).then(function (robj) {
+                                queryTransactionList($scope.account.address,$scope.chain.id).then(function (robj) {
                                     $scope.transactionList=robj.data;
                                     $scope.$apply();
                                 })

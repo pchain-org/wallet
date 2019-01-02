@@ -103,7 +103,7 @@
                         <div class="input-group mb-3 my-input-group">
                             <span class="input-group-addon">CHAIN</span>
                             <div class="form-control">
-                                <select  class="mySelect" ng-model="chain" ng-options="  chain.id as chain.name  for chain in chainList" ng-change="selectChain()"></select>
+                                <select  class="mySelect" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList" ng-change="selectChain()"></select>
                             </div>
                         </div>
                         <div class="input-group mb-3 my-input-group">
@@ -131,7 +131,7 @@
                                 <div class="input-group my-input-group">
                                     <span class="input-group-addon">To Chain</span>
                                     <div class="form-control">
-                                        <select  class="mySelect" ng-model="crossChain" ng-options="chain.id as chain.name for chain in chainList2" ></select>
+                                        <select  class="mySelect" ng-model="crossChain" ng-options="chain as chain.name for chain in chainList2" ></select>
                                     </div>
                                   <!--   <select  class="form-control" ng-model="crossChain" ng-options="chain.id as chain.name for chain in chainList2" ></select> -->
                                 </div>
@@ -490,12 +490,12 @@
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From Chain</span>
-                            <div class="form-control" ng-bind="chainList[chain].name"></div>
+                            <div class="form-control" ng-bind="chain.name"></div>
                         </div>
 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">To Chain</span>
-                            <div class="form-control" ng-bind="getChainNameByid(crossChain)"></div>
+                            <div class="form-control" ng-bind="crossChain.name"></div>
                         </div>
 
                         <div class="input-group marginTop10">
