@@ -41,7 +41,7 @@ class DB{
                 }
             });
 
-            db.run("CREATE TABLE IF NOT EXISTS tb_chain(id text, chainId text,chainName text);",function (err) {
+            db.run("CREATE TABLE IF NOT EXISTS tb_chain(id integer, chainId text,chainName text);",function (err) {
                 if(!err){
                     resolve("ok");
                     console.log("init db_chain complete");
