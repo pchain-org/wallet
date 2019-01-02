@@ -18,25 +18,25 @@
 
         }
          $scope.chain = 0;
-         $scope.crossChain = 1;
-
          $scope.chainList = new Array();
          $scope.chainList2 = new Array();
          $scope.chainList = [
-             {name:"Main Chain",id:0}
+             {name:"Main Chain",id:0,chainId:"pchain"}
          ];
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.name = resData.data[i].chainName;
                  obj.id = resData.data[i].id;
+                 obj.chainId = resData.data[i].chainId;
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
              }
+             $scope.crossChain = "1";
+             $scope.$apply();
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
          })
-
 
         $scope.getBalance = function () {
             var obj = {};
@@ -140,23 +140,26 @@
         $scope.nonce = 0;
         $scope.nonce2 = 0;
 
+        $scope.crossChain = "1";
+
         $scope.selectChain = function () {
-            $scope.chainList2 = new Array();
             if($scope.chain == 0){
+                $scope.chainList2 = new Array();
                 queryChainList().then(function (resData) {
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
-                        obj3.name = "Child Chain "+resData.data[i].id;
+                        obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
+                        $scope.crossChain = 0;
+
                     }
                 }).catch(function (e) {
                     console.log(e, "queryChainList error.");
                 });
 
-
             }else{
-                var obj4 = {name:"Main Chain",id:0};
+                var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
                 $scope.crossChain = 0;
             }
@@ -392,7 +395,7 @@
 
                 // console.log(amount);
 
-                const childChainId = "child_"+($scope.crossChain - 1);
+                const childChainId = "child_"+(Number($scope.crossChain) - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
 
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
@@ -442,13 +445,14 @@
         }
 
         $scope.confirmMainToChild = function(depositeHash){
-            const childChainId = "child_"+($scope.crossChain - 1);
+            const childChainId = "child_"+(Number($scope.crossChain) - 1);
+            console.log(childChainId)
             
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
 
             var funcData = $scope.getPlayLoad(crossChainABI,"DepositInChildChain",[childChainId,depositeHash]);
 
-            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,$scope.crossChain);
+            var signRawObj = initSignRawCrosschain(funcData,$scope.nonce2,1000000000,0,Number($scope.crossChain));
 
             var signData = signTx($scope.currentPrivateKey,signRawObj);
 
@@ -457,6 +461,8 @@
             var obj2 = {};
             obj2.chainId =  Number($scope.crossChain);
             obj2.signData = signData;
+
+            console.log(obj2)
             
             var url = APIHost +"/sendTx";
             $http({
@@ -464,7 +470,7 @@
                 url:url,
                 data:obj2
             }).then(function successCallback(res){
-                // console.log(res);
+                console.log(res);
                 removeLoading();
                 if(res.data.result == "success"){
 
@@ -498,7 +504,7 @@
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
 
 
-                const childChainId = "child_"+($scope.chain - 1);
+                const childChainId = "child_"+(Number( $scope.chain) - 1);
 
                 var funcData = $scope.getPlayLoad(crossChainABI,"WithdrawFromChildChain",[childChainId,amount]);
 
