@@ -143,20 +143,20 @@
         $scope.nonce2 = 0;
 
         // $scope.crossChain.id = "1";
-         $scope.crossChain=$scope.chainList2[0];
+
 
         $scope.selectChain = function () {
+            $scope.chainList2 = new Array();
             if($scope.chain.id == 0){
-                $scope.chainList2 = new Array();
                 queryChainList().then(function (resData) {
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
                         obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
-                        $scope.crossChain.id = 0;
-
+                        // $scope.crossChain.id = 0;
                     }
+                    $scope.crossChain=$scope.chainList2[0];
                 }).catch(function (e) {
                     console.log(e, "queryChainList error.");
                 });
@@ -164,7 +164,8 @@
             }else{
                 var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
-                $scope.crossChain.id = 0;
+                // $scope.crossChain.id = 0;
+                $scope.crossChain=$scope.chainList2[0];
             }
              $scope.getBalance();
         }
@@ -281,7 +282,7 @@
         }
 
 
-        $scope.checkRecipt = function(txHash,chainId,type,childToMainAmount){
+        $scope.checkRecipt = function(txHash,chainId,type,childToMainAmount,pid,flag){
 
                 var obj = {};
                 obj.txHash = txHash;
@@ -297,18 +298,18 @@
                     if(res.data.data){
                         if(type == 1){
                             setTimeout(function(){
-                                 $scope.confirmMainToChild(txHash);
+                                 $scope.confirmMainToChild(txHash,pid,flag);
                             },2000);
                         }else if(type == 2){
                             setTimeout(function(){
-                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount);
+                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,flag);
                             },3000);
                             
                         }
 
                     }else{
                         setTimeout(function(){
-                            $scope.checkRecipt(txHash,chainId,type);
+                            $scope.checkRecipt(txHash,chainId,type,childToMainAmount,pid,flag);
                         },2000);
                     }
 
@@ -350,9 +351,7 @@
 
         
 
-        $scope.checkMainTxInChildChain = function(txHash,chainId,pid){
-                console.log("pid==="+pid)
-
+        $scope.checkMainTxInChildChain = function(txHash,chainId,pid,flag){
                 var obj = {};
                 obj.txHash = txHash;
                 obj.chainId = chainId;
@@ -366,10 +365,10 @@
                     
                     if(!res.data.data){
                         setTimeout(function(){
-                            $scope.checkMainTxInChildChain(txHash,chainId,pid);
+                            $scope.checkMainTxInChildChain(txHash,chainId,pid,flag);
                         },2000);
                     }else{
-                        $scope.confirmMainToChild(txHash,pid);
+                        $scope.confirmMainToChild(txHash,pid,flag);
                     }
             
 
@@ -389,9 +388,7 @@
 
 
         $scope.mainToChild = function() {
-
             try{
-
                 $scope.getNonce($scope.crossChain.id);
 
                 const gasPrice = $scope.gasPrice*Math.pow(10,9);
@@ -427,7 +424,6 @@
                 }).then(function successCallback(res){
                     console.log(res);
                     if(res.data.result == "success"){
-
                         var depositeHash = res.data.data;
                         var objt = {};
                         objt.hash = depositeHash;
@@ -440,11 +436,12 @@
                         objt.chainName = $scope.chain.name;
                         objt.crossChainId=$scope.crossChain.id;
                         objt.crossChainName=$scope.crossChain.name;
+                        objt.flag=true;
                         console.log(objt)
                         addMultiChainTransaction(objt).then(function (aobj) {
                             console.log(aobj.data)
                             if(aobj.result=="success"){
-                                $scope.checkMainTxInChildChain(depositeHash,$scope.crossChain.id,aobj.data);
+                                $scope.checkMainTxInChildChain(depositeHash,$scope.crossChain.id,aobj.data,true);
                             }
                         })
                         // $scope.checkRecipt(depositeHash,$scope.chain,1);
@@ -465,7 +462,7 @@
 
         }
 
-        $scope.confirmMainToChild = function(depositeHash,pid){
+        $scope.confirmMainToChild = function(depositeHash,pid,flag){
             const childChainId = "child_"+(Number($scope.crossChain.id) - 1);
             console.log(childChainId)
             
@@ -514,6 +511,7 @@
                     objt.crossChainId=$scope.crossChain.id;
                     objt.crossChainName=$scope.crossChain.name;
                     objt.pid=pid;
+                    objt.flag=flag;
                     console.log(objt)
                     saveMultiChainChild3(objt).then(function (aobj) {
                         console.log(aobj)
@@ -572,9 +570,25 @@
                         var depositeHash = res.data.data;
 
                         console.log(amount);
-
-                        $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount);
-
+                        var objt = {};
+                        objt.hash = depositeHash;
+                        objt.nonce = $scope.nonce;
+                        objt.fromaddress = $scope.account.address;
+                        objt.value = $scope.toAmount;
+                        objt.gas = $scope.gasLimit;
+                        objt.gasPrice = gasPrice;
+                        objt.chainId = $scope.chain.id;
+                        objt.chainName = $scope.chain.name;
+                        objt.crossChainId=$scope.crossChain.id;
+                        objt.crossChainName=$scope.crossChain.name;
+                        objt.flag=false;
+                        console.log(objt)
+                        addMultiChainTransaction(objt).then(function (aobj) {
+                            console.log(aobj.data)
+                            if(aobj.result=="success"){
+                                $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount,aobj.data,false);
+                            }
+                        })
 
                     }else{
                         swal(res.data.error);
@@ -597,7 +611,7 @@
 
         }
 
-        $scope.confirmChildToMain = function(depositeHash,childToMainAmount){
+        $scope.confirmChildToMain = function(depositeHash,childToMainAmount,pid,flag){
 
             const childChainId = "child_"+($scope.chain.id - 1);
 
@@ -638,6 +652,23 @@
                     var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
                     var html = '<a href="'+url+'">Transaction hash:'+hash+'</a>';
                     successNotify(html);
+                    var objt = {};
+                    objt.hash = res.data.data;
+                    objt.nonce = $scope.nonce;
+                    objt.fromaddress = $scope.account.address;
+                    objt.value = $scope.toAmount;
+                    objt.gas = $scope.gasLimit;
+                    objt.gasPrice = $scope.gasLimit;
+                    objt.chainId = $scope.chain.id;
+                    objt.chainName = $scope.chain.name;
+                    objt.crossChainId=$scope.crossChain.id;
+                    objt.crossChainName=$scope.crossChain.name;
+                    objt.pid=pid;
+                    objt.flag=flag;
+                    console.log(objt)
+                    saveMultiChainChild3(objt).then(function (aobj) {
+                        console.log(aobj)
+                    })
                 }else{
                     swal(res.data.error);
                 }
