@@ -33,8 +33,8 @@
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
              }
-             // $scope.crossChain.id = "1";
              $scope.crossChain=$scope.chainList2[0];
+             // $scope.crossChain = 1;
              $scope.$apply();
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
