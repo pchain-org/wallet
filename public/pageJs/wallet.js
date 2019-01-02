@@ -32,7 +32,7 @@
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
              }
-             $scope.crossChain = "1";
+             $scope.crossChain = 1;
              $scope.$apply();
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
@@ -140,7 +140,7 @@
         $scope.nonce = 0;
         $scope.nonce2 = 0;
 
-        $scope.crossChain = "1";
+        $scope.crossChain = 1;
 
         $scope.selectChain = function () {
             if($scope.chain == 0){
