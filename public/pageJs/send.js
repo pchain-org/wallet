@@ -76,7 +76,7 @@
              console.log(e, "queryChainList error.");
          });
 
-
+     $scope.crossChain = 1;
 
         $scope.accountList = new Array();
 
@@ -172,6 +172,8 @@
                 var obj = {};
                 obj.chainId = $scope.chain.id;
                 obj.signData = signData;
+
+                console.log(obj)
                 
                 loading();
                 var url = APIHost +"/sendTx";

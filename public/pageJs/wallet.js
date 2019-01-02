@@ -18,8 +18,6 @@
 
         }
          $scope.chain = 0;
-         $scope.crossChain = 1;
-
          $scope.chainList = new Array();
          $scope.chainList2 = new Array();
          $scope.chainList = [
@@ -28,7 +26,7 @@
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.name = resData.data[i].chainName;
                  obj.id = resData.data[i].id;
                  $scope.chainList.push(obj);
                  $scope.chainList2.push(obj);
@@ -36,7 +34,6 @@
          }).catch(function (e) {
              console.log(e, "queryChainList error.");
          })
-
 
         $scope.getBalance = function () {
             var obj = {};
@@ -139,21 +136,23 @@
         $scope.gasPrice = 10;
         $scope.nonce = 0;
         $scope.nonce2 = 0;
+         $scope.crossChain = 1;
 
         $scope.selectChain = function () {
-            $scope.chainList2 = new Array();
             if($scope.chain == 0){
+                $scope.chainList2 = new Array();
                 queryChainList().then(function (resData) {
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
-                        obj3.name = "Child Chain "+resData.data[i].id;
+                        obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
+                        $scope.crossChain = 0;
+
                     }
                 }).catch(function (e) {
                     console.log(e, "queryChainList error.");
                 });
-
 
             }else{
                 var obj4 = {name:"Main Chain",id:0};
@@ -443,6 +442,7 @@
 
         $scope.confirmMainToChild = function(depositeHash){
             const childChainId = "child_"+($scope.crossChain - 1);
+            console.log(childChainId)
             
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
 
@@ -457,6 +457,8 @@
             var obj2 = {};
             obj2.chainId =  Number($scope.crossChain);
             obj2.signData = signData;
+
+            console.log(obj2)
             
             var url = APIHost +"/sendTx";
             $http({
@@ -464,7 +466,7 @@
                 url:url,
                 data:obj2
             }).then(function successCallback(res){
-                // console.log(res);
+                console.log(res);
                 removeLoading();
                 if(res.data.result == "success"){
 
