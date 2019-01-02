@@ -67,7 +67,7 @@
          queryChainList().then(function (resData) {
              for(var i=0;i<resData.data.length;i++){
                  var obj = {};
-                 obj.name = "Child Chain "+resData.data[i].id;
+                 obj.name = resData.data[i].chainName;
                  obj.id = resData.data[i].id;
                  $scope.chainList.push(obj);
                  $scope.chain=$scope.chainList[0];
