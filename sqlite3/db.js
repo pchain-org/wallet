@@ -8,9 +8,6 @@ var Promise = require("bluebird");
 var Setting = require("../lib/settingRemote.js");
 const DBPath = Setting.DBPath;
 
-
-// console.log(DBPath);
-
 var db = new sqlite3.Database(DBPath,function(data){
     // console.log(data);
 });

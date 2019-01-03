@@ -52,8 +52,6 @@ class initChild{
 
 
     getUpdate(){
-
-
         // self.currentVersion = currentVersion;
         return new Promise(function (accept,reject) {
 
