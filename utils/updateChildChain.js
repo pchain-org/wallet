@@ -8,7 +8,7 @@ const Promise = require("bluebird");
 const fs = require('fs');
 const path = require('path');
 
-const gitPackageJsonUrl = "https://raw.githubusercontent.com/PchainJS/PchainWeb3/master/childChain.json";  //only for test
+const gitPackageJsonUrl = "https://raw.githubusercontent.com/pchain-org/wallet/master/childChain.json?token=AQ6h7rIkkDUsD-uGirh8hs4nJPhoWEUbks5cNvp-wA%3D%3D";
 let self;
 class UpdateChildChain {
 	constructor(){
