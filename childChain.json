@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "chain": [
+    {
+      "id": 1,
+      "chainId": "child_0",
+      "chainName": "Chain child 1"
+    },
+    {
+      "id": 2,
+      "chainId": "child_1",
+      "chainName": "Chain child 2"
+    }
+  ]
+}

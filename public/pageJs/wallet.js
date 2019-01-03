@@ -147,14 +147,16 @@
 
         $scope.selectChain = function () {
             if($scope.chain.id == 0){
-                $scope.chainList2 = new Array();
+                
                 queryChainList().then(function (resData) {
+                    $scope.chainList2 = new Array();
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
                         obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
-                        $scope.crossChain.id = 0;
+                        $scope.crossChain =  $scope.chainList2[0];
+                        $scope.$apply();
 
                     }
                 }).catch(function (e) {
@@ -162,9 +164,11 @@
                 });
 
             }else{
+                $scope.chainList2 = new Array();
                 var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
-                $scope.crossChain.id = 0;
+                $scope.crossChain = obj4;
+                $scope.$apply();
             }
              $scope.getBalance();
         }

@@ -5,6 +5,7 @@
  */
 var sqlietDb = require("../sqlite3/db");
 var Promise = require("bluebird");
+const path = require("path");
 function addAccount (privateKey,address) {
     return new Promise(function (accept,reject) {
         var sql = "INSERT INTO tb_account(id,privateKey,address,createTime) VALUES (?,?,?,?)";
@@ -59,13 +60,21 @@ function addChain(chainId,chainName) {
 //query chain
 function queryChainList() {
     return new Promise(function (accept,reject) {
-        var sql = "select * from tb_chain order by chainId asc";
-        sqlietDb.query(sql).then(function (resObj) {
-            accept(resObj);
-        }).catch(function (e) {
-            reject(e);
-            console.log(e, "error");
-        })
+        // var sql = "select * from tb_chain order by chainId asc";
+        // sqlietDb.query(sql).then(function (resObj) {
+        //     accept(resObj);
+        // }).catch(function (e) {
+        //     reject(e);
+        //     console.log(e, "error");
+        // })
+       console.time("read json");
+        const childChainJsonPath = path.join(__dirname,"../childChain.json");
+        var childChainJson = require(childChainJsonPath);
+        console.log(childChainJson);
+        var obj = {};
+        obj.data = childChainJson.chain; 
+        accept(obj);
+        console.timeEnd("read json");
     });
 }
 
