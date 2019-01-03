@@ -4,14 +4,20 @@
 
         $scope.gasPrice = 10;
         $scope.chainList = [
-            { name: "Main Chain", id: 0 }
+            {name:"Main Chain",id:0,chainId:"pchain"}
         ];
-        for (var i = 0; i < 5; i++) {
-            var obj = {};
-            obj.name = "Child Chain " + (i + 1);
-            obj.id = (i + 1);
-            $scope.chainList.push(obj);
-        }
+        queryChainList().then(function (resData) {
+             for(var i=0;i<resData.data.length;i++){
+                 var obj = {};
+                 obj.name = resData.data[i].chainName;
+                 obj.id = resData.data[i].id;
+                 obj.chainId = resData.data[i].chainId;
+                 $scope.chainList.push(obj);
+             }
+             $scope.$apply();
+         }).catch(function (e) {
+             console.log(e, "queryChainList error.");
+         })
 
         $scope.chainId = 0;
 

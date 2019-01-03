@@ -150,31 +150,34 @@
         $scope.nonce2 = 0;
 
         // $scope.crossChain.id = "1";
-
+         $scope.crossChain=$scope.chainList2[0];
 
 
 
         $scope.selectChain = function () {
-            $scope.chainList2 = new Array();
             if($scope.chain.id == 0){
+                
                 queryChainList().then(function (resData) {
+                    $scope.chainList2 = new Array();
                     for(var i=0;i<resData.data.length;i++){
                         var obj3 = {};
                         obj3.name = resData.data[i].chainName;
                         obj3.id = resData.data[i].id;
                         $scope.chainList2.push(obj3);
-                        // $scope.crossChain.id = 0;
+                        $scope.crossChain =  $scope.chainList2[0];
+                        $scope.$apply();
+
                     }
-                    $scope.crossChain=$scope.chainList2[0];
                 }).catch(function (e) {
                     console.log(e, "queryChainList error.");
                 });
 
             }else{
+                $scope.chainList2 = new Array();
                 var obj4 = {name:"Main Chain",id:0,chainId:"pchain"};
                 $scope.chainList2.push(obj4);
-                // $scope.crossChain.id = 0;
-                $scope.crossChain=$scope.chainList2[0];
+                $scope.crossChain = obj4;
+                $scope.$apply();
             }
              $scope.getBalance();
 
@@ -312,7 +315,7 @@
                             },2000);
                         }else if(type == 2){
                             setTimeout(function(){
-                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid);
+                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,flag);
                             },3000);
                             
                         }
@@ -397,7 +400,9 @@
 
 
         $scope.mainToChild = function() {
+
             try{
+
                 $scope.getNonce($scope.crossChain.id);
 
                 const gasPrice = $scope.gasPrice*Math.pow(10,9);
@@ -432,6 +437,7 @@
                     data:obj
                 }).then(function successCallback(res){
                     if(res.data.result == "success"){
+
                         var depositeHash = res.data.data;
                         var objt = {};
                         objt.hash = depositeHash;
@@ -520,6 +526,7 @@
                             }
                         })
                     }
+
                 }else{
                     swal(res.data.error);
                 }
@@ -584,6 +591,8 @@
                                 $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount,aobj.data,false);
                             }
                         })
+                        // console.log(amount);
+                        // $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount);
 
                     }else{
                         swal(res.data.error);

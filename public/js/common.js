@@ -29,6 +29,8 @@ function removePageLoader(){
     $(".page-loader-wrapper").hide();
 }
 
+setTimeout(removePageLoader,3000);
+
 function showPopup(str,time,callback){
     if(!time) time = 3000;
     var html = '<div class="popup"><div class="pContent"><p>'+str+'</p></div></div>';

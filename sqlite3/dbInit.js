@@ -8,8 +8,6 @@ var Setting = require("../lib/setting.js");
 var Promise = require("bluebird");
 const DBPath = Setting.DBPath;
 
-console.log(DBPath);
-
 var db;
 let self;
 class DB{
@@ -41,11 +39,6 @@ class DB{
                 if(result){
                     let sql2="CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY,hash text,nonce text,fromaddress text,toaddress text,value real,gas text,gasPrice text,data text,type integer,chainId integer,chainName text,pid integer,createTime text);";
                     return self.promiseRun(sql2);
-                }
-            }).then((result)=>{
-                if(result){
-                    let sql3 = "CREATE TABLE IF NOT EXISTS tb_chain(id integer, chainId text,chainName text);"
-                    return self.promiseRun(sql3);
                 }
             }).then((result)=>{
                 if(result){

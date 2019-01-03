@@ -15,23 +15,21 @@ const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
-const query = require("./sqlite3/queryInit.js");
 const UpdateUtil = require("./utils/update");
+const UpdateChildChainUtil = require("./utils/updateChildChain");
 
 
 let mainWindow;
 
 function createWindow () {
-    mainWindow = new BrowserWindow({width: 1000, height: 700,mixWidth:700,minHeight:700})
+    mainWindow = new BrowserWindow({width: 1000, height: 700,minWidth:900,minHeight:700})
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'public/wallet.html'),
         protocol: 'file:',
         slashes: true,
         icon:path.join(__dirname,"public/img/logo.png")
     }))
-
     initMenu();
-
     mainWindow.once('show',()=>{
         UpdateUtil.checkUpdate(0);
     });
@@ -61,14 +59,11 @@ function init(){
     DB.init().then(function (result) {
         console.log(result);
         loadingWindow.hide();
-        query.queryChild().then(function (data) {
-            console.log("Init Child:", data);
-        }).catch(function (e) {
-            console.log("Init Child:", e)
-        });
     }).catch(function (reason) {
         console.log("reason"+reason)
     });
+
+    UpdateChildChainUtil.checkUpdate();
 }
 
 app.on('ready', function(){

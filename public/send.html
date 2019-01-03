@@ -163,7 +163,7 @@
                     <h2><strong>Latest 10 transaction records</strong></h2>
                 </div>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionList.length > 0" ng-cloak>
                     <thead>
                     <tr>
                         <th>Chain</th>
@@ -183,6 +183,9 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="text-center" ng-show="transactionList.length == 0" ng-cloak>
+                    <h3>No Records</h3>
+                </div>
             </div>
             </div>
         </div>
