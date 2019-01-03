@@ -51,7 +51,6 @@ sqliteObj.execute = function (sql,varArr) {
         }
         stmt.finalize();
         if(flag){
-            console.log(responseObj)
             accept(responseObj);
         }else{
             responseObj.result = "error";

@@ -170,6 +170,7 @@
                         <th>Hash</th>
                         <th>To</th>
                         <th>Value</th>
+                        <th>Operation</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -178,6 +179,7 @@
                         <td ng-bind="item.hash"></td>
                         <td ng-bind="item.toaddress"></td>
                         <td ng-bind="item.value"></td>
+                        <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info">Detail</a></td>
                     </tr>
                     </tbody>
                 </table>

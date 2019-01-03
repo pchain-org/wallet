@@ -13,7 +13,6 @@
             var obj = {};
             obj.chainId = $scope.chain.id;
             obj.address = $scope.account.address;
-            console.log(obj);
             var url = APIHost +"/getBalance";
             $http({
                 method:'POST',
@@ -31,6 +30,11 @@
             },function errorCallback(res){
                 showPopup("Internet error, please refresh the page");
             });
+
+            queryTransactionList($scope.account.address,$scope.chain.id).then(function (robj) {
+                $scope.transactionList=robj.data;
+                $scope.$apply();
+            })
         }
 
         $scope.nonceFlag = true;
@@ -57,6 +61,8 @@
             },function errorCallback(res){
                 showPopup("Internet error, please refresh the page");
             });
+
+
         }
                 //chain list
 
@@ -176,9 +182,6 @@
                 var obj = {};
                 obj.chainId = $scope.chain.id;
                 obj.signData = signData;
-
-                console.log(obj)
-                
                 loading();
                 var url = APIHost +"/sendTx";
                 $http({
@@ -204,7 +207,6 @@
                         objt.chainId = $scope.chain.id;
                         objt.data=$scope.data;
                         objt.chainName = $scope.chain.name;
-                        console.log(objt)
                         addTransaction(objt).then(function (aobj) {
                             if(aobj.result=="success"){
                                 queryTransactionList($scope.account.address,$scope.chain.id).then(function (robj) {

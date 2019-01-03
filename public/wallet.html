@@ -157,7 +157,7 @@
         <div class="row clearfix">
             <div class="card">
                     <div class="header">
-                        <h2><strong>Transaction Log</strong></h2>
+                        <h2><strong>Latest 10 transaction records</strong></h2>
                     </div>
                     <div class="body">
 
@@ -188,17 +188,17 @@
                                         <div class="col-md-1 col-lg-1 col-xs-1" ng-bind="$index+1">
                                             
                                         </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.from">
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.fromaddress">
                                             
                                         </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.to">
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.toaddress">
                                             
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value">
                                             
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xs-2">
-                                            <button class="btn badge badge-info" ng-click="showTxDetail($index)">Detail</button>
+                                            <button class="btn badge badge-info" ng-click="showTxDetail(item.id,$index)">Detail</button>
                                         </div>
                                     </div>
                                     <div class="clearfix">
@@ -208,69 +208,17 @@
                                         <div class="table-responsive">
                                             <table class="table table-filter table-hover m-b-0">                                
                                                 <tbody>
-                                                    <tr data-status="suspended">
-                                                        <td ng-bind="item.tx[0].chain"></td>
-                                                        <td ng-bind="item.tx[0].from"></td>
-                                                        <td ng-bind="item.tx[0].hash"></td>
-                                                        <td><a href="{{'index.html?key='+item.tx[0].hash+'&chain='+item.tx[0].id}}" class="badge badge-info">Detail</a></td>
-                                                    </tr>
-                                                    <tr data-status="suspended">
-                                                        <td ng-bind="item.tx[1].chain"></td>
-                                                        <td ng-bind="item.tx[1].from"></td>
-                                                        <td ng-bind="item.tx[1].hash"></td>
-                                                        <td><a href="{{'index.html?key='+item.tx[1].hash+'&chain='+item.tx[1].id}}" class="badge badge-info">Detail</a></td>
+                                                    <tr data-status="suspended" ng-repeat="item in item.txChildList">
+                                                        <td ng-bind="item.chainName"></td>
+                                                        <td ng-bind="item.fromaddress"></td>
+                                                        <td ng-bind="item.hash"></td>
+                                                        <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info">Detail</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>                
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="tItem">
-                                    <div class="iTitle row">
-                                        <div class="col-md-1 col-lg-1 col-xs-1">
-                                            1
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3">
-                                            Main Chain
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3">
-                                            Child Chain 1
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3">
-                                            1.234567894562123
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xs-2">
-                                            <button class="badge badge-info" ng-click="showDetail()">Detail</button>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix">
-                                        
-                                    </div>
-                                    <div class="iBody">
-                                        <div class="table-responsive">
-                                            <table class="table table-filter table-hover m-b-0">                                
-                                                <tbody>
-                                                    <tr data-status="suspended">
-                                                        <td>0xea674fdde714fd979de3edf0f56aa9716b898ec8</td>
-                                                        <td>0x0d768fac80be6f12ad9c66dd240c960f4722f873</td>
-                                                        <td>
-                                                           1.234
-                                                        </td>
-                                                        <td><a href="#" class="badge badge-info">Detail</a></td>
-                                                    </tr>
-                                                    <tr data-status="suspended">
-                                                        <td>0xea674fdde714fd979de3edf0f56aa9716b898ec8</td>
-                                                        <td>0x0d768fac80be6f12ad9c66dd240c960f4722f873</td>
-                                                        <td>
-                                                           1.234
-                                                        </td>
-                                                        <td><a href="#" class="badge badge-info">Detail</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>                
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                             
                         </div>    

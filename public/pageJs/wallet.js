@@ -5,19 +5,16 @@
      angularApp.controller('myCtrl',function ($scope, $http){
 
 
-        $scope.txList = [
-        {id:1,from:"Main Chain",to:"Child Chain 1",value:"1.23456789",showDetail:false,tx:[
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Main Chain",id:0},
-        {from:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",to:"0xea674fdde714fd979de3edf0f56aa9716b898ec8",hash:"0x190b398c154697605bf545ec8f23ef196fa62d2fe7245c9a98cecfe9b5cb00e3",chain:"Child Chain 1",id:1}
-        ]}
-        ];
+        $scope.showTxDetail = (pid,index)=>{
+            queryMultiChainChildTxList(pid).then(function (data) {
+                $scope.txList[index].showDetail = !$scope.txList[index].showDetail;
+                $scope.txList[index].txChildList=data.data;
+                $scope.$apply();
+            })
 
-        $scope.showTxDetail = (index)=>{
-            
-           $scope.txList[index].showDetail = !$scope.txList[index].showDetail;
+
 
         }
-         // $scope.chain.id = 0;
          $scope.chainList = new Array();
          $scope.chainList2 = new Array();
          $scope.chainList = [
@@ -61,6 +58,11 @@
             },function errorCallback(res){
                 swal("Internet error, please refresh the page");
             });
+
+            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function (data) {
+                $scope.txList = data.data;
+                $scope.$apply();
+            })
         }
 
          var clipboard2 = new Clipboard('.copyBtn2',{
@@ -124,6 +126,11 @@
                 if($scope.accountList.length>0){
                         $scope.account = $scope.accountList[0];
                         $scope.getBalance();
+                        queryMultiChainTxList($scope.account.address,$scope.chain.id).then(function (data) {
+                            $scope.txList=data.data;
+
+                        })
+
                 }
                 if($scope.accountList.length == 0){
                     removePageLoader();
@@ -143,6 +150,8 @@
         $scope.nonce2 = 0;
 
         // $scope.crossChain.id = "1";
+
+
 
 
         $scope.selectChain = function () {
@@ -168,6 +177,7 @@
                 $scope.crossChain=$scope.chainList2[0];
             }
              $scope.getBalance();
+
         }
 
         $scope.newPrivateKet = function(){
@@ -302,7 +312,7 @@
                             },2000);
                         }else if(type == 2){
                             setTimeout(function(){
-                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,flag);
+                                 $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid);
                             },3000);
                             
                         }
@@ -319,7 +329,7 @@
                 });
         }
 
-        $scope.checkChildTxInMaiChain = function(txHash,chainId,childToMainAmount){
+        $scope.checkChildTxInMaiChain = function(txHash,chainId,childToMainAmount,pid){
 
                 var obj = {};
                 obj.txHash = txHash;
@@ -331,19 +341,18 @@
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
-                    console.log(res);
                     if(res.data.result == "error"){
                         setTimeout(function(){
-                            $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount);
+                            $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid);
                         },2000);
                     }else{
-                        $scope.confirmChildToMain(txHash,childToMainAmount);
+                        $scope.confirmChildToMain(txHash,childToMainAmount,pid);
                     }
             
 
                 },function errorCallback(res){
                     setTimeout(function(){
-                        $scope.checkChildTxInMaiChain(txHash,chainId);
+                        $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid);
                     },2000);
 
                 });
@@ -374,7 +383,7 @@
 
                 },function errorCallback(res){
                     setTimeout(function(){
-                        $scope.checkMainTxInChildChain(txHash,chainId,pid);
+                        $scope.checkMainTxInChildChain(txHash,chainId,pid,flag);
                     },2000);
 
                 });
@@ -422,7 +431,6 @@
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
-                    console.log(res);
                     if(res.data.result == "success"){
                         var depositeHash = res.data.data;
                         var objt = {};
@@ -436,16 +444,11 @@
                         objt.chainName = $scope.chain.name;
                         objt.crossChainId=$scope.crossChain.id;
                         objt.crossChainName=$scope.crossChain.name;
-                        objt.flag=true;
-                        console.log(objt)
                         addMultiChainTransaction(objt).then(function (aobj) {
-                            console.log(aobj.data)
                             if(aobj.result=="success"){
                                 $scope.checkMainTxInChildChain(depositeHash,$scope.crossChain.id,aobj.data,true);
                             }
                         })
-                        // $scope.checkRecipt(depositeHash,$scope.chain,1);
-
                     }else{
                         swal(res.data.error);
                         removeLoading();
@@ -464,8 +467,7 @@
 
         $scope.confirmMainToChild = function(depositeHash,pid,flag){
             const childChainId = "child_"+(Number($scope.crossChain.id) - 1);
-            console.log(childChainId)
-            
+
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
 
             var funcData = $scope.getPlayLoad(crossChainABI,"DepositInChildChain",[childChainId,depositeHash]);
@@ -479,16 +481,12 @@
             var obj2 = {};
             obj2.chainId =  Number($scope.crossChain.id);
             obj2.signData = signData;
-
-            console.log(obj2)
-            
             var url = APIHost +"/sendTx";
             $http({
                 method:'POST',
                 url:url,
                 data:obj2
             }).then(function successCallback(res){
-                console.log(res);
                 removeLoading();
                 if(res.data.result == "success"){
 
@@ -499,24 +497,29 @@
                     var url =   "index.html?key="+hash+"&chain="+$scope.chain.id;
                     var html = '<a href="'+url+'" >Transaction hash:'+hash+'</a>';
                     successNotify(html);
-                    var objt = {};
-                    objt.hash = res.data.data;
-                    objt.nonce = $scope.nonce;
-                    objt.fromaddress = $scope.account.address;
-                    objt.value = $scope.toAmount;
-                    objt.gas = $scope.gasLimit;
-                    objt.gasPrice = $scope.gasLimit;
-                    objt.chainId = $scope.chain.id;
-                    objt.chainName = $scope.chain.name;
-                    objt.crossChainId=$scope.crossChain.id;
-                    objt.crossChainName=$scope.crossChain.name;
-                    objt.pid=pid;
-                    objt.flag=flag;
-                    console.log(objt)
-                    saveMultiChainChild3(objt).then(function (aobj) {
-                        console.log(aobj)
-                    })
-
+                    //子链>主链跳过
+                    if(flag){
+                        var objt = {};
+                        objt.hash = res.data.data;
+                        objt.nonce = $scope.nonce;
+                        objt.fromaddress = $scope.account.address;
+                        objt.value = $scope.toAmount;
+                        objt.gas = $scope.gasLimit;
+                        objt.gasPrice = $scope.gasLimit;
+                        objt.chainId = $scope.chain.id;
+                        objt.chainName = $scope.chain.name;
+                        objt.crossChainId=$scope.crossChain.id;
+                        objt.crossChainName=$scope.crossChain.name;
+                        objt.pid=pid;
+                        saveMultiChainChild3(objt).then(function (aobj) {
+                            if(aobj.result=="success") {
+                                queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function (data) {
+                                    $scope.txList = data.data;
+                                    $scope.$apply();
+                                })
+                            }
+                        })
+                    }
                 }else{
                     swal(res.data.error);
                 }
@@ -563,13 +566,8 @@
                     url:url,
                     data:obj
                 }).then(function successCallback(res){
-
-                    console.log(res);
                     if(res.data.result == "success"){
-
                         var depositeHash = res.data.data;
-
-                        console.log(amount);
                         var objt = {};
                         objt.hash = depositeHash;
                         objt.nonce = $scope.nonce;
@@ -581,10 +579,7 @@
                         objt.chainName = $scope.chain.name;
                         objt.crossChainId=$scope.crossChain.id;
                         objt.crossChainName=$scope.crossChain.name;
-                        objt.flag=false;
-                        console.log(objt)
                         addMultiChainTransaction(objt).then(function (aobj) {
-                            console.log(aobj.data)
                             if(aobj.result=="success"){
                                 $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount,aobj.data,false);
                             }
@@ -611,7 +606,7 @@
 
         }
 
-        $scope.confirmChildToMain = function(depositeHash,childToMainAmount,pid,flag){
+        $scope.confirmChildToMain = function(depositeHash,childToMainAmount,pid){
 
             const childChainId = "child_"+($scope.chain.id - 1);
 
@@ -641,7 +636,6 @@
                 url:url,
                 data:obj2
             }).then(function successCallback(res){
-                console.log(res);
                 removeLoading();
                 if(res.data.result == "success"){
 
@@ -664,10 +658,13 @@
                     objt.crossChainId=$scope.crossChain.id;
                     objt.crossChainName=$scope.crossChain.name;
                     objt.pid=pid;
-                    objt.flag=flag;
-                    console.log(objt)
                     saveMultiChainChild3(objt).then(function (aobj) {
-                        console.log(aobj)
+                        if(aobj.result=="success") {
+                            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function (data) {
+                                $scope.txList = data.data;
+                                $scope.$apply();
+                            })
+                        }
                     })
                 }else{
                     swal(res.data.error);
