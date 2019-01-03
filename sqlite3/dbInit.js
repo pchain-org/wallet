@@ -8,8 +8,6 @@ var Setting = require("../lib/setting.js");
 var Promise = require("bluebird");
 const DBPath = Setting.DBPath;
 
-console.log(DBPath);
-
 var db;
 let self;
 class DB{

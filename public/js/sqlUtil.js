@@ -42,54 +42,17 @@ function queryPrivateKey(address) {
     });
 }
 
-
-//save chain
-function addChain(chainId,chainName) {
-    return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_chain(id,chainId,chainName,createTime) VALUES (?,?,?,?)";
-        var array = [null, chainId, chainName, new Date().getTime()];
-        sqlietDb.execute(sql, array).then(function (resObj) {
-            accept(resObj);
-        }).catch(function (e) {
-            reject(e);
-            console.log("save chain error:", e);
-        })
-    });
-}
-
 //query chain
 function queryChainList() {
     return new Promise(function (accept,reject) {
-        // var sql = "select * from tb_chain order by chainId asc";
-        // sqlietDb.query(sql).then(function (resObj) {
-        //     accept(resObj);
-        // }).catch(function (e) {
-        //     reject(e);
-        //     console.log(e, "error");
-        // })
-       console.time("read json");
         const childChainJsonPath = path.join(__dirname,"../childChain.json");
         var childChainJson = require(childChainJsonPath);
-        console.log(childChainJson);
         var obj = {};
         obj.data = childChainJson.chain; 
         accept(obj);
-        console.timeEnd("read json");
     });
 }
 
-//query chain
-function queryChainByTime() {
-    return new Promise(function (accept,reject) {
-        var sql = "select createTime from tb_chain order by chainId asc";
-        sqlietDb.query(sql).then(function (resObj) {
-            accept(resObj);
-        }).catch(function (e) {
-            reject(e);
-            console.log(e, "error");
-        })
-    });
-}
 /*
    save transaction record
  */
