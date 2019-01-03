@@ -15,7 +15,6 @@ const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
-const query = require("./sqlite3/queryInit.js");
 const UpdateUtil = require("./utils/update");
 const UpdateChildChainUtil = require("./utils/updateChildChain");
 
@@ -30,9 +29,7 @@ function createWindow () {
         slashes: true,
         icon:path.join(__dirname,"public/img/logo.png")
     }))
-
     initMenu();
-
     mainWindow.once('show',()=>{
         UpdateUtil.checkUpdate(0);
     });
@@ -62,11 +59,6 @@ function init(){
     DB.init().then(function (result) {
         console.log(result);
         loadingWindow.hide();
-        // query.queryChild().then(function (data) {
-        //     console.log("Init Child:", data);
-        // }).catch(function (e) {
-        //     console.log("Init Child:", e)
-        // });
     }).catch(function (reason) {
         console.log("reason"+reason)
     });

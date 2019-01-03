@@ -44,11 +44,6 @@ class DB{
                 }
             }).then((result)=>{
                 if(result){
-                    let sql3 = "CREATE TABLE IF NOT EXISTS tb_chain(id integer, chainId text,chainName text);"
-                    return self.promiseRun(sql3);
-                }
-            }).then((result)=>{
-                if(result){
                     resolve("ok")
                 }
             }).catch((err)=>{
