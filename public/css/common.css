@@ -98,6 +98,9 @@ p {
 .marginLeft20 {
   margin-left: 20px;
 }
+.marginRight60 {
+  margin-right: 60px;
+}
 .padding10 {
   padding: 10px;
 }
@@ -403,4 +406,11 @@ button[disabled] {
 }
 .no-frame {
   overflow: hidden;
+}
+.radiusBtn {
+  border-radius: 8px !important;
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  -o-border-radius: 8px !important;
 }

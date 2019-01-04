@@ -4,12 +4,12 @@
     {
       "id": 1,
       "chainId": "child_0",
-      "chainName": "Chain child 1"
+      "chainName": "Child Chain 1"
     },
     {
       "id": 2,
       "chainId": "child_1",
-      "chainName": "Chain child 2"
+      "chainName": "Child Chain 2"
     }
   ]
 }

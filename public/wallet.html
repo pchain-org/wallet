@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js " lang="en">
+<html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<meta name="description" content="The Pchain TESTNET 1.0">
+<meta name="description" content="The Pchain wallet">
 
 <title>PCHAIN Wallet</title>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -22,8 +22,7 @@
 <link rel="stylesheet" href="css/bootstrap-select.min.css">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-
-<link href="https://cdn.bootcss.com/angular.js/1.5.8/angular-csp.css" rel="stylesheet">
+<link href="css/angular-csp.css" rel="stylesheet">
 <link rel="stylesheet" href="css/lib/font-awesome.min.css">
 <link rel="stylesheet" href="css/sweetalert.css"/>
 <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
@@ -31,14 +30,12 @@
 <script src="js/angular.min.js"></script>
 </head>
 <body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
-<!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="sQuare"></div>
+        <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="PCHAIN"></div>
         <p>Please wait...</p>
     </div>
 </div>
-<div class="overlay"></div>
 
 <div ng-include="'./head.html'"></div>
 
@@ -95,7 +92,7 @@
              <div class="col-xl-4 col-lg-4 col-md-4">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Balance <i class="icon icon-refresh pointer" ng-click="getBalance()"></i></strong></h2>
+                        <h2><strong>Balance <i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
                     </div>
                     <div class="body">
                         <div class="input-group mb-3 my-input-group">
@@ -137,7 +134,7 @@
                             <div class="col-xl-6 col-lg-6 col-md-6">
                                  <div class="input-group "  ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
                                     <span class="input-group-addon">Amount</span>
-                                    <input type="text" class="form-control"   ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') "  name="toAmount" ng-model="toAmount" placeholder={{'max:'+balance}}  ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                    <input type="text" class="form-control"   ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') "  name="toAmount" ng-model="toAmount" placeholder={{'max:'+maxSendAmount}}  ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
                                 </div>
                             </div>
                         </form>
@@ -159,7 +156,7 @@
                     </div>
                     <div class="body">
 
-                        <div class="complexTable">
+                        <div class="complexTable" ng-show="txList.length > 0" ng-cloak>
                             <div class="head row">
                                 <div class="col-md-1 col-lg-1 col-xs-1">
                                     #
@@ -192,7 +189,7 @@
                                         <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.toaddress">
                                             
                                         </div>
-                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value">
+                                        <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value+' PAI'">
                                             
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xs-2">
@@ -206,10 +203,16 @@
                                         <div class="table-responsive">
                                             <table class="table table-filter table-hover m-b-0">                                
                                                 <tbody>
+                                                    <tr>
+                                                        <th>Chain</th>
+                                                        <th>Account</th>
+                                                        <th>Hash</th>
+                                                        <th>Operation</th>
+                                                    </tr>
                                                     <tr data-status="suspended" ng-repeat="item in item.txChildList">
                                                         <td ng-bind="item.chainName"></td>
                                                         <td ng-bind="item.fromaddress"></td>
-                                                        <td ng-bind="item.hash"></td>
+                                                        <td ng-bind="cutWords( item.hash)"></td>
                                                         <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info">Detail</a></td>
                                                     </tr>
                                                 </tbody>
@@ -219,6 +222,10 @@
                                 </div>
                             </div>
                             
+                        </div>
+
+                        <div class="text-center" ng-show="txList.length == 0" ng-cloak>
+                            <h3>No Records</h3>
                         </div>    
                     </div>
             </div>
@@ -422,7 +429,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title block text-center">
-                        Cross-Ch ain Transfer 
+                        Cross-Chain Transfer 
                     </h4>
 
                 </div>
@@ -479,8 +486,6 @@
             </div>
         </div>
     </div>
-
-
 
 <script type="text/javascript">
      window.$ = window.jQuery = require('jquery');

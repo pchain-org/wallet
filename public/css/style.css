@@ -98,6 +98,9 @@ p {
 .marginLeft20 {
   margin-left: 20px;
 }
+.marginRight60 {
+  margin-right: 60px;
+}
 .padding10 {
   padding: 10px;
 }
@@ -404,6 +407,13 @@ button[disabled] {
 .no-frame {
   overflow: hidden;
 }
+.radiusBtn {
+  border-radius: 8px !important;
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  -o-border-radius: 8px !important;
+}
 /**  leftMenu css end **/
 html {
   height: 100%;
@@ -490,8 +500,7 @@ body {
   border-top: 1px solid #dee2e6;
 }
 .complexTable .head > div {
-  text-algin: center;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   padding: 4px;
 }
@@ -516,4 +525,31 @@ body {
 }
 .complexTable .tBody .tItem .iBody table {
   color: white;
+}
+@-webkit-keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.myIconSpin {
+  -webkit-animation: icon-spin 2s infinite linear;
+  -moz-animation: icon-spin 2s infinite linear;
+  animation: icon-spin 2s infinite linear;
+  display: inline-block;
+}
+.swal-footer {
+  text-align: center;
 }

@@ -1,379 +1,351 @@
 <!doctype html>
-<html class="no-js " lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<meta name="description" content="The Pchain TESTNET 1.0">
-
-<title>PCHAIN Wallet</title>
-<link rel="icon" href="img/logo.png" type="image/x-icon">
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131307171-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="The Pchain wallet">
+    <title>PCHAIN Wallet</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131307171-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'UA-131307171-1');
 </script>
-
-
-<link rel="stylesheet" href="css/bootstrap-select.min.css">
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-
-<link href="https://cdn.bootcss.com/angular.js/1.5.8/angular-csp.css" rel="stylesheet">
-<link rel="stylesheet" href="css/lib/font-awesome.min.css">
-<link rel="stylesheet" href="css/sweetalert.css"/>
-
- <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
-
-<link rel="stylesheet" href="css/page.css">
-
-<script src="https://cdn.bootcss.com/angular.js/1.7.0/angular.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/angular.min.js"></script>
 </head>
+
 <body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
-<!-- Page Loader -->
-<div class="page-loader-wrapper">
-    <div class="loader">
-        <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="sQuare"></div>
-        <p>Please wait...</p>
-    </div>
-</div>
-<!-- Overlay For Sidebars -->
-<div class="overlay"></div>
-
-<div ng-include="'./head.html'"></div>
-
-<section class="content">
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-lg-12">
-                <div class="card mycard">
-                    <div class="body block-header">
-                        <div class="row">
-                            <div class="col-12">
-                                <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
-                                <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
-                                <ul class="breadcrumb p-l-0 p-b-0 ">
-                                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
-                                    <li class="breadcrumb-item active">Contract</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+                <p>Please wait...</p>
             </div>
         </div>
-
-        <div class="row clearfix">
-            <div class="col-xl-8 col-lg-8 col-md-8"> 
-                <div class="card mycard">
-                    <div class="header">
-                        <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
-                    </div>
-                    <div class="body">
-                        <div class="input-group mb-3 my-input-group">
-                            <span class="input-group-addon">Address</span>
-                            <div class="form-control">
-                               <!--  <select  class="selectpicker" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="getBalance()"></select> -->
-                               <select  class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="getBalance()"></select>
-                            </div>
-                        </div>
-                        <div class="input-group mb-3 my-input-group fadeInput">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-4">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Balance<i class="icon icon-refresh pointer" ng-click="getBalance()"></i></strong></h2>
-                    </div>
-                    <div class="body">
-                        <div class="input-group mb-3 my-input-group">
-                            <span class="input-group-addon">CHAIN</span>
-                            <div class="form-control">
-                                <select  class="mySelect" ng-model="chainId" ng-options="  chain.id as chain.name  for chain in chainList" ng-change="getBalance()"></select>
-                            </div>
-                        </div>
-                        <div class="input-group mb-3 my-input-group">
-                            <span class="input-group-addon">Balance</span>
-                            <div class="form-control" >
-                                <div class="value" ng-bind="balance"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-        <div class="row clearfix">
-           <div class="col-xl-12">
-                <div class="card mycard">
-                    <div class="header">
-                        <h2><strong>Contract</strong> <small class="inline">Notice :the contract is in <span ng-bind="chainList[chainId-1].name"></span></span></small></h2>
-                    </div>
-                    <div class="body">
-
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Interact with Contract</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#deploy">Deploy Contract</a></li>
-                        </ul>
-                        <div id="myTabContent" class="tab-content">
-                            <div role="tabpanel" class="tab-pane in active" id="home">
-                                <form class="padding10" name="InteractForm" novalidate>
-                                    <div class="input-group marginTop20" ng-class="(InteractForm.contractAddr.$invalid && InteractForm.contractAddr.$dirty)?'has-danger':( InteractForm.contractAddr.$valid?'has-success':'') ">
-                                        <span class="input-group-addon">Contract Address</span>
-                                         <input type="text" class="form-control"  name="contractAddr" ng-model="contractAddr" placeholder="" ng-class="(InteractForm.contractAddr.$invalid && InteractForm.contractAddr.$dirty)?'form-control-danger':(InteractForm.contractAddr.$valid?'form-control-success':'') "  ng-pattern="/^[a-fA-F0-9]{40}$|^(0x)?[0-9a-fA-F]{40}$/" required>
+        <div ng-include="'./head.html'"></div>
+        <section class="content">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card mycard">
+                            <div class="body block-header">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                        <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
+                                        <ul class="breadcrumb p-l-0 p-b-0 ">
+                                            <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                                            <li class="breadcrumb-item active">Contract</li>
+                                        </ul>
                                     </div>
-                                    <div class="marginTop20 padding10">
-                                        <b>ABI/JSON Interface</b>
-                                        <div class="textarea">
-                                            <textarea placeholder="" class="" rows="6" ng-model='abi' name="abi" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-xl-8 col-lg-8 col-md-8">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Address</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="getBalance()"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 my-input-group fadeInput">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">CHAIN</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="chain" ng-options="chain as chain.name  for chain in chainList" ng-change="getBalance()"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Balance</span>
+                                    <div class="form-control">
+                                        <div class="value" ng-bind="balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row clearfix">
+                    <div class="col-xl-12">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>Contract</strong> <small class="inline">Notice :The contract is in <span ng-bind="chain.name"></span></span></small></h2>
+                            </div>
+                            <div class="body">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Interact with Contract</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#deploy">Deploy Contract</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane in active" id="home">
+                                        <form class="padding10" name="InteractForm" novalidate>
+                                            <div class="input-group marginTop20" ng-class="(InteractForm.contractAddr.$invalid && InteractForm.contractAddr.$dirty)?'has-danger':( InteractForm.contractAddr.$valid?'has-success':'') ">
+                                                <span class="input-group-addon">Contract Address</span>
+                                                <input type="text" class="form-control" name="contractAddr" ng-model="contractAddr" placeholder="" ng-class="(InteractForm.contractAddr.$invalid && InteractForm.contractAddr.$dirty)?'form-control-danger':(InteractForm.contractAddr.$valid?'form-control-success':'') " ng-pattern="/^[a-fA-F0-9]{40}$|^(0x)?[0-9a-fA-F]{40}$/" required>
+                                            </div>
+                                            <div class="marginTop20 padding10">
+                                                <b>ABI/JSON Interface</b>
+                                                <div class="textarea">
+                                                    <textarea placeholder="" class="" rows="6" ng-model='abi' name="abi" required>
 
                                             </textarea>
-                                        </div>
-                                    </div>
-                                    <div class="text-left">
-                                        <button class="btn btn-primary" ng-disabled="InteractForm.$invalid" ng-click="access()">Access</button>
-                                    </div>
-                                </form>
-
-                                <div class="row clearfix" ng-show="ABIJson.length > 0" ng-cloak>
-                                    <div class="col-xl-12">
-                                        <div class="card mycard">
-                                            <div class="header">
-                                                <h2><strong>Read / Write Contract</strong> <small class="inline"> <span ng-bind="contractAddr"></span></span></small></h2>
-                                            </div>
-                                            <div class="body">
-                                                <div class="input-group mb-3 my-input-group">
-                                                    <span class="input-group-addon">Select Function</span>
-                                                    <div class="form-control">
-                                                        <select  class="mySelect" ng-model="funcObj" ng-options="item as item.name  for item in ABIJson" ></select>
-                                                    </div>
                                                 </div>
-
-                                                <div class="marginTop10">
-                                                    <form name="contractForm" novalidate>
-                                                        <div class="" ng-repeat="item in funcObj.inputs">
-                                                            <div ng-switch="item.type">
-                                                                <div ng-switch-when="address">
-                                                                    <div>
-                                                                        <div class="input-group marginTop20" >
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <input type="text" class="form-control"  ng-model="item.value"   required>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div ng-switch-when="uint256">
-                                                                    <div>
-                                                                        <div class="input-group marginTop20">
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <input type="text" class="form-control"  ng-model="item.value"   required>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div ng-switch-when="string">
-                                                                    <div>
-                                                                        <div class="input-group marginTop20">
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <input type="text" class="form-control"  ng-model="item.value"   required>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div ng-switch-when="bytes">
-                                                                    <div>
-                                                                        <div class="input-group marginTop20">
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <input type="text" class="form-control"  ng-model="item.value"   required>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div ng-switch-when="bool">
-                                                                    <div>
-                                                                        <div class="input-group marginTop20">
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <div class="form-control">
-                                                                                <div class="radio inlineblock m-r-20">
-                                                                                    <input type="radio" name="flag" id="male" class="with-gap" ng-model="item.value" ng-value="true">
-                                                                                    <label for="male">True</label>
+                                            </div>
+                                            <div class="text-left">
+                                                <button class="btn btn-primary" ng-disabled="InteractForm.$invalid" ng-click="access()">Access</button>
+                                            </div>
+                                        </form>
+                                        <div class="row clearfix" ng-show="ABIJson.length > 0" ng-cloak>
+                                            <div class="col-xl-12">
+                                                <div class="card mycard">
+                                                    <div class="header">
+                                                        <h2><strong>Read / Write Contract</strong> <small class="inline"> <span ng-bind="contractAddr"></span></span></small></h2>
+                                                    </div>
+                                                    <div class="body">
+                                                        <div class="input-group mb-3 my-input-group">
+                                                            <span class="input-group-addon">Select Function</span>
+                                                            <div class="form-control">
+                                                                <select class="mySelect" ng-model="funcObj" ng-options="item as item.name  for item in ABIJson"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="marginTop10">
+                                                            <form name="contractForm" novalidate>
+                                                                <div class="" ng-repeat="item in funcObj.inputs">
+                                                                    <div ng-switch="item.type">
+                                                                        <div ng-switch-when="address">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <input type="text" class="form-control" ng-model="item.value" required>
                                                                                 </div>
-                                                                                <div class="radio inlineblock">
-                                                                                    <input type="radio" name="flag" id="Female" class="with-gap" ng-model="item.value" ng-value="false" checked>
-                                                                                    <label for="Female">False</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="uint256">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <input type="text" class="form-control" ng-model="item.value" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="string">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <input type="text" class="form-control" ng-model="item.value" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="bytes">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <input type="text" class="form-control" ng-model="item.value" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="bool">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="radio inlineblock m-r-20">
+                                                                                            <input type="radio" name="flag" id="male" class="with-gap" ng-model="item.value" ng-value="true">
+                                                                                            <label for="male">True</label>
+                                                                                        </div>
+                                                                                        <div class="radio inlineblock">
+                                                                                            <input type="radio" name="flag" id="Female" class="with-gap" ng-model="item.value" ng-value="false" checked>
+                                                                                            <label for="Female">False</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-default>
+                                                                            <div>
+                                                                                <div class="input-group marginTop20">
+                                                                                    <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
+                                                                                    <input type="text" class="form-control" ng-model="item.value" required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div ng-switch-default>
-                                                                    <div>
-                                                                        <div class="input-group marginTop20">
-                                                                            <span class="input-group-addon" ng-bind="item.name+'('+item.type+')'"></span>
-                                                                            <input type="text" class="form-control"  ng-model="item.value"   required>
+                                                                <div class="input-group marginTop20" ng-class="(contractForm.gasLimit.$invalid && contractForm.gasLimit.$dirty)?'has-danger':( contractForm.gasLimit.$valid?'has-success':'') " ng-show="!funcObj.constant" ng-cloak>
+                                                                    <span class="input-group-addon">Gas Limit </span>
+                                                                    <input type="text" class="form-control" ng-class="(contractForm.gasLimit.$invalid && contractForm.gasLimit.$dirty)?'form-control-danger':(contractForm.gasLimit.$valid?'form-control-success':'') " name="gasLimit" ng-model="gasLimit" id="gasLimit" ng-pattern="/^[1-9]\d*$/" required>
+                                                                </div>
+                                                                <div class="input-group marginTop20" ng-class="(contractForm.amount.$invalid && contractForm.amount.$dirty)?'has-danger':( contractForm.amount.$valid?'has-success':'') " ng-show="funcObj.payable" ng-cloak>
+                                                                    <span class="input-group-addon">Value </span>
+                                                                    <input type="text" class="form-control" ng-class="(contractForm.amount.$invalid && contractForm.amount.$dirty)?'form-control-danger':(contractForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" id="amount" ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                                                </div>
+                                                                <div class="marginTop10 text-center" ng-show="funcObj.constant" ng-cloak>
+                                                                    <button class="btn btn-primary" ng-disabled="contractForm.$invalid" ng-click="call()">Read</button>
+                                                                </div>
+                                                                <div class="marginTop10 text-center" ng-show="!funcObj.constant" ng-cloak>
+                                                                    <button class="btn btn-primary" ng-disabled="contractForm.$invalid || !funcObj" ng-click="enterPassword(0)">Write</button>
+                                                                </div>
+                                                            </form>
+                                                            <div class="marginTop10" ng-show="funcObj.constant && showResult" ng-cloak>
+                                                                <h2><strong>Result</strong></h2>
+                                                                <div class="" ng-repeat="item in funcObj.outputs">
+                                                                    <div ng-switch="item.type">
+                                                                        <div ng-switch-when="address">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="uint256">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="string">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="bytes">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-when="bool">
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value?'True':'False'"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-switch-default>
+                                                                            <div>
+                                                                                <div class="input-group marginTop20 my-input-group">
+                                                                                    <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
+                                                                                    <div class="form-control">
+                                                                                        <div class="value" ng-bind="item.value"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="input-group marginTop20"  ng-class="(contractForm.gasLimit.$invalid && contractForm.gasLimit.$dirty)?'has-danger':( contractForm.gasLimit.$valid?'has-success':'') " ng-show="!funcObj.constant" ng-cloak>
-                                                            <span class="input-group-addon">Gas Limit </span>
-                                                             <input type="text"  class="form-control"  ng-class="(contractForm.gasLimit.$invalid && contractForm.gasLimit.$dirty)?'form-control-danger':(contractForm.gasLimit.$valid?'form-control-success':'') " name="gasLimit" ng-model="gasLimit"  id="gasLimit" ng-pattern="/^[1-9]\d*$/" required>
-                                                        </div>
-                                                        <div class="input-group marginTop20" ng-class="(contractForm.amount.$invalid && contractForm.amount.$dirty)?'has-danger':( contractForm.amount.$valid?'has-success':'') "  ng-show="funcObj.payable" ng-cloak>
-                                                            <span class="input-group-addon">Value </span>
-                                                             <input type="text"  class="form-control"  ng-class="(contractForm.amount.$invalid && contractForm.amount.$dirty)?'form-control-danger':(contractForm.amount.$valid?'form-control-success':'') "  name="amount" ng-model="amount"  id="amount" ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
-                                                        </div>
-                                                        
-                                                        <div class="marginTop10 text-center" ng-show="funcObj.constant" ng-cloak>
-                                                            <button class="btn btn-primary" ng-disabled="contractForm.$invalid" ng-click="call()">Read</button>
-                                                        </div>
-
-                                                        <div class="marginTop10 text-center" ng-show="!funcObj.constant" ng-cloak>
-                                                            <button class="btn btn-primary" ng-disabled="contractForm.$invalid" ng-click="enterPassword(0)">Write</button>
-                                                        </div>
-                                                    </form>
-
-                                                    <div class="marginTop10" ng-show="funcObj.constant && showResult" ng-cloak>
-                                                        <h2><strong>Result</strong></h2>
-                                                        <div class="" ng-repeat="item in funcObj.outputs">
-                                                        <div ng-switch="item.type">
-                                                            <div ng-switch-when="address">
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div ng-switch-when="uint256">
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div ng-switch-when="string">
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div ng-switch-when="bytes">
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div ng-switch-when="bool">
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value?'True':'False'"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div ng-switch-default>
-                                                                <div>
-                                                                    <div class="input-group marginTop20 my-input-group">
-                                                                        <span class="input-group-addon" ng-bind="item.name?(item.name+'('+item.type+')'):item.type"></span>
-                                                                        <div class="form-control" >
-                                                                            <div class="value" ng-bind="item.value"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane" id="deploy">
-                                <form  name="deployForm" novalidate>
-                                    <div class="marginTop10 padding10">
-                                        <b>Byte Code</b>
-                                        <div class="textarea">
-                                            <textarea placeholder="" class="" rows="6" name="bydeCode" ng-model="byteCode" required >
+                                    <div role="tabpanel" class="tab-pane" id="deploy">
+                                        <form name="deployForm" novalidate>
+                                            <div class="marginTop10 padding10">
+                                                <b>Byte Code</b>
+                                                <div class="textarea">
+                                                    <textarea placeholder="" class="" rows="6" name="bydeCode" ng-model="byteCode" required>
 
                                             </textarea>
-                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-group marginTop20 " ng-class="(deployForm.deployGas.$invalid && deployForm.deployGas.$dirty)?'has-danger':( deployForm.deployGas.$valid?'has-success':'') ">
+                                                <span class="input-group-addon">Gas Limit</span>
+                                                <input type="number" class="form-control" name="deployGas" ng-model="deployGas" placeholder="300000" ng-class="(deployForm.deployGas.$invalid && deployForm.deployGas.$dirty)?'form-control-danger':(deployForm.deployGas.$valid?'form-control-success':'') " required>
+                                            </div>
+                                            <div class="marginTop10 text-center">
+                                                <button class="btn btn-primary" ng-disabled="deployForm.$invalid || nonce == -1" ng-click="enterPassword(1)">Deploy</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="input-group marginTop20 " ng-class="(deployForm.deployGas.$invalid && deployForm.deployGas.$dirty)?'has-danger':( deployForm.deployGas.$valid?'has-success':'') ">
-                                        <span class="input-group-addon">Gas Limit</span>
-                                         <input type="number"  class="form-control"  name="deployGas" ng-model="deployGas" placeholder="300000" ng-class="(deployForm.deployGas.$invalid && deployForm.deployGas.$dirty)?'form-control-danger':(deployForm.deployGas.$valid?'form-control-success':'') "  required>
-                                    </div>
-                                    <div class="marginTop10 text-center">
-                                        <button class="btn btn-primary" ng-disabled="deployForm.$invalid || nonce == -1" ng-click="enterPassword(1)">Deploy</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-    </div>
-</section>
-
-    <!-- enterPassword -->
-    <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                   <h4 class="modal-title text-center block">
+        </section>
+        <!-- enterPassword -->
+        <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
                             Please Enter Password
                     </h4>
-                </div>
-                <div class="modal-body">
-                    <form name="passwordForm" novalidate>
-                        <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
-                             <span class="input-group-addon">Password</span>
-                            <input type="password" placeholder="" class="form-control"  ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword"  required >
-                        </div>
-
-                        <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
-                                Confirm
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-body">
+                        <form name="passwordForm" novalidate>
+                            <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                                <span class="input-group-addon">Password</span>
+                                <input type="password" placeholder="" class="form-control" ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                    Confirm
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- confirm transaction -->
     <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -385,31 +357,27 @@
                     <h4 class="modal-title text-center block">
                         PCHAIN Contract
                     </h4>
-
                 </div>
                 <div class="modal-body">
                     <div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">CHAIN</span>
-                            <div class="form-control" ng-bind="chainList[chainId-1].name"></div>
+                            <div class="form-control" ng-bind="chain.name"></div>
                         </div>
-
                         <div class="input-group marginTop10" ng-show="contractAddr" ng-cloak>
                             <span class="input-group-addon"> Contract Address </span>
                             <div class="form-control" ng-bind="contractAddr"></div>
                         </div>
-
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From Address</span>
                             <div class="form-control" ng-bind="account.address"></div>
                         </div>
-
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
                             <div class="form-control" ng-bind="amount+' PAI'"></div>
                             <!-- <div class="form-control" id="modalToAmount"></div> -->
                         </div>
-<!-- 
+                        <!-- 
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Limit</span>
                             <div class="form-control" ng-bind="gasLimit"></div>
@@ -419,29 +387,24 @@
                             <span class="input-group-addon">Gas Price</span>
                             <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
                         </div> -->
-
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Max TX Fee</span>
                             <div class="form-control" ng-bind="txFee+' PAI'"></div>
                         </div>
-
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Nonce</span>
                             <div class="form-control" ng-bind="nonce"></div>
                         </div>
-
                         <div class="input-group marginTop10">
                             <b>Input Data</b><br>
                             <div class="textArea" ng-bind="byteCode">
-
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer text-center">
                     <div class="block">
-                        <button type="button" class="btn btn-primary"  ng-disabled="nonce == -1" ng-click="sendTx()">
+                        <button type="button" class="btn btn-primary" ng-disabled="nonce == -1" ng-click="sendTx()">
                             Make transaction
                         </button>
                     </div>
@@ -449,20 +412,16 @@
             </div>
         </div>
     </div>
-
-
-
-<script type="text/javascript">
-     window.$ = window.jQuery = require('jquery');
-</script>
-<script type="text/javascript" src="js/popper.min.js"></script>
-<script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
-
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/bootstrap-notify.js"></script> 
-
-<script src="js/common.js"></script>
-<script src="js/sqlUtil.js"></script>
-<script type="text/javascript" src="pageJs/contract.js"></script>
+    <script type="text/javascript">
+    window.$ = window.jQuery = require('jquery');
+    </script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert_2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/sqlUtil.js"></script>
+    <script type="text/javascript" src="pageJs/contract.js"></script>
 </body>
+
 </html>

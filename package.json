@@ -1,5 +1,5 @@
 {
-  "name": "wallet",
+  "name": "pwallet",
   "version": "1.0.0",
   "description": "pchain wallet ",
   "main": "main.js",
