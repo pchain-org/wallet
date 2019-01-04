@@ -425,6 +425,10 @@ body {
   font-size: 16px;
   backgroud-color: white;
   padding-bottom: 50px;
+  padding-top: 10px;
+}
+.top_navbar {
+  padding-top: 10px !important;
 }
 .myHead {
   height: 60px;

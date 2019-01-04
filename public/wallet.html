@@ -193,7 +193,7 @@
                                             
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xs-2">
-                                            <button class="btn badge badge-info" ng-click="showTxDetail(item.id,$index)">Detail</button>
+                                            <button class="btn badge badge-info radiusBtn" ng-click="showTxDetail(item.id,$index)">Detail</button>
                                         </div>
                                     </div>
                                     <div class="clearfix">
@@ -213,7 +213,7 @@
                                                         <td ng-bind="item.chainName"></td>
                                                         <td ng-bind="item.fromaddress"></td>
                                                         <td ng-bind="cutWords( item.hash)"></td>
-                                                        <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info">Detail</a></td>
+                                                        <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>                
