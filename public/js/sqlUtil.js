@@ -6,6 +6,27 @@
 var sqlietDb = require("../sqlite3/db");
 var Promise = require("bluebird");
 const path = require("path");
+function importAccount (privateKey,address) {
+    console.log(address)
+    var responseObj ={result:'success', data:{}, error:{}};
+    return new Promise(function (accept,reject) {
+        queryAddressExists(address).then(function (data) {
+            if(data.result="success" && data.data.len==0){
+                return addAccount(privateKey,address);
+            }else{
+                responseObj.result="error";
+                responseObj.error="Address already exists";
+                reject(responseObj);
+            }
+        }).then(function () {
+            accept(responseObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("import privateKey error:", e);
+        })
+    });
+}
+
 function addAccount (privateKey,address) {
     return new Promise(function (accept,reject) {
         var sql = "INSERT INTO tb_account(id,privateKey,address,createTime) VALUES (?,?,?,?)";
@@ -26,6 +47,18 @@ function queryAccountList() {
         }).catch(function (e) {
             reject(e);
             console.log(e, "error");
+        })
+    });
+}
+
+function queryAddressExists(address) {
+    return new Promise(function (accept,reject) {
+        var sql = "select count(*) len from tb_account where address=?";
+        var array = [address]
+        sqlietDb.queryByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
         })
     });
 }

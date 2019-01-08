@@ -255,21 +255,30 @@
 
             var enPri = AESEncrypt(newPrivateKey,$scope.password2);
 
-            addAccount(enPri,obj.address).then(function (resObj) {
+            importAccount(enPri,obj.address).then(function (resObj) {
+                console.log(resObj)
                 if(resObj.result=="success"){
                     showPopup("Import Successfully",1000);
                     $('#importAccount').modal('hide');
                     $scope.password2 = "";
                     $scope.repeatPassword2 = "";
                     $scope.newPrivate = "";
-
                     if($scope.accountList.length> 0){
                         $scope.account = $scope.accountList[$scope.accountList.length-1];
                     }
                     $scope.getBalance();
                 }
             }).catch(function (e) {
-                console.log(e, "error");
+                showPopup(e.error,1000);
+                $('#importAccount').modal('hide');
+                $scope.password2 = "";
+                $scope.repeatPassword2 = "";
+                $scope.newPrivate = "";
+
+                if($scope.accountList.length> 0){
+                    $scope.account = $scope.accountList[$scope.accountList.length-1];
+                }
+                $scope.getBalance();
             })
             
         }

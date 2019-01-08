@@ -35,11 +35,7 @@ sqliteObj.createTable = function (sql) {
 }
 
 sqliteObj.execute = function (sql,varArr) {
-    var responseObj ={
-        result:'success',
-        data:{},
-        error:{}
-    };
+    var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
         var stmt = db.prepare(sql);
         var flag = false;
@@ -59,6 +55,7 @@ sqliteObj.execute = function (sql,varArr) {
 }
 
 sqliteObj.query = function (sql) {
+    var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
         db.all(sql, function(err, row) {
             if(!err){
@@ -75,6 +72,7 @@ sqliteObj.query = function (sql) {
 }
 
 sqliteObj.queryByParam = function (sql,param) {
+    var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
         db.get(sql,param, function(err, row) {
             if(!err){
@@ -90,6 +88,7 @@ sqliteObj.queryByParam = function (sql,param) {
 }
 
 sqliteObj.queryAllByParam = function (sql,param) {
+    var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
         db.all(sql,param, function(err, row) {
             if(!err){
