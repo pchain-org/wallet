@@ -17,14 +17,21 @@ const initMenu = require('./lib/menu.js');
 const DB = require("./sqlite3/dbInit.js");
 const UpdateUtil = require("./utils/update");
 const UpdateChildChainUtil = require("./utils/updateChildChain");
-
+const InitMenuJson = require("./lib/menu.json");
 
 let mainWindow;
 
 function createWindow () {
+    let mainPageUrlPath;
+    if(InitMenuJson.modeSubMenu[0].checked){
+        mainPageUrlPath =  path.join(__dirname, 'public/wallet.html');
+    }else{
+        mainPageUrlPath =  path.join(__dirname, 'public/devPages/accountDev.html');
+    }
+
     mainWindow = new BrowserWindow({width: 1000, height: 700,minWidth:900,minHeight:700,titleBarStyle: 'hidden'})
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'public/wallet.html'),
+        pathname: mainPageUrlPath,
         protocol: 'file:',
         slashes: true,
         icon:path.join(__dirname,"public/img/logo.png")
@@ -41,7 +48,7 @@ function createWindow () {
 
 let loadingWindow;
 function showLoadingWindow(){
-    loadingWindow = new BrowserWindow({width:500,height:300,resizable:false,frame:false});
+    loadingWindow = new BrowserWindow({width:500,height:300,resizable:false,frame:false,backgroundColor:"#000000"});
     loadingWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'public/loading.html'),
         protocol: 'file:',
@@ -58,9 +65,11 @@ function showLoadingWindow(){
 function init(){
     DB.init().then(function (result) {
         console.log(result);
-        loadingWindow.hide();
-    }).catch(function (reason) {
-        console.log("reason"+reason)
+        setTimeout(function(){
+            loadingWindow.hide();
+        },1000);
+    }).catch(function (err) {
+        console.log("error"+err)
     });
 
     UpdateChildChainUtil.checkUpdate();

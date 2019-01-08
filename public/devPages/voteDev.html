@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="The Pchain wallet">
+    <title>PCHAIN Wallet</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131307171-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131307171-1');
+</script>
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link href="../css/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css?v=4.0">
+    <link rel="stylesheet" href="../css/page.css">
+    <script src="../js/angular.min.js"></script>
+</head>
+
+<body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="../img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+                <p>Please wait...</p>
+            </div>
+        </div>
+        <div ng-include="'./headDev.html'"></div>
+        <section class="content">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card mycard">
+                            <div class="body block-header">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-8 col-sm-4 col-5">
+                                        <h2 class="hidden-sm-down">Local Node Mode</h2>
+                                        <h2 class="hidden-sm-up">Local</h2>
+                                        <ul class="breadcrumb p-l-0 p-b-0 ">
+                                            <li class="breadcrumb-item"><a href="account.html"><i class="icon icon-home"></i></a></li>
+                                            <li class="breadcrumb-item active">Chain</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+                    <div class="col-xl-8 col-lg-8 col-md-8">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Address</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="account" ng-options="account  for account in accountList" ng-change="selectAccount()"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Balance</span>
+                                    <div class="form-control">
+                                        <div class="value" ng-bind="balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Operations</strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 text-center">
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#createChainModal"   >Create Child Chain</button>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 text-center">
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#joinChainModal">Join Child Chain</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Create Chain Modal -->
+    <div class="modal fade" id="createChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Create Child Chain
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="createChainForm" novalidate>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">From</span>
+                            <div class="form-control" ng-bind="account"></div>
+                        </div>
+                        <div class="input-group" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'has-danger':( createChainForm.newChainId.$valid?'has-success':'') ">
+                            <span class="input-group-addon">ChainId</span>
+                            <input type="text" placeholder="pchainId" class="form-control" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'form-control-danger':(createChainForm.newChainId.$valid?'form-control-success':'') " name="newChainId" ng-model="newChainId" required>
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="createChainForm.$invalid " ng-click="createChildChain()">
+                                Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    window.$ = window.jQuery = require('jquery');
+    </script>
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <script type="text/javascript" src="../lib/sweetalert/sweetalert_2.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-notify.js"></script>
+    <script src="../js/common.js"></script>
+    <script type="text/javascript" src="../pagejs/voteDev.js"></script>
+</body>
+
+</html>
