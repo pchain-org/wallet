@@ -58,8 +58,8 @@ function queryChainList() {
  */
 function addTransaction(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,data,type,chainId,chainName,pid,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        var array = [null, obj.hash, obj.nonce,obj.fromaddress,obj.toaddress,obj.value,obj.gas,obj.gasPrice,obj.data,1,obj.chainId,obj.chainName,0, new Date()];
+        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,data,type,chainId,chainName,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.nonce,obj.fromaddress,obj.toaddress,obj.value,obj.gas,obj.gasPrice,obj.data,1,obj.chainId,obj.chainName,0, new Date(),1];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -109,7 +109,7 @@ function queryMultiChainTxList(address,chainId) {
 
 function queryMultiChainChildTxList(pid) {
     return new Promise(function (accept,reject) {
-        var sql = "SELECT chainId,chainName,fromaddress,hash from tb_transaction  where pid=? ORDER BY id";
+        var sql = "SELECT id,chainId,chainName,fromaddress,hash,signData,status from tb_transaction  where pid=? ORDER BY id";
         var array = [pid]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -154,8 +154,8 @@ function addMultiChainTransaction(obj) {
  */
 function saveMultiChainMain(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        var array = [null,obj.hash,obj.nonce,obj.chainName,obj.crossChainName,obj.value,obj.gas,obj.gasPrice,2,obj.chainId,obj.chainName,0,new Date()];//主链转子链
+        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null,obj.hash,obj.nonce,obj.chainName,obj.crossChainName,obj.value,obj.gas,obj.gasPrice,2,obj.chainId,obj.chainName,0,new Date(),1];//主链转子链
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -170,8 +170,8 @@ function saveMultiChainMain(obj) {
  */
 function saveMultiChainChild2(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        var array = [null,obj.hash,obj.nonce,obj.fromaddress,"0x0000000000000000000000000000000000000065",obj.value,obj.gas,obj.gasPrice,2,obj.chainId,obj.chainName,obj.pid,new Date()];
+        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null,obj.hash,obj.nonce,obj.fromaddress,"0x0000000000000000000000000000000000000065",obj.value,obj.gas,obj.gasPrice,2,obj.chainId,obj.chainName,obj.pid,new Date(),1];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -186,13 +186,30 @@ function saveMultiChainChild2(obj) {
  */
 function saveMultiChainChild3(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        var array = [null,obj.hash,obj.nonce,obj.fromaddress,"0x0000000000000000000000000000000000000065",obj.value,obj.gas,obj.gasPrice,2,obj.crossChainId,obj.crossChainName,obj.pid,new Date()];
+        var sql = "INSERT INTO tb_transaction(id,hash,nonce,fromaddress,toaddress,value,gas,gasPrice,type,chainId,chainName,pid,createTime,status,signData) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null,obj.hash,obj.nonce,obj.fromaddress,"0x0000000000000000000000000000000000000065",obj.value,obj.gas,obj.gasPrice,2,obj.crossChainId,obj.crossChainName,obj.pid,new Date(),obj.status,obj.signData];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
             reject(e);
             console.log("save addTransaction error:", e);
+        })
+    });
+}
+
+
+/*
+修改第三笔交易状态
+ */
+function updateMultiChainChild3(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "update tb_transaction set hash =?,status=? where id=?";
+        var array = [obj.hash,obj.status,obj.id];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("update Transaction status error:", e);
         })
     });
 }

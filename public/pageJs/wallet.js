@@ -7,6 +7,7 @@
             queryMultiChainChildTxList(pid).then(function(data) {
                 $scope.txList[index].showDetail = !$scope.txList[index].showDetail;
                 $scope.txList[index].txChildList = data.data;
+                console.log($scope.txList[index].txChildList[0].chainId)
                 $scope.$apply();
             })
         }
@@ -343,8 +344,8 @@
             }
         }
 
-
-        $scope.checkRecipt = function(txHash, chainId, type, childToMainAmount, pid, flag) {
+        //校验子链转主链
+        $scope.checkRecipt = function(txHash, chainId, type, childToMainAmount, pid, flag,num) {
 
             var obj = {};
             obj.txHash = txHash;
@@ -358,20 +359,25 @@
             }).then(function successCallback(res) {
                 // console.log(res,"checkRecipt---------------");
                 if (res.data.data) {
-                    if (type == 1) {
+                    if (type == 2) {
                         setTimeout(function() {
-                            $scope.confirmMainToChild(txHash, pid, flag);
+                            num++;
+                            $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid, flag,num);
                         }, 2000);
-                    } else if (type == 2) {
-                        setTimeout(function() {
-                            $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid, flag);
-                        }, 3000);
+                        // setTimeout(function() {
+                        //     $scope.confirmMainToChild(txHash, pid, flag,num);
+                        // }, 2000);
+                    // } else if (type == 2) {
+                    //     setTimeout(function() {
+                    //         $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid, flag,num);
+                    //     }, 3000);
 
                     }
 
                 } else {
                     setTimeout(function() {
-                        $scope.checkRecipt(txHash, chainId, type, childToMainAmount, pid, flag);
+                        num++;
+                        $scope.checkRecipt(txHash, chainId, type, childToMainAmount, pid, flag,num);
                     }, 2000);
                 }
 
@@ -381,12 +387,10 @@
             });
         }
 
-        $scope.checkChildTxInMaiChain = function(txHash, chainId, childToMainAmount, pid) {
-
+        $scope.checkChildTxInMaiChain = function(txHash, chainId, childToMainAmount, pid,flag,num) {
             var obj = {};
             obj.txHash = txHash;
             obj.chainId = chainId;
-
             var url = APIHost + "/getChildTxInMainChain";
             $http({
                 method: 'POST',
@@ -394,17 +398,23 @@
                 data: obj
             }).then(function successCallback(res) {
                 if (res.data.result == "error") {
-                    setTimeout(function() {
-                        $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid);
-                    }, 2000);
+                    if(num<30){
+                        num++;
+                        setTimeout(function() {
+                            $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,num);
+                        }, 2000);
+                    }else{
+                        num++;
+                        $scope.confirmChildToMain(txHash,childToMainAmount,pid,num);
+                    }
+
                 } else {
-                    $scope.confirmChildToMain(txHash, childToMainAmount, pid);
+                    $scope.confirmChildToMain(txHash,childToMainAmount,pid,num);
                 }
-
-
             }, function errorCallback(res) {
                 setTimeout(function() {
-                    $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid);
+                    num++;
+                    $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,num);
                 }, 2000);
 
             });
@@ -412,7 +422,7 @@
 
 
 
-        $scope.checkMainTxInChildChain = function(txHash, chainId, pid, flag) {
+        $scope.checkMainTxInChildChain = function(txHash, chainId, pid, flag,num) {
             var obj = {};
             obj.txHash = txHash;
             obj.chainId = chainId;
@@ -423,58 +433,48 @@
                 url: url,
                 data: obj
             }).then(function successCallback(res) {
-
                 if (!res.data.data) {
-                    setTimeout(function() {
-                        $scope.checkMainTxInChildChain(txHash, chainId, pid, flag);
-                    }, 2000);
+                    if(num<30){
+                        setTimeout(function() {
+                            num++;
+                            $scope.checkMainTxInChildChain(txHash, chainId, pid, flag,num);
+                        }, 2000);
+                    }else{
+                        num++;
+                        $scope.confirmMainToChild(txHash, pid, flag,num);
+                    }
                 } else {
-                    $scope.confirmMainToChild(txHash, pid, flag);
+                    $scope.confirmMainToChild(txHash, pid, flag,num);
                 }
-
-
             }, function errorCallback(res) {
                 setTimeout(function() {
-                    $scope.checkMainTxInChildChain(txHash, chainId, pid, flag);
+                    num++;
+                    $scope.checkMainTxInChildChain(txHash, chainId, pid, flag,num);
                 }, 2000);
 
             });
         }
 
         $scope.getPlayLoad = function(abi, funName, paramArr) {
-
             var payloadData = TxData(abi, funName, paramArr);
             return payloadData;
         }
 
 
         $scope.mainToChild = function() {
-
             try {
-
                 $scope.getNonce($scope.crossChain.id);
-
                 const gasPrice = $scope.gasPrice * Math.pow(10, 9);
                 const amount = web3.toWei($scope.toAmount, "ether");
-
                 // console.log(amount);
-
                 const childChainId = "child_" + (Number($scope.crossChain.id) - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
-
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
-
                 var funcData = $scope.getPlayLoad(crossChainABI, "DepositInMainChain", [childChainId, amount]);
-
                 var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
-
-
-
                 //console.log("signRawObj _ mainToChild",signRawObj);
                 var signData = signTx($scope.currentPrivateKey, signRawObj);
-
                 // console.log(signData);
-
                 var obj = {};
                 obj.chainId = $scope.chain.id;
                 obj.signData = signData;
@@ -486,7 +486,6 @@
                     data: obj
                 }).then(function successCallback(res) {
                     if (res.data.result == "success") {
-
                         var depositeHash = res.data.data;
                         var objt = {};
                         objt.hash = depositeHash;
@@ -501,7 +500,7 @@
                         objt.crossChainName = $scope.crossChain.name;
                         addMultiChainTransaction(objt).then(function(aobj) {
                             if (aobj.result == "success") {
-                                $scope.checkMainTxInChildChain(depositeHash, $scope.crossChain.id, aobj.data, true);
+                                $scope.checkMainTxInChildChain(depositeHash, $scope.crossChain.id, aobj.data, true,1);//aobj.data pid,true 主转子,1计数器
                             }
                         })
                     } else {
@@ -520,19 +519,46 @@
 
         }
 
-        $scope.confirmMainToChild = function(depositeHash, pid, flag) {
+
+
+        $scope.confirmMainToChild = function(depositeHash, pid, flag,num) {
             const childChainId = "child_" + (Number($scope.crossChain.id) - 1);
-
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
-
             var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
-
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, $scope.crossChain.chainId);
-
             var signData = signTx($scope.currentPrivateKey, signRawObj);
-
-            // console.log("signRawObj_ confirmMainToChild",signRawObj);
-
+            //交易一分钟未响应，存储数据
+            if(num>30){
+                if (flag) {
+                    var objt = {};
+                    objt.signData = signData;
+                    objt.nonce = $scope.nonce;
+                    objt.fromaddress = $scope.account.address;
+                    objt.value = $scope.toAmount;
+                    objt.gas = $scope.gasLimit;
+                    objt.gasPrice = $scope.gasLimit;
+                    objt.chainId = $scope.chain.id;
+                    objt.chainName = $scope.chain.name;
+                    objt.crossChainId = $scope.crossChain.id;
+                    objt.crossChainName = $scope.crossChain.name;
+                    objt.status=0;
+                    objt.pid = pid;
+                    saveMultiChainChild3(objt).then(function(aobj) {
+                        if (aobj.result == "success") {
+                            removeLoading();
+                            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
+                                $scope.txList = data.data;
+                                console.log(data.data)
+                                $scope.showTxDetail(pid,0);
+                                $scope.$apply();
+                                $('#transaction').modal('hide');
+                                swal("Trading congestion, please click resend");
+                            })
+                        }
+                    })
+                }
+                return;
+            }
             var obj2 = {};
             obj2.chainId = Number($scope.crossChain.id);
             obj2.signData = signData;
@@ -567,10 +593,12 @@
                         objt.crossChainId = $scope.crossChain.id;
                         objt.crossChainName = $scope.crossChain.name;
                         objt.pid = pid;
+                        objt.status=1;
                         saveMultiChainChild3(objt).then(function(aobj) {
                             if (aobj.result == "success") {
                                 queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
                                     $scope.txList = data.data;
+                                    console.log(data.data)
                                     $scope.$apply();
                                 })
                             }
@@ -588,35 +616,21 @@
 
         $scope.childToMainAmount;
         $scope.childToMain = function() {
-
             try {
-
                 $scope.getNonce($scope.crossChain.id);
-
                 const gasPrice = $scope.gasPrice * Math.pow(10, 9);
                 const amount = web3.toWei($scope.toAmount, "ether");
-
                 $scope.childToMainAmount = amount;
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
-
-
                 const childChainId = "child_" + (Number($scope.chain.id) - 1);
-
                 var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromChildChain", [childChainId, amount]);
-
                 var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
-
                 // var funcData = $scope.getPlayLoad(crossChainABI,"",paramArr);
-
                 // var signRawObj = initSignRawContract();
-
                 var signData = signTx($scope.currentPrivateKey, signRawObj);
-
                 var obj = {};
                 obj.chainId = $scope.chain.id;
                 obj.signData = signData;
-
-
                 var url = APIHost + "/sendTx";
                 $http({
                     method: 'POST',
@@ -638,7 +652,7 @@
                         objt.crossChainName = $scope.crossChain.name;
                         addMultiChainTransaction(objt).then(function(aobj) {
                             if (aobj.result == "success") {
-                                $scope.checkRecipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false);
+                                $scope.checkRecipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false,1);
                             }
                         })
                         // console.log(amount);
@@ -665,24 +679,45 @@
 
         }
 
-        $scope.confirmChildToMain = function(depositeHash, childToMainAmount, pid) {
-
+        $scope.confirmChildToMain = function(depositeHash, childToMainAmount, pid,num) {
             const childChainId = "child_" + ($scope.chain.id - 1);
-
-
             var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromMainChain", [childChainId, $scope.childToMainAmount, depositeHash]);
-
             // console.log(funcData);
-
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, $scope.crossChain.chainId);
-
             // console.log(signRawObj);
-
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,3);
-
             var signData = signTx($scope.currentPrivateKey, signRawObj);
 
-
+            //交易一分钟未响应，存储数据
+            if(num>30){
+                    var objt = {};
+                    objt.signData = signData;
+                    objt.nonce = $scope.nonce;
+                    objt.fromaddress = $scope.account.address;
+                    objt.value = $scope.toAmount;
+                    objt.gas = $scope.gasLimit;
+                    objt.gasPrice = $scope.gasLimit;
+                    objt.chainId = $scope.chain.id;
+                    objt.chainName = $scope.chain.name;
+                    objt.crossChainId = $scope.crossChain.id;
+                    objt.crossChainName = $scope.crossChain.name;
+                    objt.status=0;
+                    objt.pid = pid;
+                    saveMultiChainChild3(objt).then(function(aobj) {
+                        if (aobj.result == "success") {
+                            removeLoading();
+                            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
+                                $scope.txList = data.data;
+                                console.log(data.data)
+                                $scope.showTxDetail(pid,0);
+                                $scope.$apply();
+                                $('#transaction').modal('hide');
+                                swal("Trading congestion, please click resend");
+                            })
+                        }
+                    })
+                return;
+            }
             var obj2 = {};
             obj2.chainId = Number($scope.crossChain.id);
             obj2.signData = signData;
@@ -717,6 +752,7 @@
                     objt.crossChainId = $scope.crossChain.id;
                     objt.crossChainName = $scope.crossChain.name;
                     objt.pid = pid;
+                    objt.status = 1;
                     saveMultiChainChild3(objt).then(function(aobj) {
                         if (aobj.result == "success") {
                             queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
@@ -737,11 +773,57 @@
 
         $scope.cutWords = function(words) {
          let result = words;
-         if (words.length > 12) {
+         if (words!=null && words.length > 12) {
              result = words.substr(0, 6) + "..." + words.substr(-6, 6);
          }
          return result;
      }
+
+     $scope.resendTx= function(id,signData,chainId,index) {
+         loading();
+         var obj2 = {};
+             obj2.signData = signData;
+             obj2.childId = Number(chainId);
+            if(chainId==0){
+                //子转主第二条记录
+                obj2.chainId=$scope.txList[index].txChildList[0].chainId;
+            }
+         var url = APIHost + "/sendTx";
+         $http({
+             method: 'POST',
+             url: url,
+             data: obj2
+         }).then(function successCallback(res) {
+             console.log(res);
+             removeLoading();
+             if (res.data.result == "success") {
+                 var hash = res.data.data;
+                 var url = "index.html?key=" + hash + "&chain=" + chainId;
+                 var html = '<a href="' + url + '">Transaction hash:' + hash + '</a>';
+                 successNotify(html);
+                 //子链>主链跳过
+                     var objt = {};
+                     objt.hash = res.data.data;
+                     objt.id =id;
+                     objt.status=1;
+                    updateMultiChainChild3(objt).then(function(aobj) {
+                         if (aobj.result == "success") {
+                             queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
+                                 $scope.txList = data.data;
+                                 $scope.$apply();
+                             })
+                         }
+                     })
+             } else {
+                 swal(res.data.error);
+             }
+
+         }, function errorCallback(res) {
+             swal("Internet error, please refresh the page");
+         });
+     }
+
+
 
     });
     $(function() {
