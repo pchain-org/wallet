@@ -54,18 +54,21 @@
                          $scope.getAccountList();
                      }else{
                          console.log("not connected");
-                         $scope.RPCUrl = "";
-                         jQuery('#setRPCUrl').modal("show");
+                         swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                             window.location.href = "accountDev.html";
+                         })
                      }
                  }else{
                      console.log("not connected");
-                     $scope.RPCUrl = "";
-                     jQuery('#setRPCUrl').modal("show");
+                     swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                         window.location.href = "accountDev.html";
+                     })
                  }
              })
          }catch(e){
              console.log(e);
          }
+
      }
 
      $scope.initWeb3();

@@ -48,7 +48,7 @@
                                         <h2 class="hidden-sm-up">Local</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
                                             <li class="breadcrumb-item"><a href="account.html"><i class="icon icon-home"></i></a></li>
-                                            <li class="breadcrumb-item active">Chain</li>
+                                            <li class="breadcrumb-item active">Epoch</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -99,11 +99,57 @@
                             <div class="body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#createChainModal"   >Create Child Chain</button>
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#voteNextEpochModal"   >Vote Next Epoch</button>
                                     </div>
                                     <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#joinChainModal">Join Child Chain</button>
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#revealVoteModal">Reveal Vote</button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Epoch :  <select ng-model="currentEpochNumber" ng-options="epochNumber for epochNumber in epochList " ng-change="selectEpoch()"></select> </strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+                                  <div class="table-responsive">
+                                      <table class="table m-b-0 table-striped table-dark">
+                                          <tbody>
+                                              <tr ng-repeat="(key,value) in epochInfo" ng-hide="key == 'validators'">
+                                                  <td ng-bind="key" ng-cloak></td>
+                                                  <td ng-bind="value" ng-cloak></td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                                </div>
+
+                                <div class="marginTop20">
+                                    <h2>Validators</h2>
+                                        <div class="table-responsive">
+                                          <table class="table m-b-0 table-striped table-dark">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Address</th>
+                                                    <th scope="col">Power</th>
+                                                    <th scope="col">Public Key</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr ng-repeat="item in epochInfo.validators" >
+                                                <td ng-bind="item.address" ng-cloak></td>
+                                                <td ng-bind="item.voting_power" ng-cloak></td>
+                                                <td ng-bind="item.public_key" ng-cloak></td>  
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                      </div>
                                 </div>
                             </div>
                         </div>
@@ -112,8 +158,8 @@
             </div>
         </section>
     </div>
-    <!-- Create Chain Modal -->
-    <div class="modal fade" id="createChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Vote Next Epoch Modal -->
+    <div class="modal fade" id="voteNextEpochModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -121,22 +167,75 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Create Child Chain
+                        Vote Next Epoch
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form name="createChainForm" novalidate>
+                    <form name="voteNextEpochForm" novalidate>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From</span>
                             <div class="form-control" ng-bind="account"></div>
                         </div>
-                        <div class="input-group" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'has-danger':( createChainForm.newChainId.$valid?'has-success':'') ">
-                            <span class="input-group-addon">ChainId</span>
-                            <input type="text" placeholder="pchainId" class="form-control" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'form-control-danger':(createChainForm.newChainId.$valid?'form-control-success':'') " name="newChainId" ng-model="newChainId" required>
+                        <div class="input-group" ng-class="(voteNextEpochForm.pubKey.$invalid && voteNextEpochForm.pubKey.$dirty)?'has-danger':( voteNextEpochForm.pubKey.$valid?'has-success':'') ">
+                            <span class="input-group-addon">PubKey</span>
+                            <input type="text" placeholder="PubKey" class="form-control" ng-class="(voteNextEpochForm.pubKey.$invalid && voteNextEpochForm.pubKey.$dirty)?'form-control-danger':(voteNextEpochForm.pubKey.$valid?'form-control-success':'') " name="pubKey" ng-model="pubKey" required>
+                        </div>
+                        <div class="input-group" ng-class="(voteNextEpochForm.amount.$invalid && voteNextEpochForm.amount.$dirty)?'has-danger':( voteNextEpochForm.amount.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Amount</span>
+                            <input type="number" min="1" placeholder="" class="form-control" ng-class="(voteNextEpochForm.amount.$invalid && voteNextEpochForm.amount.$dirty)?'form-control-danger':(voteNextEpochForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
+                        </div>
+                        <div class="input-group" ng-class="(voteNextEpochForm.salt.$invalid && voteNextEpochForm.salt.$dirty)?'has-danger':( voteNextEpochForm.salt.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Salt</span>
+                            <input type="text" placeholder="" class="form-control" ng-class="(voteNextEpochForm.salt.$invalid && voteNextEpochForm.salt.$dirty)?'form-control-danger':(voteNextEpochForm.salt.$valid?'form-control-success':'') " name="salt" ng-model="salt" required>
                         </div>
                         <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="createChainForm.$invalid " ng-click="createChildChain()">
-                                Create
+                            <button type="button" class="btn btn-primary" ng-disabled="voteNextEpochForm.$invalid " ng-click="voteNextEpoch()">
+                                Vote Next Epoch
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- reveal Vote Modal -->
+    <div class="modal fade" id="voteNextEpochModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Reveal Epoch
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="revealVoteForm" novalidate>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">From</span>
+                            <div class="form-control" ng-bind="account"></div>
+                        </div>
+                        <div class="input-group" ng-class="(revealVoteForm.pubKey.$invalid && revealVoteForm.pubKey.$dirty)?'has-danger':( revealVoteForm.pubKey.$valid?'has-success':'') ">
+                            <span class="input-group-addon">PubKey</span>
+                            <input type="text" placeholder="PubKey" class="form-control" ng-class="(revealVoteForm.pubKey.$invalid && revealVoteForm.pubKey.$dirty)?'form-control-danger':(revealVoteForm.pubKey.$valid?'form-control-success':'') " name="pubKey" ng-model="pubKey" required>
+                        </div>
+                        <div class="input-group" ng-class="(revealVoteForm.amount.$invalid && revealVoteForm.amount.$dirty)?'has-danger':( revealVoteForm.amount.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Amount</span>
+                            <input type="number" min="1" placeholder="" class="form-control" ng-class="(revealVoteForm.amount.$invalid && revealVoteForm.amount.$dirty)?'form-control-danger':(revealVoteForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
+                        </div>
+                        <div class="input-group" ng-class="(revealVoteForm.salt.$invalid && revealVoteForm.salt.$dirty)?'has-danger':( revealVoteForm.salt.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Salt</span>
+                            <input type="text" placeholder="" class="form-control" ng-class="(revealVoteForm.salt.$invalid && revealVoteForm.salt.$dirty)?'form-control-danger':(revealVoteForm.salt.$valid?'form-control-success':'') " name="salt" ng-model="salt" required>
+                        </div>
+                        <div class="input-group" ng-class="(revealVoteForm.blsPrivateKey.$invalid && revealVoteForm.blsPrivateKey.$dirty)?'has-danger':( revealVoteForm.blsPrivateKey.$valid?'has-success':'') ">
+                            <span class="input-group-addon">BLS Private Key</span>
+                            <input type="text" placeholder="" class="form-control" ng-class="(revealVoteForm.blsPrivateKey.$invalid && revealVoteForm.blsPrivateKey.$dirty)?'form-control-danger':(revealVoteForm.blsPrivateKey.$valid?'form-control-success':'') " name="blsPrivateKey" ng-model="blsPrivateKey" required>
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="revealVoteForm.$invalid " ng-click="revealVote()">
+                                Reveal Vote
                             </button>
                         </div>
                     </form>
