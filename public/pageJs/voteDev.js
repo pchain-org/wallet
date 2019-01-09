@@ -8,7 +8,7 @@
 
      $scope.accountList = new Array();
 
-     $scope.RPCUrl = "http://34.219.35.90:6969/pchain";
+     $scope.RPCUrl = "";
 
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
@@ -46,8 +46,9 @@
                 $scope.getAccountList();
             }else{
                 console.log("not connected");
-                $scope.RPCUrl = "";
-                jQuery('#setRPCUrl').modal("show");
+                swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                    window.location.href = "accountDev.html";
+                })
             }
         }catch(e){
             console.log(e);

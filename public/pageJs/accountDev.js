@@ -9,6 +9,10 @@
 
      $scope.accountList = new Array();
 
+     $scope.showAddData = function() {
+         $scope.addDataFlag = true;
+     }
+
      $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
 
     $scope.getBalance = function(){

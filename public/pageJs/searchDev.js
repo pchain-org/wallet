@@ -72,7 +72,9 @@
                 }
             }else{
                 console.log("not connected");
-                swal({title:"RPC Connect",text:"Not possible to connect to the RPC. Make sure the RPC is running and a connection is open."});
+                swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                    window.location.href = "accountDev.html";
+                })
             }
         }catch(e){
             console.log(e);
