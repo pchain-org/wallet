@@ -8,7 +8,7 @@
 
      $scope.accountList = new Array();
 
-     $scope.RPCUrl = "http://34.219.35.90:6969/pchain";
+     $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
 
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
@@ -65,7 +65,7 @@
         let hexStr = "0x"+decimalToHex(100000);
         console.log(hexStr);
 
-        web3Util.chain.createChildChain({from:"" ......},(err,result)=>{
+        web3Util.chain.createChildChain({from:""},(err,result)=>{
             
         })
      }

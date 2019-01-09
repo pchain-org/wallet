@@ -9,7 +9,7 @@
 
      $scope.accountList = new Array();
 
-     $scope.RPCUrl = "http://34.219.35.90:6969/pchain";
+     $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
 
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
