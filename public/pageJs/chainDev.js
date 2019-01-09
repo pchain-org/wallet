@@ -88,7 +88,7 @@
             if(!err){
                 jQuery("#createChainModal").modal("hide");
                 swal({title:"createChildChain",text:result,icon:"success"});
-                // var hash = result;
+                var hash = result;
                 // var url = "search.html?key=" + hash;
                 // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                 // successNotify(html);
@@ -128,7 +128,7 @@
              if(!err){
                  jQuery("#joinChainModal").modal("hide");
                  swal({title:"joinChainModal",text:result,icon:"success"});
-                 // var hash = result;
+                 var hash = result;
                  // var url = "search.html?key=" + hash;
                  // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  // successNotify(html);

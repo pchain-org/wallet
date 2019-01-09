@@ -37,6 +37,12 @@
                 if(result.length > 0){
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
+
+                    queryTransactionDevList($scope.account).then(function(robj) {
+                        console.log(robj)
+                        $scope.transactionDevList = robj.data;
+                        $scope.$apply();
+                    })
                 }
                 $scope.$apply();
             }
@@ -156,15 +162,40 @@
                 jQuery("#transaction").modal("hide");
                 swal({title:"Transaction",text:result,icon:"success"});
                  var hash = result;
-                 var url = "search.html?key=" + hash + "&chain=" + $scope.chain;
+                 var url = "search.html?key=" + hash;
                  var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  successNotify(html);
+
+                var objt = {};
+                objt.hash = hash;
+                objt.fromaddress = $scope.account;
+                objt.toaddress = $scope.toAddress;
+                objt.value = $scope.toAmount;
+                objt.gas = $scope.gasLimit;
+                objt.gasPrice =  $scope.gasPrice*Math.pow(10,9);
+                objt.data = $scope.data;
+                addTransactionDev(objt).then(function(aobj) {
+                    if (aobj.result == "success") {
+                        queryTransactionDevList($scope.account).then(function(robj) {
+                            $scope.transactionDevList = robj.data;
+                            $scope.$apply();
+                        })
+                    }
+                })
+
             }else{
                 let error = err.toString();
                 swal({title:"Error",text:error,icon:"error"});
             }
-            console.log(err.toString(),result);
         })
+     }
+
+     $scope.cutWords = function(words) {
+         let result = words;
+         if (words!=null && words.length > 12) {
+             result = words.substr(0, 6) + "..." + words.substr(-6, 6);
+         }
+         return result;
      }
 
  });

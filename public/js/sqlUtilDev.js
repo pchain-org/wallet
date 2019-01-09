@@ -66,6 +66,41 @@ function queryChildChainList(address) {
     });
 }
 
+/*
+   save transaction record
+ */
+function addTransactionDev(obj) {
+    console.log(obj)
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,toaddress,value,gasPrice,data,type,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash,obj.fromaddress,obj.toaddress,obj.value,obj.gasPrice,obj.data,4,0,new Date(),1];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save addTransaction error:", e);
+        })
+    });
+}
+
+/*
+ query transactions
+ */
+
+function queryTransactionDevList(address) {
+    console.log(address)
+    return new Promise(function (accept,reject) {
+        var sql = "select hash,toaddress,value from tb_transaction where type =4 and fromaddress=? order by id desc limit 10";
+        var array = [address]
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
 
 
 
