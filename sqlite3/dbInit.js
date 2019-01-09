@@ -40,8 +40,13 @@ class DB{
                     let sql2="CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY,hash text,nonce text,fromaddress text,toaddress text,value real,gas text,gasPrice text,data text,type integer,chainId integer,chainName text,pid integer,createTime text,signData text,status integer);";
                     return self.promiseRun(sql2);
                 }
-            }).then((result)=>{
-                if(result){
+            }).then((result)=> {
+                if (result) {
+                    let sql3 = "CREATE TABLE IF NOT EXISTS tb_url(id integer PRIMARY KEY,createTime text,url text);";
+                    return self.promiseRun(sql3);
+                }
+            }).then((result)=> {
+                if (result) {
                     resolve("ok")
                 }
             }).catch((err)=>{

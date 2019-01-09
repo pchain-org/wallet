@@ -3,7 +3,7 @@
         let web3Util = new Web3(); 
 
         $scope.gasPrice = 0;
-        $scope.RPCUrl = "http://34.219.35.90:6969/pchain";
+        // $scope.RPCUrl = "http://34.219.35.90:6969/pchain";
 
         $scope.search = function(key) {
 
@@ -60,20 +60,28 @@
 
         }
 
+
         $scope.initWeb3 = function(){
         removePageLoader();
          try{
-            web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
-            if(web3Util.isConnected()){
-                console.log("connected");
-                var key = GetQueryString("key");
-                if (key) {
-                    $scope.search(key);
-                }
-            }else{
-                console.log("not connected");
-                swal({title:"RPC Connect",text:"Not possible to connect to the RPC. Make sure the RPC is running and a connection is open."});
-            }
+             queryRpcUrl().then(function (data) {
+                 if(data.result=="success" && data.data.length>0) {
+                         web3Util.setProvider(new web3Util.providers.HttpProvider(data.data[0].url));
+                         if (web3Util.isConnected()) {
+                             console.log("connected");
+                             var key = GetQueryString("key");
+                             if (key) {
+                                 $scope.search(key);
+                             }
+                         } else {
+                             console.log("not connected");
+                             swal({
+                                 title: "RPC Connect",
+                                 text: "Not possible to connect to the RPC. Make sure the RPC is running and a connection is open."
+                             });
+                         }
+                     }
+                 })
         }catch(e){
             console.log(e);
         }
