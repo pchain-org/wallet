@@ -160,6 +160,38 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>Latest 10 transaction records</strong></h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionDevList.length > 0" ng-cloak>
+                                <thead>
+                                <tr>
+                                    <th>Hash</th>
+                                    <th>To</th>
+                                    <th>Value</th>
+                                    <th>Operation</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in transactionDevList">
+                                    <td ng-bind="cutWords(item.hash)"></td>
+                                    <td ng-bind="item.toaddress"></td>
+                                    <td ng-bind="item.value+' PAI'"></td>
+                                    <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-center" ng-show="transactionDevList.length == 0" ng-cloak>
+                                <h3>No Records</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -322,6 +354,7 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-notify.js"></script>
     <script src="../js/common.js"></script>
+    <script src="../js/sqlUtildev.js"></script>
     <script type="text/javascript" src="../pagejs/accountDev.js"></script>
 </body>
 

@@ -9,13 +9,16 @@
 
      $scope.accountList = new Array();
 
+
      $scope.showAddData = function() {
          $scope.addDataFlag = true;
      }
 
-     $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
+     // $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
+     $scope.RPCUrl = "http://18.237.37.188:6969/pchain";
 
-    $scope.getBalance = function(){
+
+     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
         web3Util.eth.getBalance($scope.account,(err,result)=>{
             console.log(err,result);
@@ -36,6 +39,12 @@
                 if(result.length > 0){
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
+
+                    queryTransactionDevList($scope.account).then(function(robj) {
+                        console.log(robj)
+                        $scope.transactionDevList = robj.data;
+                        $scope.$apply();
+                    })
                 }
                 $scope.$apply();
             }
@@ -45,15 +54,23 @@
      $scope.initWeb3 = function(){
         removePageLoader();
          try{
-            web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
-            if(web3Util.isConnected()){
-                console.log("connected");
-                $scope.getAccountList();
-            }else{
-                console.log("not connected");
-                $scope.RPCUrl = "";
-                jQuery('#setRPCUrl').modal("show");
-            }
+             queryRpcUrl().then(function (data) {
+                if(data.result=="success" && data.data.length>0){
+                    web3Util.setProvider(new web3Util.providers.HttpProvider(data.data[0].url));
+                    if(web3Util.isConnected()){
+                        console.log("connected");
+                        $scope.getAccountList();
+                    }else{
+                        console.log("not connected");
+                        $scope.RPCUrl = "";
+                        jQuery('#setRPCUrl').modal("show");
+                    }
+                }else{
+                    console.log("not connected");
+                    $scope.RPCUrl = "";
+                    jQuery('#setRPCUrl').modal("show");
+                }
+             })
         }catch(e){
             console.log(e);
         }
@@ -64,15 +81,19 @@
 
      $scope.setRPCUrl = function(){
         try{
-            web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
-            if(web3Util.isConnected()){
-                console.log("connected");
-                $scope.getAccountList();
-                jQuery('#setRPCUrl').modal("hide");
-            }else{
-                console.log("not connected");
-                swal({title:"RPC Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error"});
-            }
+            addRpcUrl($scope.RPCUrl).then(function (data) {
+                if(data.result="success"){
+                    web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
+                    if(web3Util.isConnected()){
+                        console.log("connected");
+                        $scope.getAccountList();
+                        jQuery('#setRPCUrl').modal("hide");
+                    }else{
+                        console.log("not connected");
+                        swal({title:"RPC Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error"});
+                    }
+                }
+            })
         }catch(e){
             console.log(e);
         }
@@ -143,15 +164,40 @@
                 jQuery("#transaction").modal("hide");
                 swal({title:"Transaction",text:result,icon:"success"});
                  var hash = result;
-                 var url = "search.html?key=" + hash + "&chain=" + $scope.chain;
+                 var url = "search.html?key=" + hash;
                  var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  successNotify(html);
+
+                var objt = {};
+                objt.hash = hash;
+                objt.fromaddress = $scope.account;
+                objt.toaddress = $scope.toAddress;
+                objt.value = $scope.toAmount;
+                objt.gas = $scope.gasLimit;
+                objt.gasPrice =  $scope.gasPrice*Math.pow(10,9);
+                objt.data = $scope.data;
+                addTransactionDev(objt).then(function(aobj) {
+                    if (aobj.result == "success") {
+                        queryTransactionDevList($scope.account).then(function(robj) {
+                            $scope.transactionDevList = robj.data;
+                            $scope.$apply();
+                        })
+                    }
+                })
+
             }else{
                 let error = err.toString();
                 swal({title:"Error",text:error,icon:"error"});
             }
-            console.log(err.toString(),result);
         })
+     }
+
+     $scope.cutWords = function(words) {
+         let result = words;
+         if (words!=null && words.length > 12) {
+             result = words.substr(0, 6) + "..." + words.substr(-6, 6);
+         }
+         return result;
      }
 
  });
