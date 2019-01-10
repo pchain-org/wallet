@@ -120,7 +120,8 @@
 
 
      $scope.joinChildChain = function(){
-         let depositAmount= "0x"+decimalToHex($scope.depositAmount);
+         // let depositAmount= "0x"+decimalToHex($scope.depositAmount);
+         let depositAmount= "0x"+decimalToHex(web3Util.toWei($scope.depositAmount,'ether'));
          let gas="0x"+decimalToHex(42000);
          let gasPrice ="0x"+decimalToHex( $scope.gasPrice*Math.pow(10,9));
          console.log($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice)

@@ -220,7 +220,7 @@
                         </div>
                         <div class="input-group" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'has-danger':( joinChainForm.depositAmount.$valid?'has-success':'') ">
                             <span class="input-group-addon">depositAmount</span>
-                            <input type="number"  placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
+                            <input type="number" min="100000" placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
                         </div>
                         <div class="input-group" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'has-danger':( joinChainForm.pubkey.$valid?'has-success':'') ">
                             <span class="input-group-addon">pubkey</span>
@@ -233,7 +233,7 @@
 
                         <div class="marginTop10 text-center">
                             <button type="button" class="btn btn-primary" ng-disabled="joinChainForm.$invalid " ng-click="joinChildChain()">
-                                Create
+                                Join
                             </button>
                         </div>
                     </form>
