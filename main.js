@@ -29,7 +29,7 @@ function createWindow () {
         mainPageUrlPath =  path.join(__dirname, 'public/devPages/accountDev.html');
     }
 
-    mainWindow = new BrowserWindow({width: 1000, height: 700,minWidth:900,minHeight:700,titleBarStyle: 'hidden'})
+    mainWindow = new BrowserWindow({width: 1000, height: 700,minWidth:900,minHeight:700,titleBarStyle: 'hidden',backgroundColor:"#000000"})
     mainWindow.loadURL(url.format({
         pathname: mainPageUrlPath,
         protocol: 'file:',
