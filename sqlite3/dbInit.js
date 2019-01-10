@@ -32,6 +32,59 @@ class DB{
         });
     }
 
+    execute(sql,varArr) {
+        var responseObj ={result:'success', data:{}, error:{}};
+        return new Promise(function (accept,reject) {
+            var stmt = db.prepare(sql);
+            var flag = false;
+            if(stmt.run.call(stmt,varArr)){
+                flag = true;
+            }
+            stmt.finalize();
+            if(flag){
+                accept(responseObj);
+            }else{
+                responseObj.result = "error";
+                responseObj.error = "Execution failed";
+                reject(responseObj);
+            }
+        });
+
+    }
+
+    query(sql) {
+        var responseObj ={result:'success', data:{}, error:{}};
+        return new Promise(function (accept,reject) {
+            db.all(sql, function(err, row) {
+                if(!err){
+                    responseObj.data = row;
+                    accept(responseObj);
+                }else{
+                    responseObj.result = "error";
+                    responseObj.error = err;
+                    reject(responseObj);
+                }
+            });
+        });
+
+    }
+
+    queryByParam(sql,param) {
+        var responseObj ={result:'success', data:{}, error:{}};
+        return new Promise(function (accept,reject) {
+            db.get(sql,param, function(err, row) {
+                if(!err){
+                    responseObj.data = row;
+                    accept(responseObj);
+                }else{
+                    responseObj.result = "error";
+                    responseObj.error = err;
+                    reject(responseObj);
+                }
+            });
+        });
+    }
+
 	init(){
         return new Promise(function (resolve,reject) {
             let sql="CREATE TABLE IF NOT EXISTS tb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);";
