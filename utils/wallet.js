@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const electron = require('electron')
 const {dialog} = require('electron')
-const DB = require("../sqlite3/dbinit.js");
+const DB = require("../sqlite3/dbInit.js");
 
 let self;
 class Wallet {
