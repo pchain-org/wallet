@@ -7,10 +7,8 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu;
-
+const Tray = electron.Tray;
 var Promise = require("bluebird");
-
-
 const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
@@ -78,6 +76,7 @@ function init(){
 app.on('ready', function(){
     showLoadingWindow();
     init();
+    const tray = new Tray(path.join(__dirname,"public/img/logo.png"));
 })
 
 app.on('window-all-closed', function () {
