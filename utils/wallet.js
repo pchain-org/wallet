@@ -10,7 +10,6 @@ const {dialog} = require('electron')
 
 const DB = require("../sqlite3/dbInit.js");
 
-
 let self;
 class Wallet {
 	constructor(){
@@ -18,7 +17,7 @@ class Wallet {
 	}
 
 	saveWallet(p){
-		let currentTime = (new Date()).toUTCString();
+		let currentTime = (new Date()).getTime();
 	    let fileName = "PchainWallet_"+currentTime+".json";
 	    DB.query("select * from tb_account").then((res)=>{
 	    	// console.log(res);
