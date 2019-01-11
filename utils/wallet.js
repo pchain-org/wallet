@@ -7,7 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const electron = require('electron')
 const {dialog} = require('electron')
-const DB = require("../sqlite3/dbinit.js");
+
+const DB = require("../sqlite3/dbInit.js");
+
 
 let self;
 class Wallet {
@@ -36,7 +38,7 @@ class Wallet {
 			        JSON.stringify(walletJson,null,2),
 			        (err)=>{
 			        	if(!err){
-			        		// console.log("file save success");
+			        		console.log("file save success");
 				        		const options = {
 							    type: 'info',
 							    title: 'Wallet Backup ',
@@ -44,11 +46,11 @@ class Wallet {
 							  }
 							  dialog.showMessageBox(options);
 			        	}else{
-			        		// console.log(err);
+			        		console.log(err);
 			        		const options = {
 							    type: 'error',
 							    title: 'Wallet Backup',
-							    message: err
+							    message: err.toString()
 							  }
 							  dialog.showMessageBox(options);
 			        	}
@@ -164,10 +166,11 @@ class Wallet {
 	}
 
 	errorDialog(err){
+		console.log(err)
 		const options = {
 		    type: 'error',
 		    title: 'Pchain Wallet',
-		    message: err
+		    message: err.toString()
 		}
 		dialog.showMessageBox(options);
 	}
