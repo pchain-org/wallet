@@ -69,7 +69,11 @@
             let b = new BigNumber($scope.balance);
             let gl = new BigNumber($scope.gasLimit);
             let fee = gl.times($scope.gasPrice * Math.pow(10, 9)).dividedBy(Math.pow(10, 18));
-            $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
+             if(b.gt(fee)){
+                $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
+             }else{
+                $scope.maxSendAmount = 0;
+             }
         }
 
         var clipboard2 = new Clipboard('.copyBtn2', {
