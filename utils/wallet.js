@@ -16,7 +16,7 @@ class Wallet {
 	}
 
 	saveWallet(p){
-		let currentTime = (new Date()).toUTCString();
+		let currentTime = (new Date()).getTime();
 	    let fileName = "PchainWallet_"+currentTime+".json";
 	    DB.query("select * from tb_account").then((res)=>{
 	    	// console.log(res);
@@ -48,7 +48,7 @@ class Wallet {
 			        		const options = {
 							    type: 'error',
 							    title: 'Wallet Backup',
-							    message: err
+							    message: err.toString()
 							  }
 							  dialog.showMessageBox(options);
 			        	}
@@ -167,7 +167,7 @@ class Wallet {
 		const options = {
 		    type: 'error',
 		    title: 'Pchain Wallet',
-		    message: err
+		    message: err.toString()
 		}
 		dialog.showMessageBox(options);
 	}
