@@ -6,6 +6,7 @@ const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
 const CryptoJS = require("crypto-js");
 const BigNumber = require('bignumber.js');
+const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
 
 function AESEncrypt(msg, password) {
@@ -185,6 +186,22 @@ function initSignRawPAI(toAddress, amount, nonce, gasPrice, gasLimit, chainId) {
     return rawTx;
 }
 
+function initSignBuildInContract(data, nonce, gasPrice, gasLimit, chainId,amount) {
+    //console.log(toAddress,amount,nonce,gasPrice,gasLimit);
+
+    const rawTx = {
+        nonce: convert(nonce),
+        gasPrice: convert(gasPrice),
+        gasLimit: convert(gasLimit),
+        to: "0x0000000000000000000000000000000000000065",
+        value: convert(amount),
+        data: data,
+        chainId: chainId
+    };
+
+    return rawTx;
+}
+
 function initSignRawCrosschain(data, nonce, gasPrice, gasLimit, chainId) {
     const rawTx = {
         nonce: convert(nonce),
@@ -277,3 +294,31 @@ var crossChainABI = [{
         "outputs": []
     }
 ]
+
+
+var DelegateABI = [{
+        "type": "function",
+        "name": "Delegate",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "candidate",
+                "type": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "CancelDelegate",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "candidate",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ]
+    }];
