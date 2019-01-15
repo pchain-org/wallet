@@ -230,14 +230,17 @@
                 amount = 0;
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
              }
+             // console.log(signRawObj)
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
 
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
+             // console.log(obj)
              loading();
              var url = APIHost + "/sendTx";
+
              $http({
                  method: 'POST',
                  url: url,

@@ -244,19 +244,25 @@
                             <span class="input-group-addon">CHAIN</span>
                             <div class="form-control" ng-bind="chain.name"></div>
                         </div>
-                        <div class="input-group marginTop10">
+                        <div class="input-group marginTop10" ng-show="delegateType == 0" ng-cloak>
                             <span class="input-group-addon">Candidate </span>
-                            <div class="form-control" ng-bind="toAddress" ng-show="delegateType == 0" ng-cloak></div>
-                            <div class="form-control" ng-bind="cancleCandidate" ng-show="delegateType == 1" ng-cloak></div>
+                            <div class="form-control" ng-bind="toAddress" ></div>
+                        </div>
+                        <div class="input-group marginTop10"  ng-show="delegateType == 1" ng-cloak>
+                            <span class="input-group-addon">Candidate </span>
+                            <div class="form-control" ng-bind="cancleCandidate"></div>
                         </div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From Address</span>
                             <div class="form-control" ng-bind="account.address"></div>
                         </div>
-                        <div class="input-group marginTop10">
+                        <div class="input-group marginTop10" ng-show="delegateType == 0" ng-cloak>
                             <span class="input-group-addon">Amount</span>
-                            <div class="form-control" ng-bind="toAmount+' PAI'" ng-show="delegateType == 0" ng-cloak></div>
-                            <div class="form-control" ng-bind="cancleAmount+' PAI'" ng-show="delegateType == 1" ng-cloak></div>
+                            <div class="form-control" ng-bind="toAmount+' PAI'" ></div>
+                        </div>
+                        <div class="input-group marginTop10" ng-show="delegateType == 1" ng-cloak>
+                            <span class="input-group-addon">Amount</span>
+                            <div class="form-control" ng-bind="cancleAmount+' PAI'" ></div>
                         </div>
                         <!--                       <div class="input-group marginTop10">
                             <span class="input-group-addon">Gas Limit</span>

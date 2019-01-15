@@ -229,6 +229,72 @@ function initSignRawContract(toAddress, data, nonce, gasPrice, gasLimit, amount,
 
 var APIHost = "https://air.pchain.wang";
 
+// var crossChainABI = [{
+//         "type": "function",
+//         "name": "DepositInMainChain",
+//         "constant": false,
+//         "inputs": [{
+//                 "name": "chainId",
+//                 "type": "string"
+//             },
+//             {
+//                 "name": "amount",
+//                 "type": "uint256"
+//             }
+//         ],
+//         "outputs": []
+//     },
+//     {
+//         "type": "function",
+//         "name": "DepositInChildChain",
+//         "constant": false,
+//         "inputs": [{
+//                 "name": "chainId",
+//                 "type": "string"
+//             },
+//             {
+//                 "name": "txHash",
+//                 "type": "bytes32"
+//             }
+//         ],
+//         "outputs": []
+//     },
+//     {
+//         "type": "function",
+//         "name": "WithdrawFromChildChain",
+//         "constant": false,
+//         "inputs": [{
+//                 "name": "chainId",
+//                 "type": "string"
+//             },
+//             {
+//                 "name": "amount",
+//                 "type": "uint256"
+//             }
+//         ],
+//         "outputs": []
+//     },
+//     {
+//         "type": "function",
+//         "name": "WithdrawFromMainChain",
+//         "constant": false,
+//         "inputs": [{
+//                 "name": "chainId",
+//                 "type": "string"
+//             },
+//             {
+//                 "name": "amount",
+//                 "type": "uint256"
+//             },
+//             {
+//                 "name": "txHash",
+//                 "type": "bytes32"
+//             }
+//         ],
+//         "outputs": []
+//     }
+// ]
+
 var crossChainABI = [{
         "type": "function",
         "name": "DepositInMainChain",
@@ -236,10 +302,6 @@ var crossChainABI = [{
         "inputs": [{
                 "name": "chainId",
                 "type": "string"
-            },
-            {
-                "name": "amount",
-                "type": "uint256"
             }
         ],
         "outputs": []
@@ -266,10 +328,6 @@ var crossChainABI = [{
         "inputs": [{
                 "name": "chainId",
                 "type": "string"
-            },
-            {
-                "name": "amount",
-                "type": "uint256"
             }
         ],
         "outputs": []
@@ -295,7 +353,6 @@ var crossChainABI = [{
     }
 ]
 
-
 var DelegateABI = [{
         "type": "function",
         "name": "Delegate",
@@ -305,7 +362,8 @@ var DelegateABI = [{
                 "name": "candidate",
                 "type": "address"
             }
-        ]
+        ],
+        "outputs": []
     },
     {
         "type": "function",
@@ -320,5 +378,6 @@ var DelegateABI = [{
                 "name": "amount",
                 "type": "uint256"
             }
-        ]
+        ],
+        "outputs": []
     }];
