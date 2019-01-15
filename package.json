@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "bignumber.js": "^8.0.1",
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.3",
     "checksum": "^0.1.1",
     "clipboard": "^2.0.4",
     "cryptojs": "^2.5.3",
@@ -27,8 +27,8 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.4",
     "pchainjs-tx": "^1.0.8",
-    "pweb3": "^1.1.0",
-    "sqlite3": "^4.0.4",
+    "pweb3": "^1.1.2",
+    "sqlite3": "^4.0.6",
     "txdata": "^1.0.3"
   },
   "devDependencies": {
