@@ -482,8 +482,9 @@
                 const childChainId = "child_" + (Number($scope.crossChain.id) - 1);
                 // const childChainId = "child_"+($scope.crossChain - 1);
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,childChainId,0);
-                var funcData = $scope.getPlayLoad(crossChainABI, "DepositInMainChain", [childChainId, amount]);
-                var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+                var funcData = $scope.getPlayLoad(crossChainABI, "DepositInMainChain", [childChainId]);
+                // var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+                 var signRawObj = initSignBuildInContract(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
                 //console.log("signRawObj _ mainToChild",signRawObj);
                 var signData = signTx($scope.currentPrivateKey, signRawObj);
                 // console.log(signData);
@@ -633,8 +634,9 @@
                 $scope.childToMainAmount = amount;
                 // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
                 const childChainId = "child_" + (Number($scope.chain.id) - 1);
-                var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromChildChain", [childChainId, amount]);
-                var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+                var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromChildChain", [childChainId]);
+                // var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+                var signRawObj = initSignBuildInContract(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
                 // var funcData = $scope.getPlayLoad(crossChainABI,"",paramArr);
                 // var signRawObj = initSignRawContract();
                 var signData = signTx($scope.currentPrivateKey, signRawObj);

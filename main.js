@@ -76,7 +76,9 @@ function init(){
 app.on('ready', function(){
     showLoadingWindow();
     init();
-    const tray = new Tray(path.join(__dirname,"public/img/logo.png"));
+    if (process.platform !== 'darwin') {
+        const tray = new Tray(path.join(__dirname,"public/img/logo.png"));
+    }
 })
 
 app.on('window-all-closed', function () {
