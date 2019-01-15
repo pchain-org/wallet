@@ -1,8 +1,7 @@
  angularApp.controller('myCtrl', function($scope, $http) { 
      $scope.gasPrice = 10;
      $scope.balance = 0;
-     $scope.minValidators = 1;
-     $scope.minDepositAmount = 100000;
+     $scope.amount = 1000;
 
      let web3Util = new Web3();     
 
@@ -32,9 +31,9 @@
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
 
-                    queryTransactionDevList($scope.account,3).then(function(robj) {
+                    queryTransactionDevList($scope.account,5).then(function(robj) {
                         console.log(robj)
-                        $scope.childChainList = robj.data;
+                        $scope.delegateList = robj.data;
                         $scope.$apply();
                     })
                 }
@@ -77,58 +76,14 @@
         $scope.getBalance();
      }
 
-     $scope.createChildChain = function(){
-         let minValidators= "0x"+decimalToHex($scope.minValidators);
-         let minDepositAmount= "0x"+decimalToHex(web3Util.toWei($scope.minDepositAmount,'ether'));
-         let startBlock= "0x"+decimalToHex($scope.startBlock);
-         let endBlock= "0x"+decimalToHex($scope.endBlock);
-         let gas="0x"+decimalToHex(42000);
-         let gasPrice ="0x"+decimalToHex( $scope.gasPrice*Math.pow(10,9));
-        web3Util.chain.createChildChain($scope.account,$scope.newChainId,minValidators,minDepositAmount,startBlock,endBlock,gas,gasPrice,(err,result)=>{
-            if(!err){
-                jQuery("#createChainModal").modal("hide");
-                swal({title:"createChildChain",text:result,icon:"success"});
-                var hash = result;
-                // var url = "search.html?key=" + hash;
-                // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
-                // successNotify(html);
-                var objt = {};
-                objt.hash = hash;
-                objt.fromaddress = $scope.account;
-                objt.chainName = $scope.newChainId;
-                objt.status=0;
-                console.log(objt)
-                createChildChain(objt).then(function(aobj) {
-                    console.log(aobj)
-                    if (aobj.result == "success") {
-                        queryTransactionDevList($scope.account,3).then(function(robj) {
-                            console.log(robj)
-                            $scope.childChainList = robj.data;
-                            $scope.$apply();
-                        })
-                    }
-                })
-
-            }else{
-                let error = err.toString();
-                swal({title:"Error",text:error,icon:"error"});
-            }
-
-        })
-
-     }
-
-
-     $scope.joinChildChain = function(){
-         // let depositAmount= "0x"+decimalToHex($scope.depositAmount);
-         let depositAmount= "0x"+decimalToHex(web3Util.toWei($scope.depositAmount,'ether'));
-         let gas="0x"+decimalToHex(42000);
-         let gasPrice ="0x"+decimalToHex( $scope.gasPrice*Math.pow(10,9));
-         console.log($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice)
-         web3Util.chain.joinChildChain($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice,(err,result)=>{
+     $scope.cancelDelegate = function(){
+         let amount= "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
+         let gasPrice =null;
+         console.log($scope.account,$scope.candidate,amount)
+         web3Util.del.cancelDelegate($scope.account,$scope.candidate,amount,gasPrice,(err,result)=>{
              if(!err){
-                 jQuery("#joinChainModal").modal("hide");
-                 swal({title:"joinChainModal",text:result,icon:"success"});
+                 jQuery("#delegateModal").modal("hide");
+                 swal({title:"delegateModal",text:result,icon:"success"});
                  var hash = result;
                  // var url = "search.html?key=" + hash;
                  // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
@@ -136,15 +91,54 @@
                  var objt = {};
                  objt.hash = hash;
                  objt.fromaddress = $scope.account;
-                 objt.chainName = $scope.pchainId;
+                 objt.toaddress = $scope.candidate;
                  objt.status=1;
                  console.log(objt)
-                 createChildChain(objt).then(function(aobj) {
+                 createDelegate(objt).then(function(aobj) {
                      console.log(aobj)
                      if (aobj.result == "success") {
-                         queryTransactionDevList($scope.account,3).then(function(robj) {
+                         queryTransactionDevList($scope.account,5).then(function(robj) {
                              console.log(robj)
-                             $scope.childChainList = robj.data;
+                             $scope.delegateList = robj.data;
+                             $scope.$apply();
+                         })
+                     }
+                 })
+
+             }else{
+                 let error = err.toString();
+                 swal({title:"Error",text:error,icon:"error"});
+             }
+
+         })
+
+     }
+
+
+     $scope.delegate = function(){
+         let amount= "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
+         let gasPrice =null;
+         console.log($scope.account,$scope.candidate,amount)
+         web3Util.del.delegate($scope.account,$scope.candidate,amount,gasPrice,(err,result)=>{
+             if(!err){
+                 jQuery("#delegateModal").modal("hide");
+                 swal({title:"delegateModal",text:result,icon:"success"});
+                 var hash = result;
+                 // var url = "search.html?key=" + hash;
+                 // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
+                 // successNotify(html);
+                 var objt = {};
+                 objt.hash = hash;
+                 objt.fromaddress = $scope.account;
+                 objt.toaddress = $scope.candidate;
+                 objt.status=0;
+                 console.log(objt)
+                 createDelegate(objt).then(function(aobj) {
+                     console.log(aobj)
+                     if (aobj.result == "success") {
+                         queryTransactionDevList($scope.account,5).then(function(robj) {
+                             console.log(robj)
+                             $scope.delegateList = robj.data;
                              $scope.$apply();
                          })
                      }
@@ -162,5 +156,5 @@
 
  });
  $(function() {
-     menuActive(3);
+     menuActive(5);
  });

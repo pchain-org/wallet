@@ -357,7 +357,6 @@
             }
         }
 
-        //校验子链转主链
         $scope.checkRecipt = function(txHash, chainId, type, childToMainAmount, pid, flag,num) {
 
             var obj = {};
@@ -540,7 +539,6 @@
             var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, $scope.crossChain.chainId);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
-            //交易一分钟未响应，存储数据
             if(num>30){
                 if (flag) {
                     var objt = {};
@@ -592,7 +590,6 @@
                     var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
                     var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
                     successNotify(html);
-                    //子链>主链跳过
                     if (flag) {
                         var objt = {};
                         objt.hash = res.data.data;
@@ -701,7 +698,6 @@
             // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,3);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
 
-            //交易一分钟未响应，存储数据
             if(num>30){
                     var objt = {};
                     objt.signData = signData;
@@ -798,7 +794,6 @@
              obj2.signData = signData;
              obj2.childId = Number(chainId);
             if(chainId==0){
-                //子转主第二条记录
                 obj2.chainId=$scope.txList[index].txChildList[0].chainId;
             }
          var url = APIHost + "/sendTx";
@@ -814,7 +809,7 @@
                  var url = "index.html?key=" + hash + "&chain=" + chainId;
                  var html = '<a href="' + url + '">Transaction hash:' + hash + '</a>';
                  successNotify(html);
-                 //子链>主链跳过
+                 //child>main
                      var objt = {};
                      objt.hash = res.data.data;
                      objt.id =id;

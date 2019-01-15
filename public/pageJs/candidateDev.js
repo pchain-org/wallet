@@ -32,7 +32,7 @@
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
 
-                    queryTransactionDevList($scope.account,3).then(function(robj) {
+                    queryChildChainList($scope.account).then(function(robj) {
                         console.log(robj)
                         $scope.childChainList = robj.data;
                         $scope.$apply();
@@ -101,7 +101,7 @@
                 createChildChain(objt).then(function(aobj) {
                     console.log(aobj)
                     if (aobj.result == "success") {
-                        queryTransactionDevList($scope.account,3).then(function(robj) {
+                        queryChildChainList($scope.account).then(function(robj) {
                             console.log(robj)
                             $scope.childChainList = robj.data;
                             $scope.$apply();
@@ -119,16 +119,14 @@
      }
 
 
-     $scope.joinChildChain = function(){
-         // let depositAmount= "0x"+decimalToHex($scope.depositAmount);
-         let depositAmount= "0x"+decimalToHex(web3Util.toWei($scope.depositAmount,'ether'));
-         let gas="0x"+decimalToHex(42000);
-         let gasPrice ="0x"+decimalToHex( $scope.gasPrice*Math.pow(10,9));
-         console.log($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice)
-         web3Util.chain.joinChildChain($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice,(err,result)=>{
+     $scope.delegate = function(){
+         let amount= "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
+         let gasPrice =null;
+         console.log($scope.account,$scope.candidate,amount)
+         web3Util.chain.joinChildChain($scope.account,$scope.candidate,amount,gasPrice,(err,result)=>{
              if(!err){
-                 jQuery("#joinChainModal").modal("hide");
-                 swal({title:"joinChainModal",text:result,icon:"success"});
+                 jQuery("#delegateModal").modal("hide");
+                 swal({title:"delegateModal",text:result,icon:"success"});
                  var hash = result;
                  // var url = "search.html?key=" + hash;
                  // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
@@ -142,7 +140,7 @@
                  createChildChain(objt).then(function(aobj) {
                      console.log(aobj)
                      if (aobj.result == "success") {
-                         queryTransactionDevList($scope.account,3).then(function(robj) {
+                         queryChildChainList($scope.account).then(function(robj) {
                              console.log(robj)
                              $scope.childChainList = robj.data;
                              $scope.$apply();
@@ -162,5 +160,5 @@
 
  });
  $(function() {
-     menuActive(3);
+     menuActive(6);
  });

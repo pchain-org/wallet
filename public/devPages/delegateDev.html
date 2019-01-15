@@ -98,10 +98,10 @@
                             <div class="body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#createChainModal"   >Create Child Chain</button>
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#delegateModal"   >Vote Delegate</button>
                                     </div>
                                     <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#joinChainModal">Join Child Chain</button>
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#cancelDelegateModal">Cancel Delegate</button>
                                     </div>
                                 </div>
                             </div>
@@ -112,31 +112,31 @@
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="header">
-                            <h2><strong>Latest 10 Child Chain records</strong></h2>
+                            <h2><strong>Latest 10 delegate records</strong></h2>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="childChainList.length > 0" ng-cloak>
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="delegateList.length > 0" ng-cloak>
                                 <thead>
                                 <tr>
                                     <th>Type</th>
                                     <th>From</th>
+                                    <th>To</th>
                                     <th>Hash</th>
-                                    <th>CreateChainId</th>
                                     <th>Operation</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="item in childChainList">
-                                    <td ng-if="item.status==0"><span>Create</span></td>
-                                    <td ng-if="item.status==1"><span>Join</span></td>
+                                <tr ng-repeat="item in delegateList">
+                                    <td ng-if="item.status==0"><span>Vote</span></td>
+                                    <td ng-if="item.status==1"><span>Cancel</span></td>
                                     <td ng-bind="item.fromaddress"></td>
+                                    <td ng-bind="item.toaddress"></td>
                                     <td ng-bind="item.hash"></td>
-                                    <td ng-bind="item.chainName"></td>
                                     <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="text-center" ng-show="childChainList.length == 0" ng-cloak>
+                            <div class="text-center" ng-show="delegateList.length == 0" ng-cloak>
                                 <h3>No Records</h3>
                             </div>
                         </div>
@@ -145,8 +145,8 @@
             </div>
         </section>
     </div>
-    <!-- Create Chain Modal -->
-    <div class="modal fade" id="createChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- cancelDelegateModal -->
+    <div class="modal fade" id="cancelDelegateModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -154,38 +154,27 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Create Child Chain
+                        Cancel Delegate
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form name="createChainForm" novalidate>
+                    <form name="cancelDelegateForm" novalidate>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From</span>
                             <div class="form-control" ng-bind="account"></div>
                         </div>
-                        <div class="input-group" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'has-danger':( createChainForm.newChainId.$valid?'has-success':'') ">
-                            <span class="input-group-addon">CreateChainId</span>
-                            <input type="text" placeholder="createChainId" class="form-control" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'form-control-danger':(createChainForm.newChainId.$valid?'form-control-success':'') " name="newChainId" ng-model="newChainId" required>
+                        <div class="input-group" ng-class="(cancelDelegateForm.candidate.$invalid && cancelDelegateForm.candidate.$dirty)?'has-danger':(cancelDelegateForm.candidate.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Candidate</span>
+                            <input type="text" placeholder="the address of candidate" class="form-control" ng-class="(cancelDelegateForm.candidate.$invalid && cancelDelegateForm.candidate.$dirty)?'form-control-danger':(cancelDelegateForm.candidate.$valid?'form-control-success':'') " name="candidate" ng-model="candidate" required>
                         </div>
-                        <div class="input-group" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'has-danger':( createChainForm.minValidators.$valid?'has-success':'') ">
-                            <span class="input-group-addon">MinValidators</span>
-                            <input type="number" min="1" placeholder="minValidators" class="form-control" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'form-control-danger':(createChainForm.minValidators.$valid?'form-control-success':'') " name="minValidators" ng-model="minValidators" required>
+                        <div class="input-group" ng-class="(cancelDelegateForm.amount.$invalid && cancelDelegateForm.amount.$dirty)?'has-danger':(cancelDelegateForm.amount.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Amount</span>
+                            <input type="number" min="1000" placeholder="amount" class="form-control" ng-class="(cancelDelegateForm.amount.$invalid && cancelDelegateForm.amount.$dirty)?'form-control-danger':(cancelDelegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
                         </div>
-                        <div class="input-group" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'has-danger':( createChainForm.minDepositAmount.$valid?'has-success':'') ">
-                            <span class="input-group-addon">MinDepositAmount</span>
-                            <input type="number" min="100000" placeholder="minDepositAmount" class="form-control" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'form-control-danger':(createChainForm.minDepositAmount.$valid?'form-control-success':'') " name="minDepositAmount" ng-model="minDepositAmount" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'has-danger':( createChainForm.startBlock.$valid?'has-success':'') ">
-                            <span class="input-group-addon">StartBlock</span>
-                            <input type="number" min="1" placeholder="startBlock" class="form-control" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'form-control-danger':(createChainForm.startBlock.$valid?'form-control-success':'') " name="startBlock" ng-model="startBlock" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'has-danger':( createChainForm.endBlock.$valid?'has-success':'') ">
-                            <span class="input-group-addon">EndBlock</span>
-                            <input type="number" min="1" placeholder="endBlock" class="form-control" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'form-control-danger':(createChainForm.endBlock.$valid?'form-control-success':'') " name="endBlock" ng-model="endBlock" required>
-                        </div>
+
                         <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="createChainForm.$invalid " ng-click="createChildChain()">
-                                Create
+                            <button type="button" class="btn btn-primary" ng-disabled="cancelDelegateForm.$invalid " ng-click="cancelDelegate()">
+                                Cancel
                             </button>
                         </div>
                     </form>
@@ -195,8 +184,8 @@
     </div>
 
 
-    <!-- Create Chain Modal -->
-    <div class="modal fade" id="joinChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- delegateModal -->
+    <div class="modal fade" id="delegateModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -204,35 +193,27 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Join Child Chain
+                        Delegate
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form name="joinChainForm" novalidate>
+                    <form name="delegateForm" novalidate>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">From</span>
                             <div class="form-control" ng-bind="account"></div>
                         </div>
-                        <div class="input-group" ng-class="(joinChainForm.pchainId.$invalid && joinChainForm.pchainId.$dirty)?'has-danger':( joinChainForm.pchainId.$valid?'has-success':'') ">
-                            <span class="input-group-addon">CreateChainId</span>
-                            <input type="text" placeholder="pchainId" class="form-control" ng-class="(joinChainForm.pchainId.$invalid && joinChainForm.pchainId.$dirty)?'form-control-danger':(joinChainForm.pchainId.$valid?'form-control-success':'') " name="pchainId" ng-model="pchainId" required>
+                        <div class="input-group" ng-class="(delegateForm.candidate.$invalid && delegateForm.candidate.$dirty)?'has-danger':(delegateForm.candidate.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Candidate</span>
+                            <input type="text" placeholder="the address of candidate" class="form-control" ng-class="(delegateForm.candidate.$invalid && delegateForm.candidate.$dirty)?'form-control-danger':(delegateForm.candidate.$valid?'form-control-success':'') " name="candidate" ng-model="candidate" required>
                         </div>
-                        <div class="input-group" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'has-danger':( joinChainForm.depositAmount.$valid?'has-success':'') ">
-                            <span class="input-group-addon">DepositAmount</span>
-                            <input type="number" min="100000" placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'has-danger':( joinChainForm.pubkey.$valid?'has-success':'') ">
-                            <span class="input-group-addon">Pubkey</span>
-                            <input type="text"  placeholder="pubkey" class="form-control" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'form-control-danger':(joinChainForm.pubkey.$valid?'form-control-success':'') " name="pubkey" ng-model="pubkey" required>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'has-danger':( joinChainForm.signature.$valid?'has-success':'') ">
-                            <span class="input-group-addon">Signature</span>
-                            <input type="text"  placeholder="signature" class="form-control" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'form-control-danger':(joinChainForm.signature.$valid?'form-control-success':'') " name="signature" ng-model="signature" required>
+                        <div class="input-group" ng-class="(delegateForm.amount.$invalid && delegateForm.amount.$dirty)?'has-danger':(delegateForm.amount.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Amount</span>
+                            <input type="number" min="1000" placeholder="amount" class="form-control" ng-class="(delegateForm.amount.$invalid && delegateForm.amount.$dirty)?'form-control-danger':(delegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
                         </div>
 
                         <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="joinChainForm.$invalid " ng-click="joinChildChain()">
-                                Join
+                            <button type="button" class="btn btn-primary" ng-disabled="delegateForm.$invalid " ng-click="delegate()">
+                                Vote
                             </button>
                         </div>
                     </form>
@@ -250,7 +231,7 @@
     <script src="../js/bootstrap-notify.js"></script>
     <script src="../js/common.js"></script>
     <script src="../js/sqlUtilDev.js"></script>
-    <script type="text/javascript" src="../pageJs/chainDev.js"></script>
+    <script type="text/javascript" src="../pageJs/delegateDev.js"></script>
 </body>
 
 </html>

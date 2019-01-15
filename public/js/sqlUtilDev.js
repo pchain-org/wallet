@@ -49,22 +49,25 @@ function createChildChain(obj) {
     });
 }
 
-/*
- query transactions
- */
 
-function queryChildChainList(address) {
+/*
+   save delegate  record
+ */
+function createDelegate(obj) {
+    console.log(obj)
     return new Promise(function (accept,reject) {
-        var sql = "select chainName,hash,fromaddress,status from tb_transaction where type =3 and fromaddress=?  order by id desc limit 10";
-        var array = [address]
-        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,5,obj.toaddress,0,new Date(),obj.status];
+        sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
             reject(e);
-            console.log(e, "error");
+            console.log("save createDelegate error:", e);
         })
     });
 }
+
+
 
 /*
    save transaction record
@@ -87,11 +90,10 @@ function addTransactionDev(obj) {
  query transactions
  */
 
-function queryTransactionDevList(address) {
-    console.log(address)
+function queryTransactionDevList(address,type) {
     return new Promise(function (accept,reject) {
-        var sql = "select hash,toaddress,value from tb_transaction where type =4 and fromaddress=? order by id desc limit 10";
-        var array = [address]
+        var sql = "select hash,toaddress,value,chainName,fromaddress,status from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
+        var array = [type,address]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {

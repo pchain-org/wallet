@@ -40,7 +40,7 @@
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
 
-                    queryTransactionDevList($scope.account).then(function(robj) {
+                    queryTransactionDevList($scope.account,4).then(function(robj) {
                         console.log(robj)
                         $scope.transactionDevList = robj.data;
                         $scope.$apply();
@@ -178,7 +178,7 @@
                 objt.data = $scope.data;
                 addTransactionDev(objt).then(function(aobj) {
                     if (aobj.result == "success") {
-                        queryTransactionDevList($scope.account).then(function(robj) {
+                        queryTransactionDevList($scope.account,4).then(function(robj) {
                             $scope.transactionDevList = robj.data;
                             $scope.$apply();
                         })
