@@ -67,6 +67,23 @@ function createDelegate(obj) {
     });
 }
 
+/*
+   save delegate  record
+ */
+function createCandidate(obj) {
+    console.log(obj)
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,value,data,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,6,obj.value,obj.data,0,new Date(),obj.status];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save createCandidate error:", e);
+        })
+    });
+}
+
 
 
 /*
@@ -92,7 +109,7 @@ function addTransactionDev(obj) {
 
 function queryTransactionDevList(address,type) {
     return new Promise(function (accept,reject) {
-        var sql = "select hash,toaddress,value,chainName,fromaddress,status from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
+        var sql = "select hash,toaddress,value,chainName,fromaddress,status,data from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
         var array = [type,address]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);

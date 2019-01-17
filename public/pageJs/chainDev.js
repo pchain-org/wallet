@@ -124,41 +124,44 @@
          let depositAmount= "0x"+decimalToHex(web3Util.toWei($scope.depositAmount,'ether'));
          let gas="0x"+decimalToHex(42000);
          let gasPrice ="0x"+decimalToHex( $scope.gasPrice*Math.pow(10,9));
-         console.log($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice)
-         web3Util.chain.joinChildChain($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,$scope.signature,gas,gasPrice,(err,result)=>{
+         console.log($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,gas,gasPrice)
+         let signature = web3Util.chain.signAddress($scope.account,$scope.blsPrivateKey,(err,result)=>{
              if(!err){
-                 jQuery("#joinChainModal").modal("hide");
-                 swal({title:"joinChainModal",text:result,icon:"success"});
-                 var hash = result;
-                 // var url = "search.html?key=" + hash;
-                 // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
-                 // successNotify(html);
-                 var objt = {};
-                 objt.hash = hash;
-                 objt.fromaddress = $scope.account;
-                 objt.chainName = $scope.pchainId;
-                 objt.status=1;
-                 console.log(objt)
-                 createChildChain(objt).then(function(aobj) {
-                     console.log(aobj)
-                     if (aobj.result == "success") {
-                         queryTransactionDevList($scope.account,3).then(function(robj) {
-                             console.log(robj)
-                             $scope.childChainList = robj.data;
-                             $scope.$apply();
-                         })
-                     }
-                 })
-
+             web3Util.chain.joinChildChain($scope.account,$scope.pubkey,$scope.pchainId,depositAmount,signature,gas,gasPrice,(err,result)=>{
+                 if(!err){
+                     jQuery("#joinChainModal").modal("hide");
+                     swal({title:"joinChainModal",text:result,icon:"success"});
+                     var hash = result;
+                     // var url = "search.html?key=" + hash;
+                     // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
+                     // successNotify(html);
+                     var objt = {};
+                     objt.hash = hash;
+                     objt.fromaddress = $scope.account;
+                     objt.chainName = $scope.pchainId;
+                     objt.status=1;
+                     console.log(objt)
+                     createChildChain(objt).then(function(aobj) {
+                         console.log(aobj)
+                         if (aobj.result == "success") {
+                             queryTransactionDevList($scope.account,3).then(function(robj) {
+                                 console.log(robj)
+                                 $scope.childChainList = robj.data;
+                                 $scope.$apply();
+                             })
+                         }
+                     })
+                 }else{
+                     let error = err.toString();
+                     swal({title:"Error",text:error,icon:"error"});
+                 }
+             })
              }else{
                  let error = err.toString();
                  swal({title:"Error",text:error,icon:"error"});
              }
-
          })
-
      }
-
 
  });
  $(function() {

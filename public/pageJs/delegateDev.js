@@ -82,12 +82,13 @@
          console.log($scope.account,$scope.candidate,amount)
          web3Util.del.cancelDelegate($scope.account,$scope.candidate,amount,gasPrice,(err,result)=>{
              if(!err){
-                 jQuery("#delegateModal").modal("hide");
-                 swal({title:"delegateModal",text:result,icon:"success"});
+                 jQuery("#cancelDelegateModal").modal("hide");
+                 swal({title:"cancelDelegateModal",text:result,icon:"success"});
                  var hash = result;
                  // var url = "search.html?key=" + hash;
                  // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  // successNotify(html);
+                 console.log(hash)
                  var objt = {};
                  objt.hash = hash;
                  objt.fromaddress = $scope.account;
@@ -127,6 +128,7 @@
                  // var url = "search.html?key=" + hash;
                  // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  // successNotify(html);
+                 console.log(hash)
                  var objt = {};
                  objt.hash = hash;
                  objt.fromaddress = $scope.account;
