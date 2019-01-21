@@ -7,10 +7,15 @@
      $scope.balance = 0;
      $scope.maxSendAmount = 0;
 
-     let DefaultDelegatedListOption = {"address":"CUSTOM"};
-     let delegatedList = [{address:"0x1529FA43D9F7FE958662F7200739CDC3EC2666C7",amount:"1.23"},{address:"0x1529FA43D9F7FE958662F7200739CDC3EC2666C7",amount:"1.24"}];
-     $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
-     $scope.currentCandidate = DefaultDelegatedListOption;
+
+     queryCancelDelegateList($scope.account,7).then(function(robj) {
+         console.log(robj)
+         let DefaultDelegatedListOption = {"address":"CUSTOM"};
+         let delegatedList = robj.data;
+         $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
+         $scope.currentCandidate = DefaultDelegatedListOption;
+         $scope.$apply();
+     })
 
      $scope.selectCandidate = function(){
         if($scope.currentCandidate != DefaultDelegatedListOption.address){
@@ -49,8 +54,9 @@
              showPopup("Internet error, please refresh the page");
          });
 
-         queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
-             $scope.transactionList = robj.data;
+         queryTransactionDelegateList($scope.account,7).then(function(robj) {
+             console.log(robj)
+             $scope.delegateList2 = robj.data;
              $scope.$apply();
          })
      }
@@ -125,10 +131,6 @@
              if ($scope.accountList.length > 0) {
                  $scope.account = $scope.accountList[0];
                  $scope.getBalance();
-                 queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
-                     $scope.transactionList = new Array();
-                     $scope.transactionList = robj.data;
-                 })
              }
              if ($scope.accountList.length == 0) {
                  removePageLoader();
@@ -218,14 +220,19 @@
              var nonce = $scope.nonce;
              var funcData;
              var signRawObj;
-             if($scope.delegateType == 0){  
-                 //delegate 
-                 amount = web3.toWei($scope.toAmount, "ether");
+             if($scope.delegateType == 0){
+                 //delegate
+                 // amount = web3.toWei($scope.toAmount, "ether");
+                  amount= "0x"+decimalToHex(web3.toWei($scope.toAmount,'ether'));
+
                 funcData = $scope.getPlayLoad(DelegateABI, "Delegate", [$scope.toAddress]);
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
+                console.log(funcData)
+                 console.log(signRawObj)
              }else if($scope.delegateType == 1){  
                 //cancle delegate
-                amount = web3.toWei($scope.cancleAmount, "ether");
+                // amount = web3.toWei($scope.cancleAmount, "ether");
+                 amount= "0x"+decimalToHex(web3.toWei($scope.cancleAmount,'ether'));
                 funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate,amount]);
                 amount = 0;
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
@@ -254,20 +261,26 @@
                      var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                      successNotify(html);
                      var objt = {};
-                     objt.hash = hash;
-                     objt.nonce = nonce;
-                     objt.fromaddress = $scope.account.address;
-                     objt.toaddress = $scope.toAddress;
-                     objt.value = $scope.toAmount;
-                     objt.gas = $scope.gasLimit;
-                     objt.gasPrice = gasPrice;
-                     objt.chainId = $scope.chain.id;
-                     objt.data = $scope.data;
-                     objt.chainName = $scope.chain.name;
-                     addTransaction(objt).then(function(aobj) {
+
+                     if($scope.delegateType == 0){
+                         objt.hash = hash;
+                         objt.fromaddress = $scope.account;
+                         objt.toaddress = $scope.toAddress;
+                         objt.status=0;
+                         console.log(objt)
+                     }else if($scope.delegateType == 1){
+                         objt.hash = hash;
+                         objt.fromaddress = $scope.account;
+                         objt.toaddress = $scope.cancleCandidate;
+                         objt.status=1;
+                         console.log(objt)
+                     }
+                     createDelegate(objt).then(function(aobj) {
+                         console.log(aobj)
                          if (aobj.result == "success") {
-                             queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
-                                 $scope.transactionList = robj.data;
+                             queryTransactionDelegateList($scope.account,7).then(function(robj) {
+                                 console.log(robj)
+                                 $scope.delegateList2 = robj.data;
                                  $scope.$apply();
                              })
                          }

@@ -261,3 +261,54 @@ function queryMultiChainLastId() {
         })
     });
 }
+
+/*
+   save delegate  record
+ */
+function createDelegate(obj) {
+    console.log(obj)
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,7,obj.toaddress,0,new Date(),obj.status];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save createDelegate error:", e);
+        })
+    });
+}
+
+/*
+ query transactions
+ */
+
+function queryTransactionDelegateList(address,type) {
+    return new Promise(function (accept,reject) {
+        var sql = "select hash,toaddress,value,chainName,fromaddress,status,data from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
+        var array = [type,address]
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
+/*
+ query queryCancelDelegateList
+ */
+
+function queryCancelDelegateList(address,type) {
+    return new Promise(function (accept,reject) {
+        var sql = "select toaddress address,value amount from tb_transaction where type =? and fromaddress=? order by id desc";
+        var array = [type,address]
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
