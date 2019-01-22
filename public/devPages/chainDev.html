@@ -225,9 +225,14 @@
                             <span class="input-group-addon">Pubkey</span>
                             <input type="text"  placeholder="pubkey" class="form-control" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'form-control-danger':(joinChainForm.pubkey.$valid?'form-control-success':'') " name="pubkey" ng-model="pubkey" required>
                         </div>
-                        <div class="input-group" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'has-danger':( joinChainForm.signature.$valid?'has-success':'') ">
-                            <span class="input-group-addon">Signature</span>
-                            <input type="text"  placeholder="signature" class="form-control" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'form-control-danger':(joinChainForm.signature.$valid?'form-control-success':'') " name="signature" ng-model="signature" required>
+                        <!--<div class="input-group" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'has-danger':( joinChainForm.signature.$valid?'has-success':'') ">-->
+                            <!--<span class="input-group-addon">Signature</span>-->
+                            <!--<input type="text"  placeholder="signature" class="form-control" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'form-control-danger':(joinChainForm.signature.$valid?'form-control-success':'') " name="signature" ng-model="signature" required>-->
+                        <!--</div>-->
+
+                        <div class="input-group" ng-class="(joinChainForm.blsPrivateKey.$invalid && joinChainForm.blsPrivateKey.$dirty)?'has-danger':( joinChainForm.blsPrivateKey.$valid?'has-success':'') ">
+                            <span class="input-group-addon">BLS Private Key</span>
+                            <input type="text" placeholder="" class="form-control" ng-class="(joinChainForm.blsPrivateKey.$invalid && joinChainForm.blsPrivateKey.$dirty)?'form-control-danger':(joinChainForm.blsPrivateKey.$valid?'form-control-success':'') " name="blsPrivateKey" ng-model="blsPrivateKey" required>
                         </div>
 
                         <div class="marginTop10 text-center">

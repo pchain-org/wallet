@@ -11,11 +11,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131307171-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'UA-131307171-1');
-</script>
+        gtag('config', 'UA-131307171-1');
+    </script>
     <link rel="icon" href="../img/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
@@ -28,229 +28,203 @@
 </head>
 
 <body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="m-t-30"><img class="zmdi-hc-spin" src="../img/logo.png" width="48" height="48" alt="PCHAIN"></div>
-                <p>Please wait...</p>
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><img class="zmdi-hc-spin" src="../img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+        <p>Please wait...</p>
+    </div>
+</div>
+<div ng-include="'./headDev.html'"></div>
+<section class="content">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card mycard">
+                    <div class="body block-header">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-8 col-sm-4 col-5">
+                                <h2 class="hidden-sm-down">Local Node Mode</h2>
+                                <h2 class="hidden-sm-up">Local</h2>
+                                <ul class="breadcrumb p-l-0 p-b-0 ">
+                                    <li class="breadcrumb-item"><a href="account.html"><i class="icon icon-home"></i></a></li>
+                                    <li class="breadcrumb-item active">Chain</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div ng-include="'./headDev.html'"></div>
-        <section class="content">
-            <div class="container">
-                <div class="row clearfix">
-                    <div class="col-lg-12">
-                        <div class="card mycard">
-                            <div class="body block-header">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-8 col-sm-4 col-5">
-                                        <h2 class="hidden-sm-down">Local Node Mode</h2>
-                                        <h2 class="hidden-sm-up">Local</h2>
-                                        <ul class="breadcrumb p-l-0 p-b-0 ">
-                                            <li class="breadcrumb-item"><a href="account.html"><i class="icon icon-home"></i></a></li>
-                                            <li class="breadcrumb-item active">Chain</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+            <div class="col-xl-8 col-lg-8 col-md-8">
+                <div class="card mycard">
+                    <div class="header">
+                        <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
                     </div>
-                </div>
-                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
-                    <div class="col-xl-8 col-lg-8 col-md-8">
-                        <div class="card mycard">
-                            <div class="header">
-                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
-                            </div>
-                            <div class="body">
-                                <div class="input-group mb-3 my-input-group">
-                                    <span class="input-group-addon">Address</span>
-                                    <div class="form-control">
-                                        <select class="mySelect" ng-model="account" ng-options="account  for account in accountList" ng-change="selectAccount()"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-4">
-                        <div class="card">
-                            <div class="header">
-                                <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
-                            </div>
-                            <div class="body">
-                                <div class="input-group mb-3 my-input-group">
-                                    <span class="input-group-addon">Balance</span>
-                                    <div class="form-control">
-                                        <div class="value" ng-bind="balance"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-
-                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2><strong>Operations</strong></h2>
-                            </div>
-                            <div class="body">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#createChainModal"   >Create Child Chain</button>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 text-center">
-                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#joinChainModal">Join Child Chain</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2><strong>Latest 10 Child Chain records</strong></h2>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="childChainList.length > 0" ng-cloak>
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>From</th>
-                                    <th>Hash</th>
-                                    <th>CreateChainId</th>
-                                    <th>Operation</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in childChainList">
-                                    <td ng-if="item.status==0"><span>Create</span></td>
-                                    <td ng-if="item.status==1"><span>Join</span></td>
-                                    <td ng-bind="item.fromaddress"></td>
-                                    <td ng-bind="item.hash"></td>
-                                    <td ng-bind="item.chainName"></td>
-                                    <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="text-center" ng-show="childChainList.length == 0" ng-cloak>
-                                <h3>No Records</h3>
+                    <div class="body">
+                        <div class="input-group mb-3 my-input-group">
+                            <span class="input-group-addon">Address</span>
+                            <div class="form-control">
+                                <select class="mySelect" ng-model="account" ng-options="account  for account in accountList" ng-change="selectAccount()"></select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    <!-- Create Chain Modal -->
-    <div class="modal fade" id="createChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title text-center block">
-                        Create Child Chain
-                    </h4>
+            <div class="col-xl-4 col-lg-4 col-md-4">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="input-group mb-3 my-input-group">
+                            <span class="input-group-addon">Balance</span>
+                            <div class="form-control">
+                                <div class="value" ng-bind="balance"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form name="createChainForm" novalidate>
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">From</span>
-                            <div class="form-control" ng-bind="account"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>Operations</strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 text-center">
+                                <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#applyCandidateModal">Apply Candidate</button>
+                            </div>
+                            <div class="col-lg-6 col-md-6 text-center">
+                                <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#cancelCandidateModal">Cancel Candidate</button>
+                            </div>
                         </div>
-                        <div class="input-group" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'has-danger':( createChainForm.newChainId.$valid?'has-success':'') ">
-                            <span class="input-group-addon">createChainId</span>
-                            <input type="text" placeholder="createChainId" class="form-control" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'form-control-danger':(createChainForm.newChainId.$valid?'form-control-success':'') " name="newChainId" ng-model="newChainId" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'has-danger':( createChainForm.minValidators.$valid?'has-success':'') ">
-                            <span class="input-group-addon">minValidators</span>
-                            <input type="number" min="1" placeholder="minValidators" class="form-control" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'form-control-danger':(createChainForm.minValidators.$valid?'form-control-success':'') " name="minValidators" ng-model="minValidators" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'has-danger':( createChainForm.minDepositAmount.$valid?'has-success':'') ">
-                            <span class="input-group-addon">minDepositAmount</span>
-                            <input type="number" min="100000" placeholder="minDepositAmount" class="form-control" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'form-control-danger':(createChainForm.minDepositAmount.$valid?'form-control-success':'') " name="minDepositAmount" ng-model="minDepositAmount" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'has-danger':( createChainForm.startBlock.$valid?'has-success':'') ">
-                            <span class="input-group-addon">startBlock</span>
-                            <input type="number" min="1" placeholder="startBlock" class="form-control" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'form-control-danger':(createChainForm.startBlock.$valid?'form-control-success':'') " name="startBlock" ng-model="startBlock" required>
-                        </div>
-                        <div class="input-group" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'has-danger':( createChainForm.endBlock.$valid?'has-success':'') ">
-                            <span class="input-group-addon">endBlock</span>
-                            <input type="number" min="1" placeholder="endBlock" class="form-control" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'form-control-danger':(createChainForm.endBlock.$valid?'form-control-success':'') " name="endBlock" ng-model="endBlock" required>
-                        </div>
-                        <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="createChainForm.$invalid " ng-click="createChildChain()">
-                                Create
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="header">
+                    <h2><strong>Latest 10 candidate records</strong></h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="candidateList.length > 0" ng-cloak>
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>From</th>
+                            <th>Hash</th>
+                            <th>SecurityDeposit</th>
+                            <th>Commission</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in candidateList">
+                            <td ng-if="item.status==0"><span>Apply</span></td>
+                            <td ng-if="item.status==1"><span>Cancel</span></td>
+                            <td ng-bind="item.fromaddress"></td>
+                            <td ng-bind="item.hash"></td>
+                            <td ng-bind="item.value +' PAI'"></td>
+                            <td ng-bind="item.data+'%'"></td>
+                            <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center" ng-show="candidateList.length == 0" ng-cloak>
+                        <h3>No Records</h3>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <!-- Create Chain Modal -->
-    <div class="modal fade" id="joinChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title text-center block">
-                        Join Child Chain
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <form name="joinChainForm" novalidate>
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">From</span>
-                            <div class="form-control" ng-bind="account"></div>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.pchainId.$invalid && joinChainForm.pchainId.$dirty)?'has-danger':( joinChainForm.pchainId.$valid?'has-success':'') ">
-                            <span class="input-group-addon">createChainId</span>
-                            <input type="text" placeholder="pchainId" class="form-control" ng-class="(joinChainForm.pchainId.$invalid && joinChainForm.pchainId.$dirty)?'form-control-danger':(joinChainForm.pchainId.$valid?'form-control-success':'') " name="pchainId" ng-model="pchainId" required>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'has-danger':( joinChainForm.depositAmount.$valid?'has-success':'') ">
-                            <span class="input-group-addon">depositAmount</span>
-                            <input type="number" min="100000" placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'has-danger':( joinChainForm.pubkey.$valid?'has-success':'') ">
-                            <span class="input-group-addon">pubkey</span>
-                            <input type="text"  placeholder="pubkey" class="form-control" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'form-control-danger':(joinChainForm.pubkey.$valid?'form-control-success':'') " name="pubkey" ng-model="pubkey" required>
-                        </div>
-                        <div class="input-group" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'has-danger':( joinChainForm.signature.$valid?'has-success':'') ">
-                            <span class="input-group-addon">signature</span>
-                            <input type="text"  placeholder="signature" class="form-control" ng-class="(joinChainForm.signature.$invalid && joinChainForm.signature.$dirty)?'form-control-danger':(joinChainForm.signature.$valid?'form-control-success':'') " name="signature" ng-model="signature" required>
-                        </div>
-
-                        <div class="marginTop10 text-center">
-                            <button type="button" class="btn btn-primary" ng-disabled="joinChainForm.$invalid " ng-click="joinChildChain()">
-                                Join
-                            </button>
-                        </div>
-                    </form>
-                </div>
+</section>
+</div>
+<!-- cancelCandidateModal -->
+<div class="modal fade" id="cancelCandidateModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title text-center block">
+                    Cancel The Candidate
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="cancelCandidateForm" novalidate>
+                    <div class="input-group marginTop10">
+                        <span class="input-group-addon">From</span>
+                        <div class="form-control" ng-bind="account"></div>
+                    </div>
+                    <div class="marginTop10 text-center">
+                        <button type="button" class="btn btn-primary" ng-disabled="cancelCandidateForm.$invalid " ng-click="cancelCandidate()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <script type="text/javascript">
+
+<!-- applyCandidateModal -->
+<div class="modal fade" id="applyCandidateModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title text-center block">
+                    Apply The Candidate
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form name="applyCandidateForm" novalidate>
+                    <div class="input-group marginTop10">
+                        <span class="input-group-addon">From</span>
+                        <div class="form-control" ng-bind="account"></div>
+                    </div>
+                    <div class="input-group" ng-class="(applyCandidateForm.securityDeposit.$invalid && applyCandidateForm.securityDeposit.$dirty)?'has-danger':(applyCandidateForm.securityDeposit.$valid?'has-success':'') ">
+                        <span class="input-group-addon">SecurityDeposit</span>
+                        <input type="number" min="10000" placeholder="minimum 10,000 PAI" class="form-control" ng-class="(applyCandidateForm.securityDeposit.$invalid && applyCandidateForm.securityDeposit.$dirty)?'form-control-danger':(applyCandidateForm.securityDeposit.$valid?'form-control-success':'') " name="securityDeposit" ng-model="securityDeposit" required>
+                    </div>
+                    <div class="input-group" ng-class="(applyCandidateForm.commission.$invalid && applyCandidateForm.commission.$dirty)?'has-danger':(applyCandidateForm.commission.$valid?'has-success':'') ">
+                        <span class="input-group-addon">Commission</span>
+                        <input type="number" min="0" placeholder="between 0% - 100%" class="form-control" ng-class="(applyCandidateForm.commission.$invalid && applyCandidateForm.commission.$dirty)?'form-control-danger':(applyCandidateForm.amount.$valid?'form-control-success':'') " name="commission" ng-model="commission" required>
+                    </div>
+
+                    <div class="marginTop10 text-center">
+                        <button type="button" class="btn btn-primary" ng-disabled="applyCandidateForm.$invalid " ng-click="applyCandidate()">
+                            Apply
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
     window.$ = window.jQuery = require('jquery');
-    </script>
-    <script type="text/javascript" src="../js/popper.min.js"></script>
-    <script type="text/javascript" src="../lib/sweetalert/sweetalert_2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/bootstrap-notify.js"></script>
-    <script src="../js/common.js"></script>
-    <script src="../js/sqlUtilDev.js"></script>
-    <script type="text/javascript" src="../pageJs/candidateDev.js"></script>
+</script>
+<script type="text/javascript" src="../js/popper.min.js"></script>
+<script type="text/javascript" src="../lib/sweetalert/sweetalert_2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-notify.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/sqlUtilDev.js"></script>
+<script type="text/javascript" src="../pageJs/candidateDev.js"></script>
 </body>
 
 </html>
