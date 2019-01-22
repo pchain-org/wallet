@@ -13,7 +13,7 @@
      $scope.currentCandidate = DefaultDelegatedListOption;
 
      $scope.selectCandidate = function(){
-        if($scope.currentCandidate != DefaultDelegatedListOption.address){
+        if($scope.currentCandidate != DefaultDelegatedListOption){
             $scope.cancleCandidate = $scope.currentCandidate.address;
             $scope.cancleAmount = $scope.currentCandidate.amount;
         }else{
