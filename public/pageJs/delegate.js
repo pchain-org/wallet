@@ -1,6 +1,6 @@
  angularApp.controller('myCtrl', function($scope, $http) {
 
-
+    var web3 = new Web3();
      $scope.gasLimit = 21000;
      $scope.gasPrice = 10;
      $scope.nonce = 0;
@@ -30,12 +30,14 @@
      $scope.showAddData = function() {
          $scope.addDataFlag = true;
      }
+
+     $scope.fullBalance;
      $scope.getBalance = function() {
          $scope.spin = "myIconSpin";
          var obj = {};
          obj.chainId = $scope.chain.id;
          obj.address = $scope.account.address;
-         var url = APIHost + "/getBalance";
+         var url = APIHost + "/getFullBalance";
          $http({
              method: 'POST',
              url: url,
@@ -44,7 +46,10 @@
              $scope.spin = "";
              removePageLoader();
              if (res.data.result == "success") {
-                 $scope.balance = res.data.data;
+                console.log(res);
+                $scope.fullBalance = res.data.data;
+                 $scope.balance = web3.fromWei($scope.fullBalance.balance,'ether');
+                 $scope.delegateBalance = web3.fromWei($scope.fullBalance.delegateBalance,'ether');
                  $scope.getMaxSendAmount();
              } else {
                  showPopup(res.data.error, 3000);
@@ -193,7 +198,6 @@
          }
      }
 
-     var web3 = new Web3();
      var toAmountValue;
      $scope.submit = function() {
          $scope.getNonce();
