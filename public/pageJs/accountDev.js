@@ -14,10 +14,6 @@
          $scope.addDataFlag = true;
      }
 
-     // $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
-     $scope.RPCUrl = "http://18.237.37.188:6969/pchain";
-
-
      $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
         web3Util.eth.getBalance($scope.account,(err,result)=>{

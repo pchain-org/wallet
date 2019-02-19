@@ -5,17 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="The Pchain wallet">
+    <meta name="description" content="Pchain Wallet">
     <title>PCHAIN Wallet</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131307171-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-131307171-1');
-</script>
     <link rel="icon" href="img/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/bootstrap-select.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -47,7 +38,7 @@
                                         <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
                                             <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
-                                            <li class="breadcrumb-item active">SendPAI</li>
+                                            <li class="breadcrumb-item active">SendPI</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -100,7 +91,7 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Send PAI</strong> <small>Notice : you will send PAI in <span ng-bind="chain.name"></span></span></small></h2>
+                                <h2><strong>Send PI</strong> <small>Notice : you will send PI in <span ng-bind="chain.name"></span></span></small></h2>
                             </div>
                             <div class="body">
                                 <form name="Form" novalidate="" class="row clearfix">
@@ -161,7 +152,7 @@
                                         <td ng-bind="item.chainName"></td>
                                         <td ng-bind="cutWords(item.hash)"></td>
                                         <td ng-bind="item.toaddress"></td>
-                                        <td ng-bind="item.value+' PAI'"></td>
+                                        <td ng-bind="item.value+' PI'"></td>
                                         <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
                                     </tr>
                                 </tbody>
@@ -212,7 +203,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Send PAI
+                        Send PI
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -231,7 +222,7 @@
                         </div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
-                            <div class="form-control" ng-bind="toAmount+' PAI'"></div>
+                            <div class="form-control" ng-bind="toAmount+' PI'"></div>
                             <!-- <div class="form-control" id="modalToAmount"></div> -->
                         </div>
                         <!--                       <div class="input-group marginTop10">
@@ -245,7 +236,7 @@
                         </div> -->
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Max Fee</span>
-                            <div class="form-control" ng-bind="txFee+' PAI'"></div>
+                            <div class="form-control" ng-bind="txFee+' PI'"></div>
                         </div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Nonce</span>
