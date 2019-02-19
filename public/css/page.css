@@ -252,7 +252,7 @@
 .theme-purple .btn-primary:active,
 .theme-purple .btn-primary:hover,
 .theme-purple .btn-primary:focus {
-    background: #c18eda
+    background: #254b9e
 }
 
 .theme-purple .btn-primary.btn-simple {
@@ -267,11 +267,11 @@
 }
 
 .theme-purple .sidebar .menu .list li.active.open .active a {
-    color: #254b9e
+    color: #6cb0da
 }
 
 .theme-purple .sidebar .menu .list a:hover {
-    color: #254b9e
+    color: #6cb0da
 }
 
 .theme-purple .sidebar.h_menu .menu li.active.open>a {
@@ -3095,7 +3095,7 @@ fieldset[disabled] .navbar .navbar-nav>a.btn.active {
 .show>.btn-primary.dropdown-toggle,
 .show>.btn-primary.dropdown-toggle:focus,
 .show>.btn-primary.dropdown-toggle:hover {
-    background-color: #34bbe8;
+    background-color: #254b9e;
     color: #fff;
     box-shadow: none
 }
