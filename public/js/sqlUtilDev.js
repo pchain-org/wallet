@@ -108,6 +108,7 @@ function addTransactionDev(obj) {
  */
 
 function queryTransactionDevList(address,type) {
+    console.log(address,type)
     return new Promise(function (accept,reject) {
         var sql = "select hash,toaddress,value,chainName,fromaddress,status,data from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
         var array = [type,address]

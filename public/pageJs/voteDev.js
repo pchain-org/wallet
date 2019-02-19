@@ -6,7 +6,7 @@
 
      $scope.accountList = new Array();
 
-     $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
+     // $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
 
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
@@ -39,22 +39,50 @@
         })
      }
 
+     // $scope.initWeb3 = function(){
+     //    removePageLoader();
+     //     try{
+     //        web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
+     //        if(web3Util.isConnected()){
+     //            console.log("connected");
+     //            $scope.getAccountList();
+     //        }else{
+     //            console.log("not connected");
+     //            swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+     //                window.location.href = "accountDev.html";
+     //            })
+     //        }
+     //    }catch(e){
+     //        console.log(e);
+     //    }
+     // }
+
      $scope.initWeb3 = function(){
-        removePageLoader();
+         removePageLoader();
          try{
-            web3Util.setProvider(new web3Util.providers.HttpProvider($scope.RPCUrl));
-            if(web3Util.isConnected()){
-                console.log("connected");
-                $scope.getAccountList();
-            }else{
-                console.log("not connected");
-                swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
-                    window.location.href = "accountDev.html";
-                })
-            }
-        }catch(e){
-            console.log(e);
-        }
+             queryRpcUrl().then(function (data) {
+                 if(data.result=="success" && data.data.length>0){
+                     web3Util.setProvider(new web3Util.providers.HttpProvider(data.data[0].url));
+                     if(web3Util.isConnected()){
+                         console.log("connected");
+                         $scope.getAccountList();
+                     }else{
+                         console.log("not connected");
+                         swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                             window.location.href = "accountDev.html";
+                         })
+                     }
+                 }else{
+                     console.log("not connected");
+                     swal({title:"RPC Connect Error",text:"Not possible to connect to the RPC provider. Make sure the provider is running and a connection is open.",icon:"error",button:"Go To Set RPC"}).then((v)=>{
+                         window.location.href = "accountDev.html";
+                     })
+                 }
+             })
+         }catch(e){
+             console.log(e);
+         }
+
      }
 
      $scope.initWeb3();

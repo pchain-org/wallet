@@ -122,7 +122,7 @@
                                     <td ng-if="item.status==1"><span>Cancel</span></td>
                                     <td ng-bind="item.fromaddress"></td>
                                     <td ng-bind="item.toaddress"></td>
-                                    <td ng-bind="item.hash"></td>
+                                    <td ng-bind="cutWords(item.hash)"></td>
                                     <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
                                 </tr>
                                 </tbody>

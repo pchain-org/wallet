@@ -17,6 +17,11 @@
             if(!err){
                 $scope.spin = "";
                 $scope.balance = web3Util.fromWei(result,"ether");
+                queryTransactionDevList($scope.account,6).then(function(robj) {
+                    console.log(robj)
+                    $scope.candidateList = robj.data;
+                    $scope.$apply();
+                })
                 $scope.$apply();
             }else{
                 swal({title:"RPC Error",text:err.toString(),icon:"error"});
@@ -31,12 +36,6 @@
                 if(result.length > 0){
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
-
-                    queryTransactionDevList($scope.account,6).then(function(robj) {
-                        console.log(robj)
-                        $scope.candidateList = robj.data;
-                        $scope.$apply();
-                    })
                 }
                 $scope.$apply();
             }
@@ -92,8 +91,8 @@
                 var objt = {};
                 objt.hash = hash;
                 objt.fromaddress = $scope.account;
-                objt.value = 0;
-                objt.data = 0;
+                objt.value = $scope.candidateList[0].value;
+                objt.data = $scope.candidateList[0].data;
                 objt.status= 1;
                 console.log(objt)
                 createCandidate(objt).then(function(aobj) {
@@ -157,6 +156,13 @@
 
          })
 
+     }
+     $scope.cutWords = function(words) {
+         let result = words;
+         if (words.length > 12) {
+             result = words.substr(0, 6) + "..." + words.substr(-6, 6);
+         }
+         return result;
      }
 
 

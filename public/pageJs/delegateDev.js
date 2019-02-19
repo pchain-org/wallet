@@ -155,6 +155,14 @@
 
      }
 
+     $scope.cutWords = function(words) {
+         let result = words;
+         if (words.length > 12) {
+             result = words.substr(0, 6) + "..." + words.substr(-6, 6);
+         }
+         return result;
+     }
+
 
  });
  $(function() {
