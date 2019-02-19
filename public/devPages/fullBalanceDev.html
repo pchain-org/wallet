@@ -115,8 +115,11 @@
                         <h2><strong>Proxied Detail</strong></h2>
                     </div>
                     <div class="body">
-                        <div class="row">
+                        <div class="row" ng-repeat="(address,detail) in fullBalance.proxied_detail" ng-cloak>
                            <div class="table-responsive">
+                                <div class="header" ng-bind="address" ng-cloak>
+                                    
+                                </div>
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  ng-cloak>
                                     <thead>
                                         <tr>
@@ -125,7 +128,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(key,val) in fullBalance.proxied_detail" >
+                                        <tr ng-repeat="(key,val) in detail" >
                                             <td ><span ng-bind="key" ng-cloak></span></td>
                                             <td ><span ng-bind="weiToPi(val) + ' PI'" ng-cloak></span></td>
                                         </tr>
