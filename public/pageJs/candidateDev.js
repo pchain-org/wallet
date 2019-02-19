@@ -151,6 +151,7 @@
 
              }else{
                  let error = err.toString();
+                 console.log(error)
                  swal({title:"Error",text:error,icon:"error"});
              }
 

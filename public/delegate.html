@@ -138,6 +138,7 @@
                                                 </div>
                                             </div>
                                             <div class="clearfix marginTop10"></div>
+                                            <input type="hidden"  name="cancleId" ng-model="cancleId">
                                             <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <div class="input-group my-input-group " ng-class="(cancleForm.cancleCandidate.$invalid && cancleForm.cancleCandidate.$dirty)?'has-danger':( cancleForm.cancleCandidate.$valid?'has-success':'') ">
                                                     <span class="input-group-addon">Candidate</span>
@@ -147,7 +148,7 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <div class="input-group " ng-class="(cancleForm.cancleAmount.$invalid && cancleForm.cancleAmount.$dirty)?'has-danger':( cancleForm.cancleAmount.$valid?'has-success':'') ">
                                                     <span class="input-group-addon">Amount</span>
-                                                    <input type="text" class="form-control " ng-class="(cancleForm.cancleAmount.$invalid && cancleForm.cancleAmount.$dirty)?'cancleForm-control-danger':(cancleForm.cancleAmount.$valid?'cancleForm-control-success':'') " name="cancleAmount" ng-model="cancleAmount" placeholder={{'max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                                    <input type="text" class="form-control " ng-class="(cancleForm.cancleAmount.$invalid && cancleForm.cancleAmount.$dirty)?'cancleForm-control-danger':(cancleForm.cancleAmount.$valid?'cancleForm-control-success':'') " name="cancleAmount" ng-model="cancleAmount"  ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
                                                 </div>
                                             </div>
                                         </form>
@@ -175,6 +176,7 @@
                                     <th>From</th>
                                     <th>To</th>
                                     <th>Hash</th>
+                                    <th>Value</th>
                                     <th>Operation</th>
                                 </tr>
                                 </thead>
@@ -182,10 +184,12 @@
                                 <tr ng-repeat="item in delegateList2">
                                     <td ng-if="item.status==0"><span>Vote</span></td>
                                     <td ng-if="item.status==1"><span>Cancel</span></td>
+                                    <td ng-if="item.status==2"><span>Vote->Cancel</span></td>
                                     <td ng-bind="item.fromaddress"></td>
                                     <td ng-bind="item.toaddress"></td>
-                                    <td ng-bind="item.hash"></td>
-                                    <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                    <td ng-bind="cutWords( item.hash)"></td>
+                                    <td ng-bind="item.value"></td>
+                                    <td><a href="{{'index.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -6,25 +6,24 @@
      $scope.nonce = 0;
      $scope.balance = 0;
      $scope.maxSendAmount = 0;
+     let DefaultDelegatedListOption = {"address":"CUSTOM"};
 
-
-     queryCancelDelegateList($scope.account,7).then(function(robj) {
-         console.log(robj)
-         let DefaultDelegatedListOption = {"address":"CUSTOM"};
-         let delegatedList = robj.data;
-         $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
-         $scope.currentCandidate = DefaultDelegatedListOption;
-         $scope.$apply();
-     })
 
      $scope.selectCandidate = function(){
-        if($scope.currentCandidate != DefaultDelegatedListOption){
-            $scope.cancleCandidate = $scope.currentCandidate.address;
-            $scope.cancleAmount = $scope.currentCandidate.amount;
-        }else{
-            $scope.cancleCandidate = "";
-            $scope.cancleAmount = 0;
-        }
+         queryCancelDelegateList($scope.account.address,7).then(function(robj) {
+             let delegatedList = robj.data;
+             $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
+             $scope.currentCandidate = DefaultDelegatedListOption;
+             $scope.$apply();
+         })
+         if($scope.currentCandidate != DefaultDelegatedListOption){
+             $scope.cancleCandidate = $scope.currentCandidate.address;
+             $scope.cancleAmount = $scope.currentCandidate.amount;
+             $scope.cancleId=$scope.currentCandidate.id;
+         }else{
+             $scope.cancleCandidate = "";
+             $scope.cancleAmount = 0;
+         }
      }
 
      $scope.showAddData = function() {
@@ -54,8 +53,16 @@
              showPopup("Internet error, please refresh the page");
          });
 
-         queryTransactionDelegateList($scope.account,7).then(function(robj) {
-             console.log(robj)
+         queryCancelDelegateList($scope.account.address,7).then(function(robj) {
+             let delegatedList = robj.data;
+             $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
+             $scope.currentCandidate = DefaultDelegatedListOption;
+             $scope.$apply();
+         })
+
+
+
+         queryTransactionDelegateList($scope.account.address,7).then(function(robj) {
              $scope.delegateList2 = robj.data;
              $scope.$apply();
          })
@@ -103,7 +110,8 @@
 
      $scope.chainList = new Array();
      $scope.chainList = [
-         { name: "Main Chain", id: 0, chainId: "pchain" }
+         // { name: "Main Chain", id: 0, chainId: "pchain" }
+         { name: "Main Chain", id: 0, chainId: "testnet"}
      ];
 
      $scope.chain = $scope.chainList[0]
@@ -180,6 +188,8 @@
          $scope.getBalance();
      }
 
+
+
      $scope.delegateType;
      $scope.showEnterPwd = function(type) {
         $scope.delegateType = type;
@@ -223,13 +233,10 @@
              if($scope.delegateType == 0){
                  //delegate
                  // amount = web3.toWei($scope.toAmount, "ether");
-                  amount= "0x"+decimalToHex(web3.toWei($scope.toAmount,'ether'));
-
+                 amount= "0x"+decimalToHex(web3.toWei($scope.toAmount,'ether'));
                 funcData = $scope.getPlayLoad(DelegateABI, "Delegate", [$scope.toAddress]);
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
-                console.log(funcData)
-                 console.log(signRawObj)
-             }else if($scope.delegateType == 1){  
+             }else if($scope.delegateType == 1){
                 //cancle delegate
                 // amount = web3.toWei($scope.cancleAmount, "ether");
                  amount= "0x"+decimalToHex(web3.toWei($scope.cancleAmount,'ether'));
@@ -264,24 +271,24 @@
 
                      if($scope.delegateType == 0){
                          objt.hash = hash;
-                         objt.fromaddress = $scope.account;
+                         objt.fromaddress = $scope.account.address;
                          objt.toaddress = $scope.toAddress;
                          objt.status=0;
-                         console.log(objt)
+                         objt.value=$scope.toAmount;
                      }else if($scope.delegateType == 1){
                          objt.hash = hash;
-                         objt.fromaddress = $scope.account;
+                         objt.fromaddress = $scope.account.address;
                          objt.toaddress = $scope.cancleCandidate;
                          objt.status=1;
-                         console.log(objt)
+                         objt.value=$scope.toAmount;
+                         objt.id=$scope.cancleId;
                      }
                      createDelegate(objt).then(function(aobj) {
-                         console.log(aobj)
                          if (aobj.result == "success") {
-                             queryTransactionDelegateList($scope.account,7).then(function(robj) {
-                                 console.log(robj)
+                             queryTransactionDelegateList($scope.account.address,7).then(function(robj) {
                                  $scope.delegateList2 = robj.data;
-                                 $scope.$apply();
+                                 $scope.selectCandidate();
+                                 // $scope.$apply();
                              })
                          }
                      })
@@ -290,12 +297,10 @@
                  }
 
              }, function errorCallback(res) {
-                 console.log(res);
                  showPopup("Internet error, please refresh the page");
              });
 
          } catch (e) {
-             console.log(e);
              swal(e.toString());
          }
 

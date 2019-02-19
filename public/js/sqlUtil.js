@@ -156,7 +156,7 @@ function queryMultiChainChildTxList(pid) {
 
 
 /*
-跨连保存
+MultiChain save
  */
 function addMultiChainTransaction(obj) {
     var responseObj ={result:'success', data:{}, error:{}};
@@ -183,7 +183,7 @@ function addMultiChainTransaction(obj) {
 }
 
 /*
-保存跨连转账主交易记录
+save MultiChain main
  */
 function saveMultiChainMain(obj) {
     return new Promise(function (accept,reject) {
@@ -199,7 +199,7 @@ function saveMultiChainMain(obj) {
 }
 
 /*
-保存跨连转账第二条转账记录
+save MultiChain 2
  */
 function saveMultiChainChild2(obj) {
     return new Promise(function (accept,reject) {
@@ -215,7 +215,7 @@ function saveMultiChainChild2(obj) {
 }
 
 /*
-保存跨连转账第三条转账记录
+save MultiChain 3
  */
 function saveMultiChainChild3(obj) {
     return new Promise(function (accept,reject) {
@@ -232,7 +232,7 @@ function saveMultiChainChild3(obj) {
 
 
 /*
-修改第三笔交易状态
+update status
  */
 function updateMultiChainChild3(obj) {
     return new Promise(function (accept,reject) {
@@ -248,7 +248,7 @@ function updateMultiChainChild3(obj) {
 }
 
 /*
-查询最大id
+max id
  */
 function queryMultiChainLastId() {
     return new Promise(function (accept,reject) {
@@ -266,10 +266,37 @@ function queryMultiChainLastId() {
    save delegate  record
  */
 function createDelegate(obj) {
-    console.log(obj)
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status) VALUES (?,?,?,?,?,?,?,?)";
-        var array = [null, obj.hash, obj.fromaddress,7,obj.toaddress,0,new Date(),obj.status];
+        if(obj.status==1){
+            updateCancelDelegateStatus(obj.id).then(function (data) {
+                if(data.result="success"){
+                    return insertDelegate(obj);
+                }
+            }).then(function (responseObj) {
+                accept(responseObj);
+            }).catch(function (e) {
+                reject(e);
+                console.log("save cancelDelegate error:", e);
+            })
+        }else{
+            insertDelegate(obj).then(function (data) {
+                accept(data);
+            }).catch(function (e) {
+                reject(e);
+                console.log("save createDelegate error:", e);
+            })
+        }
+
+    });
+}
+
+/*
+   save delegate  record
+ */
+function insertDelegate(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status,value) VALUES (?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,7,obj.toaddress,0,new Date(),obj.status,obj.value];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -302,13 +329,30 @@ function queryTransactionDelegateList(address,type) {
 
 function queryCancelDelegateList(address,type) {
     return new Promise(function (accept,reject) {
-        var sql = "select toaddress address,value amount from tb_transaction where type =? and fromaddress=? order by id desc";
+        var sql = "select id,toaddress address,value amount from tb_transaction where type =? and fromaddress=? and status=0  order by id desc";
         var array = [type,address]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
             reject(e);
             console.log(e, "error");
+        })
+    });
+}
+
+
+/*
+   updtate Canceldelegate  status=2
+ */
+function updateCancelDelegateStatus(id) {
+    return new Promise(function (accept,reject) {
+        var sql = "update tb_transaction set status=? where id=?";
+        var array = [2,id];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save createDelegate error:", e);
         })
     });
 }

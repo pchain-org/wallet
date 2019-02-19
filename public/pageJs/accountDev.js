@@ -141,6 +141,7 @@
             if(!err){
                 jQuery("#newAccountModal").modal("hide");
                 swal({title:"New Account",text:result,icon:"success"});
+                $scope.getAccountList();
             }else{
                 let error = err.toString();
                 swal({title:"New Account",text:error,icon:"error"});
@@ -168,6 +169,7 @@
                  var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                  successNotify(html);
 
+
                 var objt = {};
                 objt.hash = hash;
                 objt.fromaddress = $scope.account;
@@ -184,7 +186,6 @@
                         })
                     }
                 })
-
             }else{
                 let error = err.toString();
                 swal({title:"Error",text:error,icon:"error"});
