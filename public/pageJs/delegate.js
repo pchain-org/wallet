@@ -45,7 +45,6 @@
              $scope.spin = "";
              removePageLoader();
              if (res.data.result == "success") {
-                console.log(res);
                 $scope.fullBalance = res.data.data;
                  $scope.balance = web3.fromWei($scope.fullBalance.balance,'ether');
                  $scope.delegateBalance = web3.fromWei($scope.fullBalance.delegateBalance,'ether');
