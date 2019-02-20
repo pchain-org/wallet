@@ -35,3 +35,10 @@ To build binaries for specific platforms, use the following flags:
 $ yarn packager:mac  #mac
 $ yarn packager:win  #windows
 ```
+
+### Config folder
+
+The data folder for Pchain wallet depends on your operating system:
+
+- Windows `%APPDATA%\pwallet`
+- macOS `~/Library/Application\ Support/pwallet`
