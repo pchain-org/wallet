@@ -130,74 +130,76 @@
                     </div>
                 </div>
                 <div class="row clearfix">
-                    <div class="card">
-                        <div class="header">
-                            <h2><strong>Latest 10 transaction records</strong></h2>
-                        </div>
-                        <div class="body">
-                            <div class="complexTable" ng-show="txList.length > 0" ng-cloak>
-                                <div class="head row">
-                                    <div class="col-md-1 col-lg-1 col-xs-1">
-                                        #
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xs-3">
-                                        From
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xs-3">
-                                        To
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xs-3">
-                                        Value
-                                    </div>
-                                    <div class="col-md-2 col-lg-2 col-xs-2">
-                                        Operation
-                                    </div>
-                                </div>
-                                <div class="clearfix">
-                                </div>
-                                <div class="tBody">
-                                    <div class="tItem" ng-repeat="item in txList">
-                                        <div class="iTitle row">
-                                            <div class="col-md-1 col-lg-1 col-xs-1" ng-bind="$index+1">
-                                            </div>
-                                            <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.fromaddress">
-                                            </div>
-                                            <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.toaddress">
-                                            </div>
-                                            <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value+' PAI'">
-                                            </div>
-                                            <div class="col-md-2 col-lg-2 col-xs-2">
-                                                <button class="btn badge badge-info radiusBtn" ng-click="showTxDetail(item.id,$index)">Detail</button>
-                                            </div>
-                                        </div>
-                                        <div class="clearfix">
-                                        </div>
-                                        <div class="iBody" ng-show="item.showDetail" ng-cloak>
-                                            <div class="table-responsive">
-                                                <table class="table table-filter table-hover m-b-0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th>Chain</th>
-                                                            <th>Account</th>
-                                                            <th>Hash</th>
-                                                            <th>Operation</th>
-                                                        </tr>
-                                                        <tr data-status="suspended" ng-repeat="item in item.txChildList">
-                                                            <td ng-bind="item.chainName"></td>
-                                                            <td ng-bind="item.fromaddress"></td>
-                                                            <td ng-bind="cutWords( item.hash)"></td>
-                                                            <td ng-if="item.status==0"><button ng-click="resendTx(item.id,item.signData,item.chainId,$index)" class="badge badge-info radiusBtn">Resend</button></td>
-                                                            <td ng-if="item.status==1"><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Latest 10 transaction records</strong></h2>
                             </div>
-                            <div class="text-center" ng-show="txList.length == 0" ng-cloak>
-                                <h3>No Records</h3>
+                            <div class="body">
+                                <div class="complexTable" ng-show="txList.length > 0" ng-cloak>
+                                    <div class="head row">
+                                        <div class="col-md-1 col-lg-1 col-xs-1">
+                                            #
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            From
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            To
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xs-3">
+                                            Value
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xs-2">
+                                            Operation
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                    </div>
+                                    <div class="tBody">
+                                        <div class="tItem" ng-repeat="item in txList">
+                                            <div class="iTitle row">
+                                                <div class="col-md-1 col-lg-1 col-xs-1" ng-bind="$index+1">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.fromaddress">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.toaddress">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xs-3" ng-bind="item.value+' PAI'">
+                                                </div>
+                                                <div class="col-md-2 col-lg-2 col-xs-2">
+                                                    <button class="btn badge badge-info radiusBtn" ng-click="showTxDetail(item.id,$index)">Detail</button>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                            <div class="iBody" ng-show="item.showDetail" ng-cloak>
+                                                <div class="table-responsive">
+                                                    <table class="table table-filter table-hover m-b-0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Chain</th>
+                                                                <th>Account</th>
+                                                                <th>Hash</th>
+                                                                <th>Operation</th>
+                                                            </tr>
+                                                            <tr data-status="suspended" ng-repeat="item in item.txChildList">
+                                                                <td ng-bind="item.chainName"></td>
+                                                                <td ng-bind="item.fromaddress"></td>
+                                                                <td ng-bind="cutWords( item.hash)"></td>
+                                                                <td ng-if="item.status==0"><button ng-click="resendTx(item.id,item.signData,item.chainId,$index)" class="badge badge-info radiusBtn">Resend</button></td>
+                                                                <td ng-if="item.status==1"><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center" ng-show="txList.length == 0" ng-cloak>
+                                    <h3>No Records</h3>
+                                </div>
                             </div>
                         </div>
                     </div>

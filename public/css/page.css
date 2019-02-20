@@ -299,7 +299,7 @@
 }
 
 .theme-purple .card .header h2:before {
-    background: #254b9e
+    background: #6cb0da
 }
 
 .theme-purple .card .header h2 strong {
@@ -24894,4 +24894,7 @@ section small {
 
 .overlay_menu .social .icon i {
     vertical-align: text-bottom
+}
+.btn{
+    border-radius: 18px;
 }

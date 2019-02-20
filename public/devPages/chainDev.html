@@ -99,36 +99,37 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2><strong>Latest 10 Child Chain records</strong></h2>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="childChainList.length > 0" ng-cloak>
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>From</th>
-                                    <th>Hash</th>
-                                    <th>CreateChainId</th>
-                                    <th>Operation</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in childChainList">
-                                    <td ng-if="item.status==0"><span>Create</span></td>
-                                    <td ng-if="item.status==1"><span>Join</span></td>
-                                    <td ng-bind="item.fromaddress"></td>
-                                    <td ng-bind="item.hash"></td>
-                                    <td ng-bind="item.chainName"></td>
-                                    <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="text-center" ng-show="childChainList.length == 0" ng-cloak>
-                                <h3>No Records</h3>
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Latest 10 Child Chain records</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="childChainList.length > 0" ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>From</th>
+                                        <th>Hash</th>
+                                        <th>CreateChainId</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in childChainList">
+                                        <td ng-if="item.status==0"><span>Create</span></td>
+                                        <td ng-if="item.status==1"><span>Join</span></td>
+                                        <td ng-bind="item.fromaddress"></td>
+                                        <td ng-bind="item.hash"></td>
+                                        <td ng-bind="item.chainName"></td>
+                                        <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center" ng-show="childChainList.length == 0" ng-cloak>
+                                    <h3>No Records</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
