@@ -222,13 +222,7 @@
             obj.address = priToAddress(newPrivateKey);
 
             $scope.accountList.push(obj);
-            // console.log(newPrivateKey,obj.address);
-
             var enPri = AESEncrypt(newPrivateKey, $scope.password);
-            // console.log(enPri);
-
-            // addAccount(obj.address,enPri).then()
-
             addAccount(enPri, obj.address).then(function(resObj) {
                 if (resObj.result == "success") {
                     showPopup("Created successfully", 1000);
@@ -239,14 +233,9 @@
                     }
                     $scope.getBalance();
                 }
-                // console.log(resObj)
             }).catch(function(e) {
                 console.log(e, "error");
             })
-
-            // var dePri = AESDecrypt(enPri,$scope.password);
-            // console.log(dePri);
-
         }
 
         $scope.importPrivateKey = function(){
@@ -538,7 +527,6 @@
 
         $scope.confirmMainToChild = function(depositeHash, pid, flag,num) {
             const childChainId = "child_" + (Number($scope.crossChain.id) - 1);
-            // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,1);
             var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, $scope.crossChain.chainId);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
@@ -587,8 +575,6 @@
                 if (res.data.result == "success") {
 
                     $('#transaction').modal('hide');
-                    // var hash = res.data.data;;
-                    // var url =   "/index.html?key="+hash+"&chain="+$scope.crossChain;
                     var hash = depositeHash;
                     var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
                     var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
@@ -634,13 +620,9 @@
                 const gasPrice = $scope.gasPrice * Math.pow(10, 9);
                 const amount = web3.toWei($scope.toAmount, "ether");
                 $scope.childToMainAmount = amount;
-                // var signRawObj = initSignRawDeposite($scope.account.address,amount,"",$scope.nonce,gasPrice,$scope.gasLimit,"",2);
                 const childChainId = "child_" + (Number($scope.chain.id) - 1);
                 var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromChildChain", [childChainId]);
-                // var signRawObj = initSignRawCrosschain(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
                 var signRawObj = initSignBuildInContract(funcData, $scope.nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
-                // var funcData = $scope.getPlayLoad(crossChainABI,"",paramArr);
-                // var signRawObj = initSignRawContract();
                 var signData = signTx($scope.currentPrivateKey, signRawObj);
                 var obj = {};
                 obj.chainId = $scope.chain.id;
@@ -669,9 +651,6 @@
                                 $scope.checkRecipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false,1);
                             }
                         })
-                        // console.log(amount);
-                        // $scope.checkRecipt(depositeHash,$scope.chain.id,2,amount);
-
                     } else {
                         swal(res.data.error);
                         removeLoading();
@@ -696,10 +675,7 @@
         $scope.confirmChildToMain = function(depositeHash, childToMainAmount, pid,num) {
             const childChainId = "child_" + ($scope.chain.id - 1);
             var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromMainChain", [childChainId, $scope.childToMainAmount, depositeHash]);
-            // console.log(funcData);
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, $scope.crossChain.chainId);
-            // console.log(signRawObj);
-            // var signRawObj = initSignRawDeposite($scope.account.address,"",depositeHash,$scope.nonce2,0,0,childChainId,3);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
 
             if(num>30){
@@ -736,8 +712,6 @@
             obj2.signData = signData;
             obj2.childId = Number($scope.chain.id);
             var url = APIHost + "/sendTx";
-
-            // console.log(obj2);
             $http({
                 method: 'POST',
                 url: url,
@@ -747,8 +721,6 @@
                 if (res.data.result == "success") {
 
                     $('#transaction').modal('hide');
-                    // var hash = res.data.data;
-                    // var url =   "/index.html?key="+hash+"&chain="+$scope.crossChain;
                     var hash = depositeHash;
                     var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
                     var html = '<a href="' + url + '">Transaction hash:' + hash + '</a>';

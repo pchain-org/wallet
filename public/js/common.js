@@ -123,8 +123,6 @@ function priToAddress(pri) {
 
 function signTx(pri, txObj) {
 
-    //console.log(arguments);
-    // var Tx = EthTx;
     var Tx = require("pchainjs-tx");
 
     var privateKey = new Buffer(pri, 'hex')
@@ -144,7 +142,6 @@ function signTx(pri, txObj) {
 function convert(num) {
     var x = new BigNumber(num);
     var s = "0x" + x.toString(16);
-    // console.log(num,s);
     return s;
 }
 
@@ -167,13 +164,9 @@ function decimalToHex(dec) {
 
 function getHexValue(val) {
     var s = sanitizeHex(decimalToHex(val));
-
-    // console.log(s);
 }
 
 function initSignRawPAI(toAddress, amount, nonce, gasPrice, gasLimit, chainId) {
-    //console.log(toAddress,amount,nonce,gasPrice,gasLimit);
-
     const rawTx = {
         nonce: convert(nonce),
         gasPrice: convert(gasPrice),
@@ -187,8 +180,6 @@ function initSignRawPAI(toAddress, amount, nonce, gasPrice, gasLimit, chainId) {
 }
 
 function initSignBuildInContract(data, nonce, gasPrice, gasLimit, chainId,amount) {
-    //console.log(toAddress,amount,nonce,gasPrice,gasLimit);
-
     const rawTx = {
         nonce: convert(nonce),
         gasPrice: convert(gasPrice),
@@ -228,72 +219,6 @@ function initSignRawContract(toAddress, data, nonce, gasPrice, gasLimit, amount,
 }
 
 var APIHost = "https://air.pchain.wang";
-
-// var crossChainABI = [{
-//         "type": "function",
-//         "name": "DepositInMainChain",
-//         "constant": false,
-//         "inputs": [{
-//                 "name": "chainId",
-//                 "type": "string"
-//             },
-//             {
-//                 "name": "amount",
-//                 "type": "uint256"
-//             }
-//         ],
-//         "outputs": []
-//     },
-//     {
-//         "type": "function",
-//         "name": "DepositInChildChain",
-//         "constant": false,
-//         "inputs": [{
-//                 "name": "chainId",
-//                 "type": "string"
-//             },
-//             {
-//                 "name": "txHash",
-//                 "type": "bytes32"
-//             }
-//         ],
-//         "outputs": []
-//     },
-//     {
-//         "type": "function",
-//         "name": "WithdrawFromChildChain",
-//         "constant": false,
-//         "inputs": [{
-//                 "name": "chainId",
-//                 "type": "string"
-//             },
-//             {
-//                 "name": "amount",
-//                 "type": "uint256"
-//             }
-//         ],
-//         "outputs": []
-//     },
-//     {
-//         "type": "function",
-//         "name": "WithdrawFromMainChain",
-//         "constant": false,
-//         "inputs": [{
-//                 "name": "chainId",
-//                 "type": "string"
-//             },
-//             {
-//                 "name": "amount",
-//                 "type": "uint256"
-//             },
-//             {
-//                 "name": "txHash",
-//                 "type": "bytes32"
-//             }
-//         ],
-//         "outputs": []
-//     }
-// ]
 
 var crossChainABI = [{
         "type": "function",

@@ -194,10 +194,7 @@
 
          try {
              const gasPrice = $scope.gasPrice * Math.pow(10, 9);
-             // const gasPrice = 20*Math.pow(10,9);
-
-             const amount = web3.toWei($scope.toAmount, "ether");
-             // const amount = web3.toWei(toAmountValue,"ether");            
+             const amount = web3.toWei($scope.toAmount, "ether");          
 
              var nonce = $scope.nonce;
              var signRawObj = initSignRawPAI($scope.toAddress, amount, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
