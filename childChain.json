@@ -5,11 +5,6 @@
       "id": 1,
       "chainId": "child_0",
       "chainName": "Child Chain 1"
-    },
-    {
-      "id": 2,
-      "chainId": "child_1",
-      "chainName": "Child Chain 2"
     }
   ]
 }
