@@ -6,6 +6,7 @@
      $scope.nonce = 0;
      $scope.balance = 0;
      $scope.maxSendAmount = 0;
+
      let DefaultDelegatedListOption = {"address":"CUSTOM"};
 
 
@@ -70,6 +71,42 @@
              $scope.delegateList2 = robj.data;
              $scope.$apply();
          })
+     }
+
+     $scope.getRecommendList = function() {
+         var obj = {};
+         //console.log(obj);
+         var url = APIHost + "/getCandidateList";
+         $http({
+             method: 'POST',
+             url: url,
+             data: obj
+         }).then(function successCallback(res) {
+             console.log(res);
+             if (res.data.result == "success") {
+                let recommendList = res.data.data;
+                $scope.recommendList = _.concat(DefaultDelegatedListOption,recommendList);
+                $scope.recommendCandidate = DefaultDelegatedListOption;
+                $scope.$apply();
+             } else {
+                 showPopup(res.data.message, 3000);
+             }
+
+         }, function errorCallback(res) {
+             showPopup("Internet error, please refresh the page");
+         });
+
+
+     }
+     $scope.getRecommendList();
+
+     $scope.selectRecommend = function(){
+         if($scope.recommendCandidate != DefaultDelegatedListOption){
+             $scope.toAddress = $scope.recommendCandidate.address;
+         }else{
+             $scope.toAddress = "";
+             $scope.toAmount = 0;
+         }
      }
 
      $scope.getMaxSendAmount = function() {

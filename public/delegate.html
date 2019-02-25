@@ -104,6 +104,29 @@
                                 <div id="myTabContent" class="tab-content">
                                     <div role="tabpanel" class="tab-pane in active" id="delegateTab" ng-cloak>
                                         <form name="Form" novalidate="" class="row clearfix">
+                                            <div class="col-xl-12 col-lg-12 col-md-12">
+                                                <div class="input-group my-input-group " >
+                                                    <span class="input-group-addon">Recommended Candidates</span>
+                                                    <div class="form-control">
+                                                        <select class="mySelect" ng-model="recommendCandidate" ng-options="  candidate as candidate.address +'('+candidate.username+')'  for candidate in recommendList" ng-change="selectRecommend()"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12">
+                                                 <div class="table-responsive">
+                                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="recommendCandidate.email" ng-cloak>
+                                                        <thead>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="(key,val) in recommendCandidate">
+                                                            <td ng-bind="key"></td>
+                                                            <td ng-bind="val"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                
+                                            </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <div class="input-group my-input-group " ng-class="(Form.toAddress.$invalid && Form.toAddress.$dirty)?'has-danger':( Form.toAddress.$valid?'has-success':'') ">
                                                     <span class="input-group-addon">Candidate</span>
