@@ -9,6 +9,20 @@ const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
 
+angularApp.filter('gmtTime', function() { 
+        return function(d) {
+            var gt = new Date(d*1000);
+            return gt.toGMTString();
+        }
+});
+
+angularApp.filter('weiToPI', function() { 
+        return function(v) {
+            const web3 = new Web3();
+            return web3.fromWei(v,'ether')+" PI";
+        }
+});
+
 function AESEncrypt(msg, password) {
     return CryptoJS.AES.encrypt(msg, password).toString();
 }
