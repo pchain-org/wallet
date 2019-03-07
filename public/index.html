@@ -65,7 +65,7 @@
                                         <td><code class="w3-codespan">Status</code></td>
                                         <td>Peending</td>
                                     </tr>
-                                    <tr ng-repeat="(key,value) in result.data" ng-show="value != null" ng-cloak>
+                                    <tr ng-repeat="(key,value) in result.data" ng-show="value != null" ng-hide="key == 'fromAddress' || key == 'toAddress'" ng-cloak>
                                         <td><code class="w3-codespan" ng-bind="key"></code></td>
                                         <td ng-bind="value" ng-hide="key == 'transactionsCount' || key == 'blockNumber' " ng-class="(key == 'input' || key == 'extraData')?'longText':''"></td>
                                         <td  ng-show="key == 'transactionsCount' " >
@@ -152,6 +152,7 @@
          window.$ = window.jQuery = window.jquery = require('jquery');
     </script>
     <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
     <script src="js/common.js"></script>
