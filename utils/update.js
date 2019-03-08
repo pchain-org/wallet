@@ -8,7 +8,7 @@ const Promise = require("bluebird");
 const electron = require('electron')
 const {dialog} = require('electron')
 
-const gitPackageJsonUrl = "https://raw.githubusercontent.com/pchain-org/wallet/master/package.json?token=AQ6h7g3ZbGSSroz1wG7ADVv_6gYOrIk4ks5cNvpOwA%3D%3D";  
+const gitPackageJsonUrl = "https://raw.githubusercontent.com/pchain-org/wallet/master/package.json";  
 let self;
 class Update {
 	constructor(){
