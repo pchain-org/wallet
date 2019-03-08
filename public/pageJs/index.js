@@ -191,11 +191,13 @@
         }
 
         var key = GetQueryString("key");
-        var chain = Number(GetQueryString("chain"));
-        if(chain == "pchain"){
+        var chain = GetQueryString("chain");
+         if(chain == "pchain"){
             chain = 0;
         }else if(chain == "child_0"){
             chain = 1;
+        }else{
+            chain = Number(chain);
         }
         var type = Number(GetQueryString("type"));
         if (key) {
