@@ -69,12 +69,12 @@
     {
       "label": "Light Wallet",
       "type": "radio",
-      "checked": false
+      "checked": true
     },
     {
       "label": "Local Node",
       "type": "radio",
-      "checked": true
+      "checked": false
     }
   ]
 }

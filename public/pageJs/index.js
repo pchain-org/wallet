@@ -81,7 +81,7 @@
 
                 obj.blockKey = keyWord;
             } else {
-                swal("Illegal input");
+                showPopup("Data format error");
                 removeLoading();
                 return false;
             }
