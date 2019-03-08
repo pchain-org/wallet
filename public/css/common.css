@@ -413,3 +413,14 @@ button[disabled] {
   -ms-border-radius: 8px !important;
   -o-border-radius: 8px !important;
 }
+@media (min-width: 768px) {
+  .container {
+    max-width: auto;
+    width: 100%;
+  }
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: auto;
+  }
+}
