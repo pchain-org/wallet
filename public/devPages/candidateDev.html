@@ -123,7 +123,7 @@
                                 <td ng-if="item.status==1"><span>Cancel</span></td>
                                 <td ng-bind="item.fromaddress"></td>
                                 <td ng-bind="item.hash"></td>
-                                <td ng-bind="item.value +' PAI'"></td>
+                                <td ng-bind="item.value +' PI'"></td>
                                 <td ng-bind="item.data+'%'"></td>
                                 <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
                             </tr>
@@ -190,7 +190,7 @@
                     </div>
                     <div class="input-group" ng-class="(applyCandidateForm.securityDeposit.$invalid && applyCandidateForm.securityDeposit.$dirty)?'has-danger':(applyCandidateForm.securityDeposit.$valid?'has-success':'') ">
                         <span class="input-group-addon">SecurityDeposit</span>
-                        <input type="number" min="10000" placeholder="minimum 10,000 PAI" class="form-control" ng-class="(applyCandidateForm.securityDeposit.$invalid && applyCandidateForm.securityDeposit.$dirty)?'form-control-danger':(applyCandidateForm.securityDeposit.$valid?'form-control-success':'') " name="securityDeposit" ng-model="securityDeposit" required>
+                        <input type="number" min="10000" placeholder="minimum 10,000 PI" class="form-control" ng-class="(applyCandidateForm.securityDeposit.$invalid && applyCandidateForm.securityDeposit.$dirty)?'form-control-danger':(applyCandidateForm.securityDeposit.$valid?'form-control-success':'') " name="securityDeposit" ng-model="securityDeposit" required>
                     </div>
                     <div class="input-group" ng-class="(applyCandidateForm.commission.$invalid && applyCandidateForm.commission.$dirty)?'has-danger':(applyCandidateForm.commission.$valid?'has-success':'') ">
                         <span class="input-group-addon">Commission</span>

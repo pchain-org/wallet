@@ -237,7 +237,7 @@
          $scope.getMaxSendAmount();
          if ($scope.maxSendAmount < $scope.toAmount) {
              let tips1 = "Insufficient Balance ";
-             let tips2 = "Max Amount :" + $scope.maxSendAmount + " PAI"
+             let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
              swal(tips1, tips2, "error");
          } else {
              $('#enterPassword').modal('show');

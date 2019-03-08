@@ -100,7 +100,7 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Send PAI</strong> <small>Notice : you will send PAI In your local node</span></small></h2>
+                                <h2><strong>Send PI</strong> <small>Notice : you will send PI In your local node</span></small></h2>
                             </div>
                             <div class="body">
                                 <form name="Form" novalidate="" class="row clearfix">
@@ -172,7 +172,7 @@
                                     <tr ng-repeat="item in transactionDevList">
                                         <td ng-bind="cutWords(item.hash)"></td>
                                         <td ng-bind="item.toaddress"></td>
-                                        <td ng-bind="item.value+' PAI'"></td>
+                                        <td ng-bind="item.value+' PI'"></td>
                                         <td><a href="{{'search.html?key='+item.hash}}" class="badge badge-info radiusBtn">Detail</a></td>
                                     </tr>
                                     </tbody>
@@ -296,7 +296,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Send PAI
+                        Send PI
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -311,7 +311,7 @@
                         </div>
                         <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
-                            <div class="form-control" ng-bind="toAmount+' PAI'"></div>
+                            <div class="form-control" ng-bind="toAmount+' PI'"></div>
                         </div>
                         <!-- <div class="input-group marginTop10">
                             <span class="input-group-addon">Max Fee</span>
