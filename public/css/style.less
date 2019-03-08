@@ -4,7 +4,7 @@
 html{
   height: 100%;
 }
-
+@fontColor:#a27ce6;
 body{
   overflow-x: hidden;
   overflow-y: scroll;
@@ -154,7 +154,34 @@ body{
 .swal-footer{
   text-align:center;
 }
+.tableStyle{
+  width:100%;
+  table{
+    width:100%;
+    tbody{
+      width:100%;
+      tr{
+        width:100%;
+        td{
 
+        }
+        .longText{
+          word-break:break-all;
+          overflow-x:scroll;
+          max-width:300px;
+        }
+      }
+    }
+  }
+}
+.moreBtn{
+  padding:20px;
+  font-size:20px;
+  color:@fontColor;
+  font-weight:bolder;
+  cursor:pointer;
+  text-align:center;
+}
 
 
 
