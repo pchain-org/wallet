@@ -59,7 +59,7 @@
 
                 obj.blockNumber = keyWord;
             } else {
-                swal("Data format error");
+                showPopup("Data format error");
                 removeLoading();
                 return false;
             }
