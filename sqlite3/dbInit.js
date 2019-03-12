@@ -90,7 +90,7 @@ class DB{
             let sql="CREATE TABLE IF NOT EXISTS tb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);";
             self.promiseRun(sql).then((result)=>{
                 if(result){
-                    let sql2="CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY,hash text,nonce text,fromaddress text,toaddress text,value real,gas text,gasPrice text,data text,type integer,chainId integer,chainName text,pid integer,createTime text,signData text,status integer);";
+                    let sql2="CREATE TABLE IF NOT EXISTS tb_transaction(id integer PRIMARY KEY,hash text,nonce text,fromaddress text,toaddress text,value text,gas text,gasPrice text,data text,type integer,chainId integer,chainName text,pid integer,createTime text,signData text,status integer);";
                     return self.promiseRun(sql2);
                 }
             }).then((result)=> {
