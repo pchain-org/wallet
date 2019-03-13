@@ -7,9 +7,9 @@
     "start": "electron .",
     "build:mac": "./node_modules/.bin/electron-rebuild",
     "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
-    "packager:mac": "electron-packager ./ pwallet --platform=darwin --out ./app --app-version 1.0.1 --overwrite --icon=public/img/logo.hqx ",
-    "packager:win": "electron-packager ./ pwallet --platform=win32 --arch=x64 --architecture=all --out=./app --asar --app-version 1.0.1 --overwrite --icon=public/img/logo.ico",
-    "packager:liunx": "electron-packager ./ pwallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.1 --overwrite"
+    "packager:mac": "electron-packager ./ pwallet --platform=darwin --out ./app --app-version 1.0.0 --overwrite --icon=public/img/logo.hqx ",
+    "packager:win": "electron-packager ./ pwallet --platform=win32 --arch=x64 --architecture=all --out=./app --asar --app-version 1.0.0 --overwrite --icon=public/img/logo.ico",
+    "packager:liunx": "electron-packager ./ pwallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.0 --overwrite"
   },
   "keywords": [
     "pchain wallet"
