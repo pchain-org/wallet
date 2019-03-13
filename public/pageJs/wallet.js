@@ -2,6 +2,8 @@
     var web3 = new Web3();
     $('.collapse').collapse();
 
+    const {ipcRenderer} = require('electron');
+
     angularApp.controller('myCtrl', function($scope, $http) {
         $scope.showTxDetail = (pid, index) => {
             queryMultiChainChildTxList(pid).then(function(data) {
@@ -53,11 +55,11 @@
                     $scope.balance = res.data.data;
                     $scope.getMaxSendAmount();
                 } else {
-                    swal(res.data.error);
+                    swal("Error",res.data.error,"error");
                 }
 
             }, function errorCallback(res) {
-                swal("Internet error, please refresh the page");
+                swal("Error","Internet error, please refresh the page","erro");
             });
 
             queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
@@ -289,7 +291,7 @@
         $scope.currentPrivateKey = "";
         $scope.confirmPassword = function() {
             if ($scope.account == undefined) {
-                swal("Please create a wallet address at first");
+                swal("Error","Please create a wallet address at first","error");
                 return;
             }
             queryPrivateKey($scope.account.address).then(function(result) {
@@ -309,14 +311,14 @@
                             $scope.submit();
                         }
                     } else {
-                        swal("Password error");
+                        swal("Error","Password error","error");
                     }
                 } else {
-                    swal("Password error");
+                    swal("Error","Password error","error");
                 }
             }).catch(function(e) {
 
-                swal("Password error");
+                swal("Error","Password error","error");
             })
 
         };
@@ -385,7 +387,7 @@
                 }
 
             }, function errorCallback(res) {
-                swal("Internet error, please refresh the page");
+                swal("Error","Internet error, please refresh the page","error");
 
             });
         }
@@ -508,17 +510,17 @@
                             }
                         })
                     } else {
-                        swal(res.data.error);
+                        swal("Error",res.data.error,"error");
                         removeLoading();
                     }
 
                 }, function errorCallback(res) {
-                    swal("Internet error, please refresh the page");
+                    swal("Error","Internet error, please refresh the page","error");
                 });
 
             } catch (e) {
                 console.log(e);
-                swal(e.toString());
+                swal("Error",e.toString(),"error");
             }
 
         }
@@ -554,7 +556,7 @@
                                 $scope.showTxDetail(pid,0);
                                 $scope.$apply();
                                 $('#transaction').modal('hide');
-                                swal("Trading congestion, please click resend");
+                                swal("Error","Trading congestion, please click resend","error");
                             })
                         }
                     })
@@ -605,11 +607,11 @@
                     }
 
                 } else {
-                    swal(res.data.error);
+                    swal("Error",res.data.error,"error");
                 }
 
             }, function errorCallback(res) {
-                swal("Internet error, please refresh the page");
+                swal("Error","Internet error, please refresh the page","error");
             });
         }
 
@@ -652,17 +654,17 @@
                             }
                         })
                     } else {
-                        swal(res.data.error);
+                        swal("Error",res.data.error,"error");
                         removeLoading();
                     }
 
                 }, function errorCallback(res) {
-                    swal("Internet error, please refresh the page");
+                    swal("Error","Internet error, please refresh the page","error");
                 });
 
             } catch (e) {
                 console.log(e);
-                swal(e.toString());
+                swal("Error",e.toString(),"error");
             }
 
         }
@@ -701,7 +703,7 @@
                                 $scope.showTxDetail(pid,0);
                                 $scope.$apply();
                                 $('#transaction').modal('hide');
-                                swal("Trading congestion, please click resend");
+                                swal("Error","Trading congestion, please click resend","error");
                             })
                         }
                     })
@@ -747,11 +749,11 @@
                         }
                     })
                 } else {
-                    swal(res.data.error);
+                    swal("Error",res.data.error,"error");
                 }
 
             }, function errorCallback(res) {
-                swal("Internet error, please refresh the page");
+                swal("Error","Internet error, please refresh the page","error");
             });
 
         }
@@ -799,13 +801,67 @@
                          }
                      })
              } else {
-                 swal(res.data.error);
+                 swal("Error",res.data.error,"error");
              }
 
          }, function errorCallback(res) {
-             swal("Internet error, please refresh the page");
+             swal("Error","Internet error, please refresh the page","error");
          });
      }
+
+        $scope.keystorePath = "";
+        $scope.keystoreJson;
+
+        $scope.selectKeystore = function(){
+            ipcRenderer.send('open-keystore-file');
+        }
+
+        ipcRenderer.on('selected-keystore',(event,path,fileJson)=>{
+            if(fileJson.address && fileJson.crypto && fileJson.id){
+                $scope.keystorePath = path;
+                $scope.keystoreJson = fileJson;
+                $scope.keystoreJson.address = "0x"+$scope.keystoreJson.address;
+            }else{
+                $scope.keystorePath = "";
+                $scope.keystoreJson = "";
+                swal("Error","Incorrect Format Keystore","error");
+            }
+            $scope.$apply();
+        })
+
+        $scope.importKeystoreFile = function(){
+            const eWallet = require('ethereumjs-wallet');
+            try{
+                console.log($scope.keystoreJson,$scope.keystorePassword);
+                const keystoreInstance = eWallet.fromV3($scope.keystoreJson,$scope.keystorePassword);
+                let newPrivateKey = keystoreInstance.getPrivateKey().toString("hex");
+                var enPri = AESEncrypt(newPrivateKey,$scope.keystorePassword);
+
+                importAccount(enPri,$scope.keystoreJson.address).then(function (resObj) {
+                    if(resObj.result=="success"){
+                        showPopup("Import Keystore Successfully",1000);
+                        $('#importKeystore').modal('hide');
+                        $scope.keystorePassword = "";
+                        $scope.keystoreJson = "";
+                        $scope.keystorePath = "";
+
+                        var obj = {};
+                        obj.address = priToAddress(newPrivateKey);
+                        $scope.accountList.push(obj);
+
+                        if($scope.accountList.length> 0){
+                            $scope.account = $scope.accountList[$scope.accountList.length-1];
+                        }
+                        $scope.getBalance();
+                    }
+                }).catch(function (e) {
+                    showPopup(e.error,1000);
+                })
+            }catch(e){
+                console.log(e);
+                swal("Import Error",e.toString(),"error");
+            }
+        }
 
 
 

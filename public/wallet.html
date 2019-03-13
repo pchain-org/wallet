@@ -33,7 +33,7 @@
                         <div class="card mycard">
                             <div class="body block-header">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-7 col-sm-4 col-5">
+                                    <div class="col-lg-6 col-md-5 col-sm-4 col-4">
                                         <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
                                         <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
@@ -41,9 +41,10 @@
                                             <li class="breadcrumb-item active">Wallet</li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-6 col-md-5 col-sm-7 col-7 text-right">
+                                    <div class="col-lg-6 col-md-7 col-sm-8 col-8 text-right">
                                         <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#newAccount">Create Wallet</button>
                                         <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
+                                        <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importKeystore">Import Keystore</button>
                                     </div>
                                 </div>
                             </div>
@@ -287,6 +288,56 @@
             </div>
         </div>
     </div>
+    <!-- import keystore -->
+    <div class="modal fade" id="importKeystore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog maxModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                            Import Ketstore
+                        </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="importKeystore" novalidate>
+                        <div class="text-center">
+                            <button class="btn btn-primary" ng-click="selectKeystore()">Select Keystore File</button>
+                        </div>
+                        <div class="input-group mb-3 my-input-group marginTop20" ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Keystore Path</span>
+                            <div class="form-control">
+                                <div class="value" ng-bind="keystorePath"></div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3 my-input-group" ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Address</span>
+                            <div class="form-control">
+                                <div class="value" ng-bind=" keystoreJson.address"></div>
+                            </div>
+                        </div>
+                        <div class="input-group" ng-class="(importKeystore.keystorePassword.$invalid && importKeystore.keystorePassword.$dirty)?'has-danger':( importKeystore.keystorePassword.$valid?'has-success':'') " ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Keystore Password</span>
+                            <input type="text" class="form-control" ng-class="(importKeystore.keystorePassword.$invalid && importKeystore.keystorePassword.$dirty)?'form-control-danger':(importKeystore.keystorePassword.$valid?'form-control-success':'') " name="keystorePassword" ng-model="keystorePassword" required>
+                        </div>
+                        <div class="alert alert-danger" ng-show="keystorePath" ng-cloak>
+                            <div class="container">
+                                <div class="alert-icon">
+                                    <i class="icon icon-warning-sign"></i>
+                                </div>
+                                <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
+                            </div>
+                        </div>
+                        <div class="marginTop10 text-center" ng-show="keystorePath" ng-cloak>
+                            <button type="button" class="btn btn-primary" ng-disabled="importKeystore.$invalid " ng-click="importKeystoreFile()">
+                                Import
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- enterPassword -->
     <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

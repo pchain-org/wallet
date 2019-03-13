@@ -2,7 +2,6 @@
  * Created by skykingit on 2018/12/01.
  */
 
-
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -16,12 +15,14 @@ const DB = require("./sqlite3/dbInit.js");
 const UpdateUtil = require("./utils/update");
 const UpdateChildChainUtil = require("./utils/updateChildChain");
 const InitMenuJson = require("./lib/menu.json");
+require('./utils/keystore').init();
 
 let mainWindow;
 
 function createWindow () {
     let mainPageUrlPath;
     if(InitMenuJson.modeSubMenu[0].checked){
+
         mainPageUrlPath =  path.join(__dirname, 'public/wallet.html');
     }else{
         mainPageUrlPath =  path.join(__dirname, 'public/devPages/accountDev.html');
@@ -92,6 +93,7 @@ app.on('activate', function () {
         createWindow()
     }
 })
+
 
 
 
