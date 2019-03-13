@@ -43,6 +43,23 @@ function createWindow () {
     mainWindow.on('closed', ()=> {
         mainWindow = null
     })
+
+    UpdateChildChainUtil.checkUpdate();
+}
+
+function init(){
+    DB.openDb().then(function(result){
+        if(result){
+            DB.init();
+        }
+    }).then(function (result) {
+        console.log(result);
+        setTimeout(function(){
+            loadingWindow.hide();
+        },1000);
+    }).catch(function (err) {
+        console.log("error"+err)
+    });
 }
 
 let loadingWindow;
@@ -55,28 +72,17 @@ function showLoadingWindow(){
         icon:path.join(__dirname,"public/img/logo.png")
     }));
 
+    init();
+
     loadingWindow.on('hide', () => {
         loadingWindow = null;
         createWindow();
     })
 }
 
-function init(){
-    DB.init().then(function (result) {
-        console.log(result);
-        setTimeout(function(){
-            loadingWindow.hide();
-        },1000);
-    }).catch(function (err) {
-        console.log("error"+err)
-    });
-
-    UpdateChildChainUtil.checkUpdate();
-}
 
 app.on('ready', function(){
     showLoadingWindow();
-    init();
     if (process.platform !== 'darwin') {
         const tray = new Tray(path.join(__dirname,"public/img/logo.png"));
     }

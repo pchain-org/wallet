@@ -12,11 +12,23 @@ var db;
 let self;
 class DB{
 	constructor(){
-		db = new sqlite3.Database(DBPath,function(data){
-		    // console.log(data);
-		});
         self = this;
 	}
+
+    openDb(){
+        return new Promise(function (resolve,reject) {
+            db = new sqlite3.Database(DBPath,function(data){
+                if(data){
+                    if(data.errno){
+                        reject(data);
+                    }
+                }else{
+                    resolve(true);
+                }
+            });
+        });
+         
+    }
 
     promiseRun(sql){
         return new Promise(function (resolve,reject) {
@@ -103,6 +115,7 @@ class DB{
                     resolve("ok")
                 }
             }).catch((err)=>{
+                console.log("in error",err);
                 reject(err);
             })
         });
