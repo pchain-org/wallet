@@ -153,11 +153,6 @@
                 if ($scope.accountList.length > 0) {
                     $scope.account = $scope.accountList[0];
                     $scope.getBalance();
-                    queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
-                        $scope.txList = data.data;
-
-                    })
-
                 }
                 if ($scope.accountList.length == 0) {
                     removePageLoader();
@@ -248,13 +243,11 @@
             
             obj.address = priToAddress(newPrivateKey);
 
-            $scope.accountList.push(obj);
-
             var enPri = AESEncrypt(newPrivateKey,$scope.password2);
 
             importAccount(enPri,obj.address).then(function (resObj) {
-                console.log(resObj)
                 if(resObj.result=="success"){
+                    $scope.accountList.push(obj);
                     showPopup("Import Successfully",1000);
                     $('#importAccount').modal('hide');
                     $scope.password2 = "";
@@ -266,16 +259,16 @@
                     $scope.getBalance();
                 }
             }).catch(function (e) {
-                showPopup(e.error,1000);
+                showPopup(e.error,2000);
                 $('#importAccount').modal('hide');
                 $scope.password2 = "";
                 $scope.repeatPassword2 = "";
                 $scope.newPrivate = "";
 
-                if($scope.accountList.length> 0){
-                    $scope.account = $scope.accountList[$scope.accountList.length-1];
-                }
-                $scope.getBalance();
+                // if($scope.accountList.length> 0){
+                //     $scope.account = $scope.accountList[$scope.accountList.length-1];
+                // }
+                // $scope.getBalance();
             })
             
         }

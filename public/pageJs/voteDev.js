@@ -11,7 +11,6 @@
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
         web3Util.eth.getBalance($scope.account,(err,result)=>{
-            console.log(err,result);
             if(!err){
                 $scope.spin = "";
                 $scope.balance = web3Util.fromWei(result,"ether");
@@ -92,14 +91,13 @@
      $scope.getCurrentEpoch = function(){
         web3Util.tdm.getCurrentEpochNumber((err,result)=>{
             if(!err){
-                $scope.currentEpochNumber = result;
+                $scope.currentEpochNumber = new BigNumber(result).toString(10);
                 for(var i=0;i<result;i++)
                     $scope.epochList.push(i+1);
                 web3Util.tdm.getEpoch(result,(err,result)=>{
                     if(!err){
-                       $scope.epochInfo = result;
+                       $scope.epochInfo = $scope.dataformt(result);
                        $scope.$apply();
-                       console.log($scope.epochInfo);
                     }else{
                         let error = err.toString();
                         swal({title:"Error",text:error,icon:"error"});
@@ -113,12 +111,12 @@
      }
 
      $scope.selectEpoch = function(){
-        console.log("in selectEpoch",$scope.currentEpochNumber);
-         web3Util.tdm.getEpoch($scope.currentEpochNumber,(err,result)=>{
+         var a=new BigNumber($scope.currentEpochNumber);
+         var result=a.toString(16);
+         web3Util.tdm.getEpoch("0x"+result,(err,result)=>{
             if(!err){
-               $scope.epochInfo = result;
+               $scope.epochInfo = $scope.dataformt(result);
                $scope.$apply();
-               console.log($scope.epochInfo);
             }else{
                 let error = err.toString();
                 swal({title:"Error",text:error,icon:"error"});
@@ -130,13 +128,10 @@
         $scope.getBalance();
      }
 
-     $scope.voteNextEpochChain = function(){
+     $scope.voteNextEpoch = function(){
         //num to hex string
-        let voteAmount = "0x"+decimalToHex($scope.amount);
+        let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
         let voteHash = web3Util.getVoteHash($scope.account,$scope.pubKey,voteAmount,$scope.salt);
-
-        console.log(voteHash);
-
         web3Util.tdm.voteNextEpoch($scope.account,voteHash,(err,result)=>{
             if(!err){
                 jQuery("#voteNextEpochModal").modal("hide");
@@ -154,10 +149,10 @@
 
      $scope.revealVote = function(){
         //num to hex string
-        let voteAmount = "0x"+decimalToHex($scope.amount);
-        let signature = web3Util.chain.signAddress($scope.account,$scope.blsPrivateKey,(err,result)=>{
+        let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
+         web3Util.chain.signAddress($scope.account,"0x"+$scope.blsPrivateKey,(err,signature)=>{
             if(!err){
-                web3Util.chain.revealVote($scope.account,$scope.pubKey,voteAmount,$scope.salt,signature,(err,result)=>{
+                web3Util.tdm.revealVote($scope.account,$scope.pubKey,voteAmount,$scope.salt,signature,(err,result)=>{
                     if(!err){
                         jQuery("#revealVoteModal").modal("hide");
                         swal({title:"Transaction",text:result,icon:"success"});
@@ -167,6 +162,7 @@
                          successNotify(html);
                     }else{
                         let error = err.toString();
+                        console.log(error)
                         swal({title:"Error",text:error,icon:"error"});
                     }
                 })
@@ -174,9 +170,20 @@
 
             }else{
                 let error = err.toString();
+                console.log(error)
                 swal({title:"Error",text:error,icon:"error"});
             }
         })
+     }
+     
+     $scope.dataformt = function (data) {
+         let result=data;
+         for(var k in result) {
+             if(!(k=='start_time' || k=='end_time' || k=='validators')){
+                 result[k]=new BigNumber(result[k]).toString(10);
+             }
+         }
+         return result;
      }
 
  });

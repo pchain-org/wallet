@@ -65,8 +65,6 @@
              $scope.$apply();
          })
 
-
-
          queryTransactionDelegateList($scope.account.address,7).then(function(robj) {
              $scope.delegateList2 = robj.data;
              $scope.$apply();
@@ -82,7 +80,7 @@
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res);
+             // console.log(res);
              if (res.data.result == "success") {
                 let recommendList = res.data.data;
                 $scope.recommendList = _.concat(DefaultDelegatedListOption,recommendList);

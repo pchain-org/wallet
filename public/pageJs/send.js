@@ -111,10 +111,6 @@
              if ($scope.accountList.length > 0) {
                  $scope.account = $scope.accountList[0];
                  $scope.getBalance();
-                 queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
-                     $scope.transactionList = new Array();
-                     $scope.transactionList = robj.data;
-                 })
              }
              if ($scope.accountList.length == 0) {
                  removePageLoader();

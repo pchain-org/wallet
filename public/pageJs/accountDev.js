@@ -17,7 +17,7 @@
      $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
         web3Util.eth.getBalance($scope.account,(err,result)=>{
-            console.log(err,result);
+            // console.log(err,result);
             if(!err){
                 $scope.spin = "";
                 $scope.balance = web3Util.fromWei(result,"ether");
@@ -25,6 +25,11 @@
             }else{
                 swal({title:"RPC Error",text:err.toString(),icon:"error"});
             }
+
+            queryTransactionDevList($scope.account,4).then(function(robj) {
+                $scope.transactionDevList = robj.data;
+                $scope.$apply();
+            })
         })
      }
 
@@ -35,14 +40,8 @@
                 if(result.length > 0){
                     $scope.account = $scope.accountList[0];  
                     $scope.getBalance();
-
-                    queryTransactionDevList($scope.account,4).then(function(robj) {
-                        console.log(robj)
-                        $scope.transactionDevList = robj.data;
-                        $scope.$apply();
-                    })
                 }
-                $scope.$apply();
+                // $scope.$apply();
             }
         })
      }

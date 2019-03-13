@@ -13,12 +13,12 @@
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
         web3Util.eth.getBalance($scope.account,(err,result)=>{
-            console.log(err,result);
+            // console.log(err,result);
             if(!err){
                 $scope.spin = "";
                 $scope.balance = web3Util.fromWei(result,"ether");
                 queryTransactionDevList($scope.account,6).then(function(robj) {
-                    console.log(robj)
+                    // console.log(robj)
                     $scope.candidateList = robj.data;
                     $scope.$apply();
                 })
