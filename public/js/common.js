@@ -232,7 +232,7 @@ function initSignRawContract(toAddress, data, nonce, gasPrice, gasLimit, amount,
     return rawTx;
 }
 
-var APIHost = "https://air.pchain.wang";
+var APIHost = "https://api.pchain.org";
 
 var crossChainABI = [{
         "type": "function",
