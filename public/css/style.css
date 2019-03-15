@@ -594,3 +594,7 @@ body {
   cursor: pointer;
   text-align: center;
 }
+.current-block-info{
+  margin-left: 100px;
+}
+

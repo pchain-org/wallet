@@ -104,7 +104,8 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Epoch :  <select ng-model="currentEpochNumber" ng-options="epochNumber for epochNumber in epochList " ng-change="selectEpoch()"></select> </strong></h2>
+                                <h2><strong>Epoch :  <select ng-model="currentEpochNumber" ng-options="epochNumber for epochNumber in epochList " ng-change="selectEpoch()"></select>
+                                    <span class="current-block-info"></span>Current blockNumber:<span ng-model="currentBlockNumber" ng-bind="currentBlockNumber" name="currentBlockNumber"></span></strong></h2>
                             </div>
                             <div class="body">
                                 <div class="row">

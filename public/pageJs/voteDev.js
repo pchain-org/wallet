@@ -19,6 +19,16 @@
                 swal({title:"RPC Error",text:err.toString(),icon:"error"});
             }
         })
+
+        web3Util.pi.getBlockNumber((err,result)=>{
+            if(!err){
+                console.log(result)
+                $scope.currentBlockNumber = result;
+                $scope.$apply();
+            }else{
+                swal({title:"RPC Error",text:err.toString(),icon:"error"});
+            }
+        })
      }
 
     $scope.getAccountList = function(){
