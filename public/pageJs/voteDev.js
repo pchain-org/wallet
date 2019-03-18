@@ -106,7 +106,7 @@
                     $scope.epochList.push(i+1);
                 web3Util.tdm.getEpoch(result,(err,result)=>{
                     if(!err){
-                       $scope.epochInfo = $scope.dataformt(result);
+                       $scope.epochInfo = $scope.dataformat(result);
                        $scope.$apply();
                     }else{
                         let error = err.toString();
@@ -125,7 +125,7 @@
          var result=a.toString(16);
          web3Util.tdm.getEpoch("0x"+result,(err,result)=>{
             if(!err){
-               $scope.epochInfo = $scope.dataformt(result);
+               $scope.epochInfo = $scope.dataformat(result);
                $scope.$apply();
             }else{
                 let error = err.toString();
@@ -185,15 +185,18 @@
             }
         })
      }
-     
-     $scope.dataformt = function (data) {
-         let result=data;
-         for(var k in result) {
-             if(!(k=='start_time' || k=='end_time' || k=='validators')){
-                 result[k]=new BigNumber(result[k]).toString(10);
+
+     $scope.dataformat= function(obj){
+         for(var k in obj) {
+             if($scope.valueOf(obj[k]).substr(0,2)=='0x'){
+                 obj[k]=parseInt(obj[k],16)
              }
          }
-         return result;
+         return obj;
+     }
+
+     $scope.valueOf=function(obj){
+         return (obj == null) ? "null" : obj.toString();
      }
 
  });
