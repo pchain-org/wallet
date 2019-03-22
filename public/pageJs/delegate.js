@@ -233,7 +233,7 @@
      $scope.showEnterPwd = function(type) {
         $scope.delegateType = type;
          $scope.getMaxSendAmount();
-         if ($scope.maxSendAmount < $scope.toAmount) {
+         if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
              let tips1 = "Insufficient Balance ";
              let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
              swal(tips1, tips2, "error");
