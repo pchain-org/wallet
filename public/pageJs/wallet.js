@@ -75,7 +75,7 @@
              if(b.gt(fee)){
                 $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
              }else{
-                $scope.maxSendAmount = 0;
+                $scope.maxSendAmount = new BigNumber(0);
              }
         }
 

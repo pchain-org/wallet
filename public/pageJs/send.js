@@ -47,7 +47,7 @@
          if(b.gt(fee)){
             $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
          }else{
-            $scope.maxSendAmount = 0;
+            $scope.maxSendAmount = new BigNumber(0);
          }
      }
 
@@ -163,6 +163,8 @@
      $scope.showEnterPwd = function() {
          $scope.getMaxSendAmount();
 
+         console.log($scope.maxSendAmount,$scope.toAmount);
+
          if ($scope.maxSendAmount.lt( new BigNumber($scope.toAmount) )) {
              let tips1 = "Insufficient Balance ";
              let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
@@ -201,6 +203,7 @@
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
+
              loading();
              var url = APIHost + "/sendTx";
              $http({
