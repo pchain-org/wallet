@@ -150,7 +150,7 @@
      $scope.chainList = new Array();
      $scope.chainList = [
          // { name: "Main Chain", id: 0, chainId: "pchain" }
-         { name: "Main Chain", id: 0, chainId: "testnet"}
+         { name: "Main Chain", id: 0, chainId: "pchain"}
      ];
 
      $scope.chain = $scope.chainList[0]

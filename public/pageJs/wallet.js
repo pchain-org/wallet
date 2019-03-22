@@ -17,7 +17,7 @@
         $scope.chainList2 = new Array();
         $scope.chainList = [
             // { name: "Main Chain", id: 0, chainId: "pchain" }
-            { name: "Main Chain", id: 0, chainId: "testnet" }
+            { name: "Main Chain", id: 0, chainId: "pchain" }
         ];
         $scope.chain = $scope.chainList[0];
         queryChainList().then(function(resData) {
@@ -197,7 +197,7 @@
             } else {
                 $scope.chainList2 = new Array();
                 // var obj4 = { name: "Main Chain", id: 0, chainId: "pchain" };
-                var obj4 = { name: "Main Chain", id: 0, chainId: "testnet" };
+                var obj4 = { name: "Main Chain", id: 0, chainId: "pchain" };
                 $scope.chainList2.push(obj4);
                 $scope.crossChain = obj4;
             }

@@ -186,6 +186,7 @@
         })
      }
 
+
      $scope.dataformat= function(obj){
          for(var k in obj) {
              if($scope.valueOf(obj[k]).substr(0,2)=='0x'){
