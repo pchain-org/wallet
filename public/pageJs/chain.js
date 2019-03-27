@@ -1,15 +1,13 @@
  angularApp.controller('myCtrl', function($scope, $http) {
 
 
-     $scope.gasLimit = 21000;
+     $scope.gasLimit = 42000;
      $scope.gasPrice = 10;
      $scope.nonce = 0;
      $scope.balance = 0;
-     $scope.maxSendAmount = 0;
+     $scope.toAmount = 100000;
+     $scope.minDepositAmount = 100000;
 
-     $scope.showAddData = function() {
-         $scope.addDataFlag = true;
-     }
      $scope.getBalance = function() {
          $scope.spin = "myIconSpin";
          var obj = {};
@@ -25,7 +23,6 @@
              removePageLoader();
              if (res.data.result == "success") {
                  $scope.balance = res.data.data;
-                 $scope.getMaxSendAmount();
              } else {
                  showPopup(res.data.error, 3000);
              }
@@ -40,16 +37,6 @@
          })
      }
 
-     $scope.getMaxSendAmount = function() {
-         let b = new BigNumber($scope.balance);
-         let gl = new BigNumber($scope.gasLimit);
-         let fee = gl.times($scope.gasPrice * Math.pow(10, 9)).dividedBy(Math.pow(10, 18));
-         if(b.gt(fee)){
-            $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
-         }else{
-            $scope.maxSendAmount = new BigNumber(0);
-         }
-     }
 
      $scope.nonceFlag = true;
      $scope.getNonce = function() {
@@ -82,25 +69,11 @@
 
      $scope.chainList = new Array();
      $scope.chainList = [
+         // { name: "Main Chain", id: 0, chainId: "pchain"
          { name: "Main Chain", id: 0, chainId: "pchain" }
      ];
 
      $scope.chain = $scope.chainList[0]
-
-     queryChainList().then(function(resData) {
-         for (var i = 0; i < resData.data.length; i++) {
-             var obj = {};
-             obj.name = resData.data[i].chainName;
-             obj.id = resData.data[i].id;
-             obj.chainId = resData.data[i].chainId;
-             $scope.chainList.push(obj);
-             $scope.chain = $scope.chainList[0];
-         }
-     }).catch(function(e) {
-         console.log(e, "queryChainList error.");
-     });
-
-     $scope.crossChain = 1;
 
      $scope.accountList = new Array();
 
@@ -148,7 +121,7 @@
                  swal("Password error");
              }
          }).catch(function(e) {
-
+            console.log(e);
              swal("Password error");
          })
 
@@ -160,44 +133,49 @@
      }
 
      $scope.showEnterPwd = function() {
-         $scope.getMaxSendAmount();
-         if ($scope.maxSendAmount.lt( new BigNumber($scope.toAmount) )) {
-             let tips1 = "Insufficient Balance ";
-             let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
-             swal(tips1, tips2, "error");
-         } else {
-             $('#enterPassword').modal('show');
-         }
+        $('#createChainModal').modal('hide');
+        $('#enterPassword').modal('show');
      }
 
+    $scope.getPlayLoad = function(abi, funName, paramArr) {
+            var payloadData = TxData(abi, funName, paramArr);
+            return payloadData;
+    }
+
+
      var web3 = new Web3();
-     var toAmountValue;
      $scope.submit = function() {
          $scope.getNonce();
          var txFee = $scope.gasLimit * $scope.gasPrice * Math.pow(10, 9);
          $scope.txFee = web3.fromWei(txFee, 'ether');
+         let minDepositAmount = web3.toWei($scope.minDepositAmount,"ether"); 
+         let paramArr = [$scope.newChainId,$scope.minValidators,minDepositAmount,$scope.startBlock,$scope.endBlock];
+         $scope.data = $scope.getPlayLoad(ChainABI,"CreateChildChain",paramArr);
          $('#transaction').modal('show');
      }
 
+     
      $scope.gasChanged = function() {
          $scope.gasPrice = jQuery("#gasPrice").val();
 
      }
      $scope.sendTx = function() {
+
          try {
              const gasPrice = $scope.gasPrice * Math.pow(10, 9);
-             const amount = web3.toWei($scope.toAmount, "ether"); 
-             var nonce = $scope.nonce;
-             var signRawObj = initSignRawPAI($scope.toAddress, amount, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+             const amount = web3.toWei($scope.toAmount, "ether");          
 
-             if ($scope.data) signRawObj.data = $scope.data;
+             var nonce = $scope.nonce;
+             var signRawObj = initSignBuildInContract($scope.data, nonce, gasPrice, $scope.gasLimit,"pchain", amount);
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
+             console.log(signRawObj);
+             console.log(signData);
 
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
-
+             console.log(obj);
              loading();
              var url = APIHost + "/sendTx";
              $http({
@@ -216,7 +194,7 @@
                      objt.hash = hash;
                      objt.nonce = nonce;
                      objt.fromaddress = $scope.account.address;
-                     objt.toaddress = $scope.toAddress;
+                     objt.toaddress ="0x0000000000000000000000000000000000000065";
                      objt.value = $scope.toAmount;
                      objt.gas = $scope.gasLimit;
                      objt.gasPrice = gasPrice;
@@ -247,6 +225,7 @@
 
      }
 
+
      $scope.cutWords = function(words) {
          let result = words;
          if (words.length > 12) {
@@ -257,5 +236,5 @@
 
  });
  $(function() {
-     menuActive(3);
+     menuActive(7);
  });

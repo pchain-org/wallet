@@ -320,3 +320,33 @@ var DelegateABI = [{
         ],
         "outputs": []
     }];
+
+
+var ChainABI = [{
+        "type": "function",
+        "name": "CreateChildChain",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "minValidators",
+                "type": "uint16"
+            },
+            {
+                "name": "minDepositAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "startBlock",
+                "type": "uint256"
+            },
+            {
+                "name": "endBlock",
+                "type": "uint256"
+            }
+        ],
+        "outputs": []
+    }];

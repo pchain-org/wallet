@@ -38,7 +38,7 @@
                                         <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
                                             <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
-                                            <li class="breadcrumb-item active">Send PI</li>
+                                            <li class="breadcrumb-item active">Chain</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -59,8 +59,6 @@
                                         <select class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="selectAccount()"></select>
                                     </div>
                                 </div>
-                                <div class="input-group mb-3 my-input-group fadeInput">
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,12 +68,6 @@
                                 <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
                             </div>
                             <div class="body">
-                                <div class="input-group mb-3 my-input-group">
-                                    <span class="input-group-addon">CHAIN</span>
-                                    <div class="form-control">
-                                        <select class="mySelect" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList" ng-change="getBalance()"></select>
-                                    </div>
-                                </div>
                                 <div class="input-group mb-3 my-input-group">
                                     <span class="input-group-addon">Balance</span>
                                     <div class="form-control">
@@ -87,50 +79,23 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="row clearfix">
+                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Send PI</strong> <small>Notice : you will send PI in <span ng-bind="chain.name"></span></span></small></h2>
+                                <h2><strong>Operations</strong></h2>
                             </div>
                             <div class="body">
-                                <form name="Form" novalidate="" class="row clearfix">
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="input-group my-input-group " ng-class="(Form.toAddress.$invalid && Form.toAddress.$dirty)?'has-danger':( Form.toAddress.$valid?'has-success':'') ">
-                                            <span class="input-group-addon">To Address</span>
-                                            <input type="text" class="form-control " ng-class="(Form.toAddress.$invalid && Form.toAddress.$dirty)?'form-control-danger':(Form.toAddress.$valid?'form-control-success':'') " name="toAddress" ng-model="toAddress" ng-pattern="/^[a-fA-F0-9]{40}$|^(0x)?[0-9a-fA-F]{40}$/" required>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 text-center">
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#createChainModal"  >Create Child Chain</button>
                                     </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="input-group " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
-                                            <span class="input-group-addon">Amount</span>
-                                            <input type="text" class="form-control " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="input-group my-input-group " ng-class="(Form.gasLimit.$invalid && Form.gasLimit.$dirty)?'has-danger':( Form.gasLimit.$valid?'has-success':'') ">
-                                            <span class="input-group-addon">Gas Limit</span>
-                                            <input type="text" class="form-control " ng-class="(Form.gasLimit.$invalid && Form.gasLimit.$dirty)?'form-control-danger':(Form.gasLimit.$valid?'form-control-success':'') " name="gasLimit" ng-model="gasLimit" ng-pattern="/^[1-9]\d*$/" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="addData" ng-show="!addDataFlag" ng-cloak>
-                                            <span ng-click="showAddData()"> +Advanced: Add Data</span>
-                                        </div>
-                                        <div class="input-group " ng-show="addDataFlag" ng-cloak>
-                                            <span class="input-group-addon">Data</span>
-                                            <input type="text" class="form-control " name="data" ng-model="data">
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="clearfix"></div>
-                                <div class="marginTop20 text-center">
-                                    <button class="btn btn-info" ng-disabled="Form.$invalid" ng-click="showEnterPwd()">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="row clearfix">
                     <div class="col-xl-12 col-md-12 col-lg-12">
                         <div class="card">
@@ -165,6 +130,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </section>
         <!-- enterPassword -->
@@ -195,7 +161,59 @@
                 </div>
             </div>
         </div>
+
+        <!-- Create Chain Modal -->
+        <div class="modal fade" id="createChainModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
+                            Create Child Chain
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="createChainForm" novalidate>
+                            <div class="input-group marginTop10">
+                                <span class="input-group-addon">From</span>
+                                <div class="form-control" ng-bind="account.address"></div>
+                            </div>
+                            <div class="input-group" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'has-danger':( createChainForm.newChainId.$valid?'has-success':'') ">
+                                <span class="input-group-addon">CreateChainId</span>
+                                <input type="text" placeholder="createChainId" class="form-control" ng-class="(createChainForm.newChainId.$invalid && createChainForm.newChainId.$dirty)?'form-control-danger':(createChainForm.newChainId.$valid?'form-control-success':'') " name="newChainId" ng-model="newChainId" required>
+                            </div>
+                            <div class="input-group" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'has-danger':( createChainForm.minValidators.$valid?'has-success':'') ">
+                                <span class="input-group-addon">MinValidators</span>
+                                <input type="number" min="1" placeholder="minValidators" class="form-control" ng-class="(createChainForm.minValidators.$invalid && createChainForm.minValidators.$dirty)?'form-control-danger':(createChainForm.minValidators.$valid?'form-control-success':'') " name="minValidators" ng-model="minValidators" required>
+                            </div>
+                            <div class="input-group" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'has-danger':( createChainForm.minDepositAmount.$valid?'has-success':'') ">
+                                <span class="input-group-addon">MinDepositAmount(PI)</span>
+                                <input type="number" min="100000" placeholder="minDepositAmount" class="form-control" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'form-control-danger':(createChainForm.minDepositAmount.$valid?'form-control-success':'') " name="minDepositAmount" ng-model="minDepositAmount" required>
+                            </div>
+                            <div class="input-group" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'has-danger':( createChainForm.startBlock.$valid?'has-success':'') ">
+                                <span class="input-group-addon">StartBlock</span>
+                                <input type="number" min="1" placeholder="startBlock" class="form-control" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'form-control-danger':(createChainForm.startBlock.$valid?'form-control-success':'') " name="startBlock" ng-model="startBlock" required>
+                            </div>
+                            <div class="input-group" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'has-danger':( createChainForm.endBlock.$valid?'has-success':'') ">
+                                <span class="input-group-addon">EndBlock</span>
+                                <input type="number" min="1" placeholder="endBlock" class="form-control" ng-class="(createChainForm.endBlock.$invalid && createChainForm.endBlock.$dirty)?'form-control-danger':(createChainForm.endBlock.$valid?'form-control-success':'') " name="endBlock" ng-model="endBlock" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="createChainForm.$invalid " ng-click="showEnterPwd()">
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+
     <!-- confirm transaction -->
     <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -205,39 +223,25 @@
                         &times;
                     </button>
                     <h4 class="modal-title text-center block">
-                        Send PI
+                        Create Child Chain
                     </h4>
                 </div>
                 <div class="modal-body">
                     <div>
                         <div class="input-group marginTop10">
-                            <span class="input-group-addon">CHAIN</span>
-                            <div class="form-control" ng-bind="chain.name"></div>
-                        </div>
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">To Address </span>
-                            <div class="form-control" ng-bind="toAddress"></div>
-                        </div>
-                        <div class="input-group marginTop10">
                             <span class="input-group-addon">From Address</span>
                             <div class="form-control" ng-bind="account.address"></div>
                         </div>
                         <div class="input-group marginTop10">
-                            <span class="input-group-addon">Amount to send</span>
+                            <span class="input-group-addon">Chain ID</span>
+                            <div class="form-control" ng-bind="newChainId"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Startup Cost</span>
                             <div class="form-control" ng-bind="toAmount+' PI'"></div>
-                            <!-- <div class="form-control" id="modalToAmount"></div> -->
                         </div>
-                        <!--                       <div class="input-group marginTop10">
-                            <span class="input-group-addon">Gas Limit</span>
-                            <div class="form-control" ng-bind="gasLimit"></div>
-                        </div>
-
                         <div class="input-group marginTop10">
-                            <span class="input-group-addon">Gas Price</span>
-                            <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
-                        </div> -->
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">Max Fee</span>
+                            <span class="input-group-addon">Fee</span>
                             <div class="form-control" ng-bind="txFee+' PI'"></div>
                         </div>
                         <div class="input-group marginTop10">
@@ -261,6 +265,7 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
     window.$ = window.jQuery = require('jquery');
     </script>
@@ -270,7 +275,7 @@
     <script src="js/bootstrap-notify.js"></script>
     <script src="js/common.js"></script>
     <script src="js/sqlUtil.js"></script>
-    <script type="text/javascript" src="pageJs/send.js"></script>
+    <script type="text/javascript" src="pageJs/chain.js"></script>
 </body>
 
 </html>
