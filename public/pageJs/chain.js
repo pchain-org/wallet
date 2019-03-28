@@ -31,7 +31,7 @@
              showPopup("Internet error, please refresh the page");
          });
 
-         queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
+         queryTransactionChildList($scope.account.address, 8).then(function(robj) {
              $scope.transactionList = robj.data;
              $scope.$apply();
          })
@@ -192,18 +192,12 @@
                      successNotify(html);
                      var objt = {};
                      objt.hash = hash;
-                     objt.nonce = nonce;
-                     objt.fromaddress = $scope.account.address;
-                     objt.toaddress ="0x0000000000000000000000000000000000000065";
-                     objt.value = $scope.toAmount;
-                     objt.gas = $scope.gasLimit;
-                     objt.gasPrice = gasPrice;
-                     objt.chainId = $scope.chain.id;
-                     objt.data = $scope.data;
-                     objt.chainName = $scope.chain.name;
-                     addTransaction(objt).then(function(aobj) {
+                     objt.fromaddress = $scope.account;
+                     objt.chainName = $scope.newChainId;
+                     objt.value=$scope.minDepositAmount;
+                     createChildChain(objt).then(function(aobj) {
                          if (aobj.result == "success") {
-                             queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
+                             queryTransactionChildList($scope.account.address, 8).then(function(robj) {
                                  $scope.transactionList = robj.data;
                                  $scope.$apply();
                              })

@@ -356,3 +356,37 @@ function updateCancelDelegateStatus(id) {
         })
     });
 }
+
+/*
+   save createChildChain record
+ */
+function createChildChain(obj) {
+    console.log(obj)
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,8,obj.chainName,0,new Date(),obj.value];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save addTransaction error:", e);
+        })
+    });
+}
+
+/*
+ query transactions
+ */
+
+function queryTransactionChildList(address,type) {
+    return new Promise(function (accept,reject) {
+        var sql = "select hash,toaddress,value,chainName,fromaddress from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
+        var array = [type,address]
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
