@@ -37,7 +37,7 @@
             var keyWord = key ? key : $scope.key;
             var currentId = angular.copy($scope.chainId)
             $scope.chainId = chain ? chain : currentId
-
+            $scope.key = keyWord;
             var resultObj = {};
 
             loading();
