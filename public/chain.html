@@ -108,7 +108,7 @@
                                         <tr>
                                             <th>Chain</th>
                                             <th>Hash</th>
-                                            <th>To</th>
+                                            <th>From</th>
                                             <th>Value</th>
                                             <th>Operation</th>
                                         </tr>
@@ -117,7 +117,7 @@
                                         <tr ng-repeat="item in transactionList">
                                             <td ng-bind="item.chainName"></td>
                                             <td ng-bind="cutWords(item.hash)"></td>
-                                            <td ng-bind="item.toaddress"></td>
+                                            <td ng-bind="item.fromaddress"></td>
                                             <td ng-bind="item.value+' PI'"></td>
                                             <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
                                         </tr>
