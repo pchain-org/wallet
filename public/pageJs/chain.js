@@ -192,7 +192,7 @@
                      successNotify(html);
                      var objt = {};
                      objt.hash = hash;
-                     objt.fromaddress = $scope.account;
+                     objt.fromaddress = $scope.account.address;
                      objt.chainName = $scope.newChainId;
                      objt.value=$scope.minDepositAmount;
                      createChildChain(objt).then(function(aobj) {

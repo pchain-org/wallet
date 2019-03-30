@@ -361,7 +361,6 @@ function updateCancelDelegateStatus(id) {
    save createChildChain record
  */
 function createChildChain(obj) {
-    console.log(obj)
     return new Promise(function (accept,reject) {
         var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
         var array = [null, obj.hash, obj.fromaddress,8,obj.chainName,0,new Date(),obj.value];
