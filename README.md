@@ -40,5 +40,5 @@ $ yarn packager:win  #windows
 
 The data folder for Pchain wallet depends on your operating system:
 
-- Windows `%APPDATA%\pwallet`
-- macOS `~/Library/Application\ Support/pwallet`
+- Windows `%APPDATA%\piwallet`
+- macOS `~/Library/Application\ Support/piwallet`
