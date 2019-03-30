@@ -302,7 +302,7 @@
                  if (res.data.result == "success") {
                      $('#transaction').modal('hide');
                      var hash = res.data.data;
-                     var url = "index.html?key=" + hash + "&chain=" + $scope.chain;
+                     var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
                      var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                      successNotify(html);
                      var objt = {};
