@@ -7,7 +7,6 @@ var sqlietDb = require("../sqlite3/db");
 var Promise = require("bluebird");
 const path = require("path");
 function importAccount (privateKey,address) {
-    console.log(address)
     var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
         queryAddressExists(address).then(function (data) {
@@ -125,7 +124,7 @@ function queryTransactionList(address,chainId) {
 
 function queryMultiChainTxList(address,chainId) {
     return new Promise(function (accept,reject) {
-        var sql = "SELECT a.id,a.fromaddress,a.toaddress ,a.`value` from tb_transaction a where a.pid=0 and a.chainid=? and a.type=2 and a.id in(select b.pid from tb_transaction b where b.fromaddress=? and a.id =b.pid) ORDER BY id desc limit 10;";
+        var sql = "SELECT a.id,a.fromaddress,a.toaddress ,a.`value`,a.chainId from tb_transaction a where a.pid=0 and a.chainid=? and a.type=2 and a.id in(select b.pid from tb_transaction b where b.fromaddress=? and a.id =b.pid) ORDER BY id desc limit 10;";
         var array = [chainId,address]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);

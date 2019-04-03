@@ -190,6 +190,7 @@
                                                                 <td ng-bind="cutWords( item.hash)"></td>
                                                                 <td ng-if="item.status==0"><button ng-click="resendTx(item.id,item.signData,item.chainId,$index)" class="badge badge-info radiusBtn">Resend</button></td>
                                                                 <td ng-if="item.status==1"><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                                                <td ng-if="item.status==404"><button ng-click="showPasswordArea(item)" class="badge badge-info radiusBtn">Resend</button></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -476,6 +477,51 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" style="margin:4px auto;" ng-disabled="!nonceFlag" ng-click="sendTx()">
                         Make transaction
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- resend  transaction -->
+    <div class="modal fade" id="resendTransaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title block text-center">
+                        Resend Cross-Chain Transaction 
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Address</span>
+                            <div class="form-control" ng-bind="account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">From Chain</span>
+                            <div class="form-control" ng-bind="currentResendSecondTx.fromChainName"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">To Chain</span>
+                            <div class="form-control" ng-bind="currentResendSecondTx.chainName"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Amount to send</span>
+                            <div class="form-control" ng-bind="currentResendSecondTx.toAmount+' PI'"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Nonce</span>
+                            <div class="form-control" ng-bind="nonce2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" style="margin:4px auto;" ng-disabled="!nonceFlag" ng-click="resendSecondTx()">
+                        Resend transaction
                     </button>
                 </div>
             </div>
