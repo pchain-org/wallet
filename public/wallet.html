@@ -188,7 +188,6 @@
                                                                 <td ng-bind="item.chainName"></td>
                                                                 <td ng-bind="item.fromaddress"></td>
                                                                 <td ng-bind="cutWords( item.hash)"></td>
-                                                                <td ng-if="item.status==0"><button ng-click="resendTx(item.id,item.signData,item.chainId,$index)" class="badge badge-info radiusBtn">Resend</button></td>
                                                                 <td ng-if="item.status==1"><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
                                                                 <td ng-if="item.status==404"><button ng-click="showPasswordArea(item)" class="badge badge-info radiusBtn">Resend</button></td>
                                                             </tr>

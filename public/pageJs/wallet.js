@@ -536,6 +536,7 @@
 
         $scope.confirmMainToChild = function(depositeHash, pid, flag,num) {
             let childChainId = "child_" + (Number($scope.crossChain.id) - 1);
+
             if($scope.pwdFormtype == 2){
                 var secondChain = angular.copy($scope.currentResendSecondTx.chainId);
                 childChainId = "child_" + ( secondChain- 1);
@@ -546,30 +547,13 @@
 
             if(num>30){
                 if (flag) {
-                    var objt = {};
-                    objt.signData = signData;
-                    objt.nonce = $scope.nonce;
-                    objt.fromaddress = $scope.account.address;
-                    objt.value = $scope.toAmount;
-                    objt.gas = $scope.gasLimit;
-                    objt.gasPrice = $scope.gasLimit;
-                    objt.chainId = $scope.chain.id;
-                    objt.chainName = $scope.chain.name;
-                    objt.crossChainId = $scope.crossChain.id;
-                    objt.crossChainName = $scope.crossChain.name;
-                    objt.status=0;
-                    objt.pid = pid;
-                    saveMultiChainChild3(objt).then(function(aobj) {
-                        if (aobj.result == "success") {
-                            removeLoading();
-                            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
-                                $scope.txList = data.data;
-                                $scope.showTxDetail(pid,0);
-                                $scope.$apply();
-                                $('#transaction').modal('hide');
-                                swal("Error","Trading congestion, please click resend","error");
-                            })
-                        }
+                    removeLoading();
+                    queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
+                        $scope.txList = data.data;
+                        $scope.showTxDetail(pid,0);
+                        $scope.$apply();
+                        $('#transaction').modal('hide');
+                        swal("Error","Trading congestion, please click resend","error");
                     })
                 }
                 return;
@@ -704,31 +688,14 @@
             var signData = signTx($scope.currentPrivateKey, signRawObj);
 
             if(num>30){
-                    var objt = {};
-                    objt.signData = signData;
-                    objt.nonce = $scope.nonce;
-                    objt.fromaddress = $scope.account.address;
-                    objt.value = $scope.toAmount;
-                    objt.gas = $scope.gasLimit;
-                    objt.gasPrice = $scope.gasLimit;
-                    objt.chainId = $scope.chain.id;
-                    objt.chainName = $scope.chain.name;
-                    objt.crossChainId = $scope.crossChain.id;
-                    objt.crossChainName = $scope.crossChain.name;
-                    objt.status=0;
-                    objt.pid = pid;
-                    saveMultiChainChild3(objt).then(function(aobj) {
-                        if (aobj.result == "success") {
-                            removeLoading();
-                            queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
-                                $scope.txList = data.data;
-                                $scope.showTxDetail(pid,0);
-                                $scope.$apply();
-                                $('#transaction').modal('hide');
-                                swal("Error","Trading congestion, please click resend","error");
-                            })
-                        }
-                    })
+                removeLoading();
+                queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
+                    $scope.txList = data.data;
+                    $scope.showTxDetail(pid,0);
+                    $scope.$apply();
+                    $('#transaction').modal('hide');
+                    swal("Error","Trading congestion, please click resend","error");
+                })
                 return;
             }
             var obj2 = {};
@@ -803,47 +770,6 @@
          return result;
      }
 
-     $scope.resendTx= function(id,signData,chainId,index) {
-         loading();
-         var obj2 = {};
-             obj2.signData = signData;
-             obj2.childId = Number(chainId);
-            if(chainId==0){
-                obj2.chainId=$scope.txList[index].txChildList[0].chainId;
-            }
-         var url = APIHost + "/sendTx";
-         $http({
-             method: 'POST',
-             url: url,
-             data: obj2
-         }).then(function successCallback(res) {
-             removeLoading();
-             if (res.data.result == "success") {
-                 var hash = res.data.data;
-                 var url = "index.html?key=" + hash + "&chain=" + chainId;
-                 var html = '<a href="' + url + '">Transaction hash:' + hash + '</a>';
-                 successNotify(html);
-                 //child>main
-                     var objt = {};
-                     objt.hash = res.data.data;
-                     objt.id =id;
-                     objt.status=1;
-                    updateMultiChainChild3(objt).then(function(aobj) {
-                         if (aobj.result == "success") {
-                             queryMultiChainTxList($scope.account.address, $scope.chain.id).then(function(data) {
-                                 $scope.txList = data.data;
-                                 $scope.$apply();
-                             })
-                         }
-                     })
-             } else {
-                 swal("Error",res.data.error,"error");
-             }
-
-         }, function errorCallback(res) {
-             swal("Error","Internet error, please refresh the page","error");
-         });
-     }
 
         $scope.keystorePath = "";
         $scope.keystoreJson;
