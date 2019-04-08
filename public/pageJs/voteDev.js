@@ -22,7 +22,6 @@
 
         web3Util.pi.getBlockNumber((err,result)=>{
             if(!err){
-                console.log(result)
                 $scope.currentBlockNumber = result;
                 $scope.$apply();
             }else{
