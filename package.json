@@ -1,15 +1,15 @@
 {
   "name": "piwallet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "pchain wallet ",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build:mac": "./node_modules/.bin/electron-rebuild",
     "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
-    "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.1 --overwrite --icon=public/img/logo.hqx ",
-    "packager:win": "electron-packager ./ PIWallet --platform=win32 --arch=x64 --architecture=x86 --out=./app --asar --app-version 1.0.1 --overwrite --icon=public/img/logo.ico",
-    "packager:liunx": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.1 --overwrite"
+    "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.2 --overwrite --icon=public/img/logo.hqx ",
+    "packager:win": "electron-packager ./ PIWallet --platform=win32 --arch=x64 --architecture=x86 --out=./app --asar --app-version 1.0.2 --overwrite --icon=public/img/logo.ico",
+    "packager:liunx": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.2 --overwrite"
   },
   "keywords": [
     "pchain wallet"
@@ -28,7 +28,7 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.4",
     "pchainjs-tx": "^1.0.8",
-    "pweb3": "^1.2.0",
+    "pweb3": "^1.2.1",
     "sqlite3": "^4.0.4",
     "txdata": "^1.0.3"
   },
