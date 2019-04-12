@@ -388,3 +388,17 @@ function queryTransactionChildList(address,type) {
         })
     });
 }
+
+
+function addSetBlockReward(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,9,obj.chainName,0,new Date(),obj.value];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save addTransaction error:", e);
+        })
+    });
+}

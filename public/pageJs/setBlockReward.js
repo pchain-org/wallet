@@ -30,7 +30,7 @@
              showPopup("Internet error, please refresh the page");
          });
 
-         queryTransactionChildList($scope.account.address, 8).then(function(robj) {
+         queryTransactionChildList($scope.account.address, 9).then(function(robj) {
              $scope.transactionList = robj.data;
              $scope.$apply();
          })
@@ -203,11 +203,12 @@
                      var objt = {};
                      objt.hash = hash;
                      objt.fromaddress = $scope.account.address;
-                     objt.chainName = $scope.newChainId;
-                     objt.value=$scope.minDepositAmount;
-                     createChildChain(objt).then(function(aobj) {
+                     objt.chainName = $scope.chain.chainId;
+                     objt.value=$scope.rewardAmount;
+                     console.log(objt)
+                     addSetBlockReward(objt).then(function(aobj) {
                          if (aobj.result == "success") {
-                             queryTransactionChildList($scope.account.address, 8).then(function(robj) {
+                             queryTransactionChildList($scope.account.address, 9).then(function(robj) {
                                  $scope.transactionList = robj.data;
                                  $scope.$apply();
                              })
