@@ -262,15 +262,17 @@
             obj.address = priToAddress(newPrivateKey);
 
             var enPri = AESEncrypt(newPrivateKey,$scope.password2);
+            $scope.password2 = "";
+            $scope.repeatPassword2 = "";
+            $scope.newPrivate = "";
+            newPrivateKey = "";
 
             importAccount(enPri,obj.address).then(function (resObj) {
                 if(resObj.result=="success"){
                     $scope.accountList.push(obj);
                     showPopup("Import Successfully",1000);
                     $('#importAccount').modal('hide');
-                    $scope.password2 = "";
-                    $scope.repeatPassword2 = "";
-                    $scope.newPrivate = "";
+                    
                     if($scope.accountList.length> 0){
                         $scope.account = $scope.accountList[$scope.accountList.length-1];
                     }
@@ -800,15 +802,14 @@
                 const keystoreInstance = eWallet.fromV3($scope.keystoreJson,$scope.keystorePassword);
                 let newPrivateKey = keystoreInstance.getPrivateKey().toString("hex");
                 var enPri = AESEncrypt(newPrivateKey,$scope.keystorePassword);
+                $scope.keystorePassword = "";
 
                 importAccount(enPri,$scope.keystoreJson.address).then(function (resObj) {
                     if(resObj.result=="success"){
                         showPopup("Import Keystore Successfully",1000);
-                        $('#importKeystore').modal('hide');
-                        $scope.keystorePassword = "";
+                        $('#importKeystore').modal('hide');                      
                         $scope.keystoreJson = "";
                         $scope.keystorePath = "";
-
                         var obj = {};
                         obj.address = priToAddress(newPrivateKey);
                         $scope.accountList.push(obj);
