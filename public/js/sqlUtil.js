@@ -361,8 +361,8 @@ function updateCancelDelegateStatus(id) {
  */
 function createChildChain(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
-        var array = [null, obj.hash, obj.fromaddress,8,obj.chainName,0,new Date(),obj.value];
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainId,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,8,obj.chainId,obj.chainName,0,new Date(),obj.value];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -378,7 +378,7 @@ function createChildChain(obj) {
 
 function queryTransactionChildList(address,type) {
     return new Promise(function (accept,reject) {
-        var sql = "select hash,toaddress,value,chainName,fromaddress from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
+        var sql = "select hash,toaddress,value,chainId,chainName,fromaddress from tb_transaction where type =? and fromaddress=? order by id desc limit 10";
         var array = [type,address]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -392,8 +392,8 @@ function queryTransactionChildList(address,type) {
 
 function addSetBlockReward(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
-        var array = [null, obj.hash, obj.fromaddress,9,obj.chainName,0,new Date(),obj.value];
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,chainId,chainName,pid,createTime,value) VALUES (?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,9,obj.chainId,obj.chainName,0,new Date(),obj.value];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {

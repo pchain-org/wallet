@@ -654,7 +654,8 @@
                         objt.crossChainName = $scope.crossChain.name;
                         addMultiChainTransaction(objt).then(function(aobj) {
                             if (aobj.result == "success") {
-                                $scope.checkReceipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false,1);
+                                const type=2;
+                                $scope.checkReceipt(depositeHash, $scope.chain.id, type, amount, aobj.data, false,1);
                             }
                         })
                     } else {

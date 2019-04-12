@@ -202,6 +202,7 @@
                      var objt = {};
                      objt.hash = hash;
                      objt.fromaddress = $scope.account.address;
+                     obj.chainId = $scope.chain.id;
                      objt.chainName = $scope.chain.chainId;
                      objt.value=$scope.rewardAmount;
                      console.log(objt)
