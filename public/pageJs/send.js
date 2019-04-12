@@ -44,10 +44,10 @@
          let b = new BigNumber($scope.balance);
          let gl = new BigNumber($scope.gasLimit);
          let fee = gl.times($scope.gasPrice * Math.pow(10, 9)).dividedBy(Math.pow(10, 18));
-         if(b.gt(fee)){
-            $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
-         }else{
-            $scope.maxSendAmount = new BigNumber(0);
+         if (b.gt(fee)) {
+             $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
+         } else {
+             $scope.maxSendAmount = new BigNumber(0);
          }
      }
 
@@ -161,7 +161,7 @@
 
      $scope.showEnterPwd = function() {
          $scope.getMaxSendAmount();
-         if ($scope.maxSendAmount.lt( new BigNumber($scope.toAmount) )) {
+         if ($scope.maxSendAmount.lt(new BigNumber($scope.toAmount))) {
              let tips1 = "Insufficient Balance ";
              let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
              swal(tips1, tips2, "error");
@@ -186,14 +186,15 @@
      $scope.sendTx = function() {
          try {
              const gasPrice = $scope.gasPrice * Math.pow(10, 9);
-             const amount = web3.toWei($scope.toAmount, "ether"); 
+             const amount = web3.toWei($scope.toAmount, "ether");
              var nonce = $scope.nonce;
              var signRawObj = initSignRawPAI($scope.toAddress, amount, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
 
              if ($scope.data) signRawObj.data = $scope.data;
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
-
+             $scope.currentPrivateKey = "";
+             
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;

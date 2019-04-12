@@ -256,8 +256,8 @@
      }
 
     $scope.getPlayLoad = function(abi, funName, paramArr) {
-            var payloadData = TxData(abi, funName, paramArr);
-            return payloadData;
+        var playLoadData = TxData(abi, funName, paramArr);
+        return playLoadData;
     }
 
      $scope.sendTx = function() {
@@ -270,26 +270,24 @@
              var signRawObj;
              if($scope.delegateType == 0){
                  //delegate
-                 // amount = web3.toWei($scope.toAmount, "ether");
                  amount= "0x"+decimalToHex(web3.toWei($scope.toAmount,'ether'));
                 funcData = $scope.getPlayLoad(DelegateABI, "Delegate", [$scope.toAddress]);
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
              }else if($scope.delegateType == 1){
                 //cancle delegate
-                // amount = web3.toWei($scope.cancleAmount, "ether");
                  amount= "0x"+decimalToHex(web3.toWei($scope.cancleAmount,'ether'));
                 funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate,amount]);
                 amount = 0;
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
              }
-             // console.log(signRawObj)
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
+             $scope.currentPrivateKey = "";
 
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
-             // console.log(obj)
+            
              loading();
              var url = APIHost + "/sendTx";
 

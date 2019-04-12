@@ -138,8 +138,8 @@
      }
 
     $scope.getPlayLoad = function(abi, funName, paramArr) {
-            var payloadData = TxData(abi, funName, paramArr);
-            return payloadData;
+        var playLoadData = TxData(abi, funName, paramArr);
+        return playLoadData;
     }
 
 
@@ -169,13 +169,12 @@
              var signRawObj = initSignBuildInContract($scope.data, nonce, gasPrice, $scope.gasLimit,"pchain", amount);
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
-             console.log(signRawObj);
-             console.log(signData);
+             $scope.currentPrivateKey = "";
 
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
-             console.log(obj);
+
              loading();
              var url = APIHost + "/sendTx";
              $http({

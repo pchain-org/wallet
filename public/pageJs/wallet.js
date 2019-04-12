@@ -388,7 +388,7 @@
                     if (type == 2) {
                         setTimeout(function() {
                             num++;
-                            $scope.checkChildTxInMaiChain(txHash, chainId, childToMainAmount, pid, flag,num);
+                            $scope.checkChildTxInMainChain(txHash, chainId, childToMainAmount, pid, flag,num);
                         }, 2000);
                     }
 
@@ -405,7 +405,7 @@
             });
         }
 
-        $scope.checkChildTxInMaiChain = function(txHash, chainId, childToMainAmount, pid,flag,num) {
+        $scope.checkChildTxInMainChain = function(txHash, chainId, childToMainAmount, pid,flag,num) {
             var obj = {};
             obj.txHash = txHash;
             obj.chainId = chainId;
@@ -419,7 +419,7 @@
                     if(num<30){
                         num++;
                         setTimeout(function() {
-                            $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,num);
+                            $scope.checkChildTxInMainChain(txHash,chainId,childToMainAmount,pid,num);
                         }, 2000);
                     }else{
                         num++;
@@ -432,7 +432,7 @@
             }, function errorCallback(res) {
                 setTimeout(function() {
                     num++;
-                    $scope.checkChildTxInMaiChain(txHash,chainId,childToMainAmount,pid,num);
+                    $scope.checkChildTxInMainChain(txHash,chainId,childToMainAmount,pid,num);
                 }, 2000);
 
             });
@@ -474,8 +474,8 @@
         }
 
         $scope.getPlayLoad = function(abi, funName, paramArr) {
-            var payloadData = TxData(abi, funName, paramArr);
-            return payloadData;
+            var playLoadData = TxData(abi, funName, paramArr);
+            return playLoadData;
         }
 
 
@@ -544,6 +544,7 @@
             var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, childChainId);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
+            $scope.currentPrivateKey = "";
 
             if(num>30){
                 if (flag) {
@@ -686,6 +687,7 @@
             var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromMainChain", [childChainId, childToMainAmount, depositeHash]);
             var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, "pchain");
             var signData = signTx($scope.currentPrivateKey, signRawObj);
+            $scope.currentPrivateKey = "";
 
             if(num>30){
                 removeLoading();

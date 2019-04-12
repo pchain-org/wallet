@@ -131,9 +131,8 @@
          }
 
          $scope.getPlayLoad = function(abi, funName, paramArr) {
-
-             var payloadData = TxData(abi, funName, paramArr);
-             return payloadData;
+            var playLoadData = TxData(abi, funName, paramArr);
+            return playLoadData;
          }
 
          $scope.pwdFormtype = 0;
@@ -312,19 +311,16 @@
                  const gasPrice = $scope.gasPrice * Math.pow(10, 9);
 
                  const amount = web3.toWei($scope.amount, "ether");
-                 // console.log(amount);
 
                  var signRawObj = initSignRawContract($scope.contractAddr, $scope.byteCode, $scope.nonce, gasPrice, $scope.gasLimit, amount, $scope.chain.chainId);
-                 console.log(signRawObj);
 
                  var signData = signTx($scope.currentPrivateKey, signRawObj);
-
-                 console.log(signData);
+                 $scope.currentPrivateKey = "";
 
                  var obj = {};
                  obj.chainId = $scope.chain.id;
                  obj.signData = signData;
-                 //console.log(obj);
+
                  var url = APIHost + "/sendTx";
                  loading();
                  $http({
