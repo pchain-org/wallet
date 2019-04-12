@@ -168,7 +168,7 @@ class Wallet {
 		console.log(err)
 		const options = {
 		    type: 'error',
-		    title: 'Pchain Wallet',
+		    title: 'PCHAIN Wallet',
 		    message: err.toString()
 		}
 		dialog.showMessageBox(options);
