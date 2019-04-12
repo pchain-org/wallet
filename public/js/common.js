@@ -349,4 +349,20 @@ var ChainABI = [{
             }
         ],
         "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "SetBlockReward",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "chainId",
+                "type": "string"
+            },
+            {
+                "name": "reward",
+                "type": "uint256"
+            }
+        ],
+        "outputs": []
     }];

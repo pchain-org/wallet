@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Pchain Wallet">
+    <title>PCHAIN Wallet</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+                <p>Please wait...</p>
+            </div>
+        </div>
+        <div ng-include="'./head.html'"></div>
+        <section class="content">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card mycard">
+                            <div class="body block-header">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                        <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
+                                        <ul class="breadcrumb p-l-0 p-b-0 ">
+                                            <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                                            <li class="breadcrumb-item active">Chain</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-xl-7 col-lg-7 col-md-6">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Address</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="selectAccount()"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 my-input-group fadeInput">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">CHAIN</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList" ng-change="getBalance()"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Balance</span>
+                                    <div class="form-control">
+                                        <div class="value" ng-bind="balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row clearfix" ng-show="accountList.length > 0" ng-cloak>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Operations</strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 text-center">
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" data-target="#blockRewardModal"  >Set Block Reward</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Latest 10 transaction records</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionList.length > 0" ng-cloak>
+                                    <thead>
+                                        <tr>
+                                            <th>Chain Name</th>
+                                            <th>Hash</th>
+                                            <th>From</th>
+                                            <th>Value</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in transactionList">
+                                            <td ng-bind="item.chainName"></td>
+                                            <td ng-bind="cutWords(item.hash)"></td>
+                                            <td ng-bind="item.fromaddress"></td>
+                                            <td ng-bind="item.value+' PI'"></td>
+                                            <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center" ng-show="transactionList.length == 0" ng-cloak>
+                                    <h3>No Records</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        <!-- enterPassword -->
+        <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
+                            Please Enter Password
+                    </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="passwordForm" novalidate>
+                            <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                                <span class="input-group-addon">Password</span>
+                                <input type="password" placeholder="" class="form-control" ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                    Confirm
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Chain Modal -->
+        <div class="modal fade" id="blockRewardModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
+                            Set Block Reward
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="blockRewardForm" novalidate>
+                            <div class="input-group marginTop10">
+                                <span class="input-group-addon">From</span>
+                                <div class="form-control" ng-bind="account.address"></div>
+                            </div>
+                            <div class="input-group" >
+                                <span class="input-group-addon">ChainId</span>
+                                <div class="form-control" ng-bind="chain.chainId"></div>
+                            </div>
+                            <div class="input-group" ng-class="(blockRewardForm.rewardAmount.$invalid && blockRewardForm.rewardAmount.$dirty)?'has-danger':( blockRewardForm.rewardAmount.$valid?'has-success':'') ">
+                                <span class="input-group-addon">RewardAmount(PI)</span>
+                                <input type="text"  placeholder="rewardAmount" class="form-control" ng-class="(blockRewardForm.rewardAmount.$invalid && blockRewardForm.rewardAmount.$dirty)?'form-control-danger':(blockRewardForm.rewardAmount.$valid?'form-control-success':'') " name="rewardAmount" ng-model="rewardAmount" ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="blockRewardForm.$invalid " ng-click="showEnterPwd()">
+                                    SET
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- confirm transaction -->
+    <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Set Block Reward
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">From Address</span>
+                            <div class="form-control" ng-bind="account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Chain ID</span>
+                            <div class="form-control" ng-bind="chain.chainId"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Fee</span>
+                            <div class="form-control" ng-bind="txFee+' PI'"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Nonce</span>
+                            <div class="form-control" ng-bind="nonce"></div>
+                        </div>
+                        <div class="input-group marginTop10" ng-show="data" ng-cloak>
+                            <b>Input Data</b><br>
+                            <div class="textArea" ng-bind="data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <div class="block text-center">
+                        <button type="button" class="btn btn-primary" ng-disabled="!nonceFlag" ng-click="sendTx()">
+                            Send Transaction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    window.$ = window.jQuery = require('jquery');
+    </script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/sqlUtil.js"></script>
+    <script type="text/javascript" src="pageJs/setBlockReward.js"></script>
+</body>
+
+</html>
