@@ -373,7 +373,7 @@
             }
         }
 
-        $scope.checkRecipt = function(txHash, chainId, type, childToMainAmount, pid, flag,num) {
+        $scope.checkReceipt = function(txHash, chainId, type, childToMainAmount, pid, flag,num) {
 
             var obj = {};
             obj.txHash = txHash;
@@ -395,7 +395,7 @@
                 } else {
                     setTimeout(function() {
                         num++;
-                        $scope.checkRecipt(txHash, chainId, type, childToMainAmount, pid, flag,num);
+                        $scope.checkReceipt(txHash, chainId, type, childToMainAmount, pid, flag,num);
                     }, 2000);
                 }
 
@@ -654,7 +654,7 @@
                         objt.crossChainName = $scope.crossChain.name;
                         addMultiChainTransaction(objt).then(function(aobj) {
                             if (aobj.result == "success") {
-                                $scope.checkRecipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false,1);
+                                $scope.checkReceipt(depositeHash, $scope.chain.id, 2, amount, aobj.data, false,1);
                             }
                         })
                     } else {
