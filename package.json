@@ -5,11 +5,12 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "build:linux": "./node_modules/.bin/electron-rebuild",
     "build:mac": "./node_modules/.bin/electron-rebuild",
     "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
     "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.2 --overwrite --icon=public/img/logo.hqx ",
     "packager:win": "electron-packager ./ PIWallet --platform=win32 --arch=x64 --architecture=x86 --out=./app --asar --app-version 1.0.2 --overwrite --icon=public/img/logo.ico",
-    "packager:liunx": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.2 --overwrite"
+    "packager:linux": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.2 --overwrite"
   },
   "keywords": [
     "pchain wallet"

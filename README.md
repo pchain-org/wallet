@@ -8,7 +8,7 @@ To run PCHAIN Wallet in development you need:
 - [Yarn](https://yarnpkg.com/) package manager
 
 
-### Initialization
+### Installation
 
 Now you're ready to initialize PCHAIN Wallet for development:
 
@@ -16,8 +16,16 @@ Now you're ready to initialize PCHAIN Wallet for development:
 $ git clone https://github.com/pchain-org/wallet.git
 $ cd wallet
 $ yarn
-$ yarn build:mac  #mac
-$ yarn build:win   #windows
+```
+
+### Post-installation
+
+To build libraries for your specific platform, use one of the following flags:
+
+```bash
+$ yarn build:linux #for Linux
+$ yarn build:mac   #for Mac
+$ yarn build:win   #for Windows
 ```
 
 ### Run PCHAIN Wallet
@@ -26,14 +34,14 @@ $ yarn build:win   #windows
 $ yarn start
 ```
 
-
 ### Generate packages
 
-To build binaries for specific platforms, use the following flags:
+To build binaries for your specific platform, use one of the following flags:
 
 ```bash
-$ yarn packager:mac  #mac
-$ yarn packager:win  #windows
+$ yarn packager:linux #for Linux
+$ yarn packager:mac   #for Mac
+$ yarn packager:win   #for Windows
 ```
 
 ### Config folder
