@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "build:linux": "./node_modules/.bin/electron-rebuild",
     "build:mac": "./node_modules/.bin/electron-rebuild",
     "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
     "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.2 --overwrite --icon=public/img/logo.hqx ",
