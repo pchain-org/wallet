@@ -104,7 +104,7 @@
         jQuery('#transaction').modal("show");
      }
 
-     $scope.unlockDuration = 0;
+     $scope.unlockDuration = 300;
      $scope.unlockAccount = function(){
         web3Util.personal.unlockAccount($scope.account,$scope.accountPwd1,$scope.unlockDuration,(err,result)=>{
             console.log(err,result);

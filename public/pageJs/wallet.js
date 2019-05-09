@@ -538,13 +538,14 @@
 
         $scope.confirmMainToChild = function(depositeHash, pid, flag,num) {
             let childChainId = "child_" + (Number($scope.crossChain.id) - 1);
+            const gasPrice = $scope.gasPrice * Math.pow(10, 9);
 
             if($scope.pwdFormtype == 2){
                 var secondChain = angular.copy($scope.currentResendSecondTx.chainId);
                 childChainId = "child_" + ( secondChain- 1);
             }
             var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
-            var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, childChainId);
+            var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, gasPrice, 0, childChainId);
             var signData = signTx($scope.currentPrivateKey, signRawObj);
             $scope.currentPrivateKey = "";
 
@@ -682,13 +683,14 @@
         }
 
         $scope.confirmChildToMain = function(depositeHash, childToMainAmount, pid,num) {
+            const gasPrice = $scope.gasPrice * Math.pow(10, 9);
             let childChainId = "child_" + ($scope.chain.id - 1);
             if($scope.pwdFormtype == 2){
                 var secondChain = angular.copy($scope.currentResendSecondTx.fromChainId);
                 childChainId = "child_" + ( secondChain- 1);
             }
             var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromMainChain", [childChainId, childToMainAmount, depositeHash]);
-            var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, 1000000000, 0, "pchain");
+            var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, gasPrice, 0, "pchain");
             var signData = signTx($scope.currentPrivateKey, signRawObj);
             $scope.currentPrivateKey = "";
 
@@ -713,6 +715,7 @@
             if($scope.pwdFormtype == 2){
                 obj2.childId = Number($scope.currentResendSecondTx.fromChainId);
             }
+            console.log(obj2)
             var url = APIHost + "/sendTx";
             $http({
                 method: 'POST',

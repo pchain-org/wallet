@@ -1,43 +1,26 @@
  angularApp.controller('myCtrl', function($scope, $http) {
 
-    var web3 = new Web3();
+
      $scope.gasLimit = 21000;
      $scope.gasPrice = 10;
      $scope.nonce = 0;
      $scope.balance = 0;
      $scope.maxSendAmount = 0;
+     $scope.voteid = 0;
+     $scope.toAmount=0;
+     $scope.toAddress="0xf81d05034ffc3c13af98c4293146802b50bc7f4f";
 
-     let DefaultDelegatedListOption = {"address":"CUSTOM"};
 
-
-     $scope.selectCandidate = function(){
-         queryCancelDelegateList($scope.account.address,7).then(function(robj) {
-             let delegatedList = robj.data;
-             $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
-             $scope.currentCandidate = DefaultDelegatedListOption;
-             $scope.$apply();
-         })
-         if($scope.currentCandidate != DefaultDelegatedListOption){
-             $scope.cancleCandidate = $scope.currentCandidate.address;
-             $scope.cancleAmount = $scope.currentCandidate.amount;
-             $scope.cancleId=$scope.currentCandidate.id;
-         }else{
-             $scope.cancleCandidate = "";
-             $scope.cancleAmount = 0;
-         }
-     }
 
      $scope.showAddData = function() {
          $scope.addDataFlag = true;
      }
-
-     $scope.fullBalance;
      $scope.getBalance = function() {
          $scope.spin = "myIconSpin";
          var obj = {};
          obj.chainId = $scope.chain.id;
          obj.address = $scope.account.address;
-         var url = APIHost + "/getFullBalance";
+         var url = APIHost + "/getBalance";
          $http({
              method: 'POST',
              url: url,
@@ -46,9 +29,7 @@
              $scope.spin = "";
              removePageLoader();
              if (res.data.result == "success") {
-                $scope.fullBalance = res.data.data;
-                 $scope.balance = web3.fromWei($scope.fullBalance.balance,'ether');
-                 $scope.delegateBalance = web3.fromWei($scope.fullBalance.total_delegateBalance,'ether');
+                 $scope.balance = res.data.data;
                  $scope.getMaxSendAmount();
              } else {
                  showPopup(res.data.error, 3000);
@@ -58,42 +39,20 @@
              showPopup("Internet error, please refresh the page");
          });
 
-         queryCancelDelegateList($scope.account.address,7).then(function(robj) {
-             let delegatedList = robj.data;
-             $scope.delegatedList = _.concat(DefaultDelegatedListOption,delegatedList);
-             $scope.currentCandidate = DefaultDelegatedListOption;
-             $scope.$apply();
-         })
-
-         queryTransactionDelegateList($scope.account.address,7).then(function(robj) {
-             $scope.delegateList2 = robj.data;
-             $scope.$apply();
-         })
-
-         $scope.getRecommendList();
-
-     }
-
-
-
-
-     $scope.selectRecommend = function(){
-         if($scope.recommendCandidate != DefaultDelegatedListOption){
-             $scope.toAddress = $scope.recommendCandidate.address;
-         }else{
-             $scope.toAddress = "";
-             $scope.toAmount = 0;
-         }
+         // queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
+         //     $scope.transactionList = robj.data;
+         //     $scope.$apply();
+         // })
      }
 
      $scope.getMaxSendAmount = function() {
          let b = new BigNumber($scope.balance);
          let gl = new BigNumber($scope.gasLimit);
          let fee = gl.times($scope.gasPrice * Math.pow(10, 9)).dividedBy(Math.pow(10, 18));
-         if(b.gt(fee)){
-            $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
-         }else{
-            $scope.maxSendAmount = new BigNumber( 0);
+         if (b.gt(fee)) {
+             $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
+         } else {
+             $scope.maxSendAmount = new BigNumber(0);
          }
      }
 
@@ -103,7 +62,6 @@
          var obj = {};
          obj.chainId = $scope.chain.id;
          obj.address = $scope.account.address;
-         //console.log(obj);
          var url = APIHost + "/getNonce";
          $http({
              method: 'POST',
@@ -128,8 +86,7 @@
 
      $scope.chainList = new Array();
      $scope.chainList = [
-         // { name: "Main Chain", id: 0, chainId: "pchain" }
-         { name: "Main Chain", id: 0, chainId: "pchain"}
+         { name: "Main Chain", id: 0, chainId: "pchain" }
      ];
 
      $scope.chain = $scope.chainList[0]
@@ -147,21 +104,19 @@
          console.log(e, "queryChainList error.");
      });
 
+
      $scope.getRecommendList = function() {
          var obj = {};
-         obj.chainId = $scope.chain.id;
-         var url = APIHost + "/getCandidateList";
-         console.log(obj)
+         var url = APIHost + "/getPghList";
          $http({
              method: 'POST',
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res);
+             // console.log(res);
              if (res.data.result == "success") {
-                 let recommendList = res.data.data;
-                 $scope.recommendList = _.concat(DefaultDelegatedListOption,recommendList);
-                 $scope.recommendCandidate = DefaultDelegatedListOption;
+                 $scope.votingList = res.data.data;
+
                  // $scope.$apply();
              } else {
                  showPopup(res.data.message, 3000);
@@ -172,11 +127,32 @@
          });
 
 
+     };
+
+     $scope.savePghVote = function(hash,address) {
+         var obj = {};
+         obj.id=$scope.voteid;
+         obj.hash=hash;
+         obj.fromAddress=address;
+         console.log(obj)
+         var url = APIHost + "/savePghVote";
+         $http({
+             method: 'POST',
+             url: url,
+             data: obj
+         }).then(function successCallback(res) {
+             if (res.data.result == "success") {
+                 $scope.getRecommendList();
+             } else {
+                 showPopup(res.data.message, 3000);
+             }
+
+         }, function errorCallback(res) {
+             showPopup("Internet error, please refresh the page");
+         });
+
+
      }
-
-
-     $scope.getRecommendList();
-
 
      $scope.crossChain = 1;
 
@@ -237,21 +213,45 @@
          $scope.getBalance();
      }
 
+     $scope.showEnterPwd = function(id) {
+         if($scope.balance>=10000){
+                 var obj = {};
+                 obj.fromAddress=$scope.account.address;
+                 var url = APIHost + "/queryAddressVoteNum";
+                 $http({
+                     method: 'POST',
+                     url: url,
+                     data: obj
+                 }).then(function successCallback(res) {
+                     if (res.data.result == "success") {
+                         if(res.data.data<2){
+                             $scope.voteid=id;
+                             $scope.getMaxSendAmount();
+                             if ($scope.maxSendAmount.lt(new BigNumber($scope.toAmount))) {
+                                 let tips1 = "Insufficient Balance ";
+                                 let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
+                                 swal(tips1, tips2, "error");
+                             } else {
+                                 $('#enterPassword').modal('show');
+                             }
+                         }else{
+                             showPopup("Sorry,2 votes per day for one address");
+                         }
+                     } else {
+                         showPopup(res.data.message, 3000);
+                     }
+                 }, function errorCallback(res) {
+                     showPopup("Internet error, please refresh the page");
+                 });
 
-
-     $scope.delegateType;
-     $scope.showEnterPwd = function(type) {
-        $scope.delegateType = type;
-         $scope.getMaxSendAmount();
-         if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
-             let tips1 = "Insufficient Balance ";
-             let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
-             swal(tips1, tips2, "error");
-         } else {
-             $('#enterPassword').modal('show');
+         }else{
+             showPopup("Sorry, balance must be equal or greater than to 10000 PI");
          }
+
+
      }
 
+     var web3 = new Web3();
      var toAmountValue;
      $scope.submit = function() {
          $scope.getNonce();
@@ -265,42 +265,25 @@
 
      }
 
-    $scope.getPlayLoad = function(abi, funName, paramArr) {
-        var playLoadData = TxData(abi, funName, paramArr);
-        return playLoadData;
-    }
-
+     $scope.getRecommendList();
      $scope.sendTx = function() {
-
          try {
              const gasPrice = $scope.gasPrice * Math.pow(10, 9);
-             let amount;           
+             const amount = web3.toWei($scope.toAmount, "ether");
              var nonce = $scope.nonce;
-             var funcData;
-             var signRawObj;
-             if($scope.delegateType == 0){
-                 //delegate
-                 amount= "0x"+decimalToHex(web3.toWei($scope.toAmount,'ether'));
-                funcData = $scope.getPlayLoad(DelegateABI, "Delegate", [$scope.toAddress]);
-                signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
-             }else if($scope.delegateType == 1){
-                //cancle delegate
-                 amount= "0x"+decimalToHex(web3.toWei($scope.cancleAmount,'ether'));
-                funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate,amount]);
-                amount = 0;
-                signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId,amount);
-             }
+             var signRawObj = initSignRawPAI($scope.toAddress, amount, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId);
+
+             if ($scope.data) signRawObj.data = $scope.data;
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
              $scope.currentPrivateKey = "";
-
+             
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
-            
+
              loading();
              var url = APIHost + "/sendTx";
-
              $http({
                  method: 'POST',
                  url: url,
@@ -313,40 +296,37 @@
                      var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
                      var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
                      successNotify(html);
-                     var objt = {};
-
-                     if($scope.delegateType == 0){
-                         objt.hash = hash;
-                         objt.fromaddress = $scope.account.address;
-                         objt.toaddress = $scope.toAddress;
-                         objt.status=0;
-                         objt.value=$scope.toAmount;
-                     }else if($scope.delegateType == 1){
-                         objt.hash = hash;
-                         objt.fromaddress = $scope.account.address;
-                         objt.toaddress = $scope.cancleCandidate;
-                         objt.status=1;
-                         objt.value=$scope.toAmount;
-                         objt.id=$scope.cancleId;
-                     }
-                     createDelegate(objt).then(function(aobj) {
-                         if (aobj.result == "success") {
-                             queryTransactionDelegateList($scope.account.address,7).then(function(robj) {
-                                 $scope.delegateList2 = robj.data;
-                                 $scope.selectCandidate();
-                                 // $scope.$apply();
-                             })
-                         }
-                     })
+                     $scope.savePghVote(hash,$scope.account.address);
+                     // var objt = {};
+                     // objt.hash = hash;
+                     // objt.nonce = nonce;
+                     // objt.fromaddress = $scope.account.address;
+                     // objt.toaddress = $scope.toAddress;
+                     // objt.value = $scope.toAmount;
+                     // objt.gas = $scope.gasLimit;
+                     // objt.gasPrice = gasPrice;
+                     // objt.chainId = $scope.chain.id;
+                     // objt.data = $scope.data;
+                     // objt.chainName = $scope.chain.name;
+                     // addTransaction(objt).then(function(aobj) {
+                     //     if (aobj.result == "success") {
+                     //         queryTransactionList($scope.account.address, $scope.chain.id).then(function(robj) {
+                     //             $scope.transactionList = robj.data;
+                     //             $scope.$apply();
+                     //         })
+                     //     }
+                     // })
                  } else {
                      swal(res.data.error);
                  }
 
              }, function errorCallback(res) {
+                 console.log(res);
                  showPopup("Internet error, please refresh the page");
              });
 
          } catch (e) {
+             console.log(e);
              swal(e.toString());
          }
 
@@ -362,5 +342,5 @@
 
  });
  $(function() {
-     menuActive(5);
+     menuActive(9);
  });
