@@ -107,6 +107,10 @@ p {
 .paddingTopBottom10 {
   padding: 10px 0;
 }
+
+.paddingRight40{
+  padding-right: 40px;
+}
 .wordWrap {
   word-wrap: break-word !important;
 }

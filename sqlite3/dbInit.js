@@ -112,7 +112,12 @@ class DB{
                 }
             }).then((result)=> {
                 if (result) {
-                    resolve("ok")
+                    let sql4 = "CREATE TABLE IF NOT EXISTS tb_erc20_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);";
+                    return self.promiseRun(sql4);
+                }
+            }).then((result)=> {
+                if (result) {
+                    resolve('ok');
                 }
             }).catch((err)=>{
                 console.log("in error",err);

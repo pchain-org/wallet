@@ -146,6 +146,36 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <h2>Next Validators</h2>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="nextValidators.length > 0" ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Power</th>
+                                        <th scope="col">Public Key</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in nextValidators" >
+                                        <td ng-bind="item.address" ng-cloak></td>
+                                        <td ng-bind="item.voting_power" ng-cloak></td>
+                                        <td ng-bind="item.public_key" ng-cloak></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center" ng-show="nextValidators.length == 0" ng-cloak>
+                                    <h3><span ng-bind="err_title"></span>No Records</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

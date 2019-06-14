@@ -28,6 +28,16 @@
                 swal({title:"RPC Error",text:err.toString(),icon:"error"});
             }
         })
+
+        web3Util.tdm.getNextEpochValidators(function(err, result) {
+            if(!err){
+                $scope.nextValidators=result;
+                $scope.$apply();
+            }else{
+                $scope.nextValidators=[];
+                $scope.err_title=err.toString().replace("Error","Notice");
+            }
+        });
      }
 
     $scope.getAccountList = function(){

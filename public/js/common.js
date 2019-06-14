@@ -153,6 +153,24 @@ function signTx(pri, txObj) {
 }
 
 
+function signEthTx(pri, txObj) {
+
+    var Tx = require("ethereumjs-tx");
+
+    var privateKey = new Buffer(pri, 'hex')
+
+    var tx = new Tx(txObj);
+
+    tx.sign(privateKey);
+
+    var serializedTx = tx.serialize();
+
+    var txData = "0x" + serializedTx.toString('hex');
+
+    return txData;
+}
+
+
 function convert(num) {
     var x = new BigNumber(num);
     var s = "0x" + x.toString(16);
@@ -232,7 +250,23 @@ function initSignRawContract(toAddress, data, nonce, gasPrice, gasLimit, amount,
     return rawTx;
 }
 
+
+function initEthSignRawContract(nonce, gasPrice, gasLimit, contract, data) {
+    const rawTx = {
+        nonce: convert(nonce),
+        gasPrice: convert(gasPrice),
+        gasLimit: convert(gasLimit),
+        to: contract,
+        data: data,
+    };
+    return rawTx;
+}
+
 var APIHost = "https://api.pchain.org";
+
+const contractAddress="0xB9bb08AB7E9Fa0A1356bd4A39eC0ca267E03b0b3";
+
+const swapAddr="0x7429f3eca2dca9f12fe0728c2f1ac198dbb64f85";
 
 var crossChainABI = [{
         "type": "function",
@@ -366,3 +400,41 @@ var ChainABI = [{
         ],
         "outputs": []
     }];
+
+
+var balanceABI =[{
+        "constant": true,
+        "inputs": [{
+            "name": "_owner",
+            "type": "address"
+        }],
+        "name": "balanceOf",
+        "outputs": [{
+            "name": "balance",
+            "type": "uint256"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }];
+
+
+var transferABI=[{
+        "constant": false,
+        "inputs": [{
+            "name": "_to",
+            "type": "address"
+        }, {
+            "name": "_value",
+            "type": "uint256"
+        }],
+        "name": "transfer",
+        "outputs": [{
+            "name": "success",
+            "type": "bool"
+        }],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }];
+

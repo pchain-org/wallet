@@ -335,6 +335,53 @@
 
         };
 
+
+        $scope.downloadKeystore = function() {
+            if ($scope.account == undefined) {
+                swal("Error","Please create a wallet address at first","error");
+                return;
+            }
+            queryPrivateKey($scope.account.address).then(function(result) {
+                if (result.result == "success") {
+                    var dePri = AESDecrypt(result.data.privateKey, $scope.keystonePassword);
+                    if (dePri) {
+                        const {dialog} = require('electron').remote
+                        $scope.currentPrivateKey = dePri;
+                        dialog.showOpenDialog({
+                            properties: [
+                                'openDirectory',
+                            ],
+                            filters: [
+                                { name: 'All', extensions: ['*'] },
+                            ]
+                        },function(res){
+                            exportKeystone(res[0],$scope.currentPrivateKey,$scope.keystonePassword).then(function(result) {
+                                console.log(result)
+                                if(result.result=="success"){
+                                    $('#exportKeyStore').modal('hide');
+                                    showPopup("Download Keystore Successfully",2000);
+                                    $scope.currentPrivateKey="";
+                                    $scope.keystonePassword="";
+                                }
+                            }).catch(function (e) {
+                                showPopup(e.error,1000);
+                            })
+
+                        })
+
+
+                    } else {
+                        swal("Error","Password error","error");
+                    }
+                } else {
+                    swal("Error","Password error","error");
+                }
+            }).catch(function(e) {
+                swal("Error","Password error","error");
+            })
+
+        };
+
         $scope.getChainNameByid = function(id) {
             var name = "Main Chain";
             if (id > 0) {

@@ -33,7 +33,7 @@
                         <div class="card mycard">
                             <div class="body block-header">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-5 col-sm-4 col-4">
+                                    <div class="col-lg-6 col-md-4 col-sm-2 col-2">
                                         <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
                                         <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
@@ -41,9 +41,10 @@
                                             <li class="breadcrumb-item active">Wallet</li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-6 col-md-7 col-sm-8 col-8 text-right">
+                                    <div class="col-lg-6 col-md-8 col-sm-10 col-10 text-right">
                                         <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#newAccount">Create Wallet</button>
                                         <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
+                                        <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#exportKeyStore">Export Keystore</button>
                                         <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importKeystore">Import Keystore</button>
                                     </div>
                                 </div>
@@ -522,6 +523,34 @@
                     <button type="button" class="btn btn-primary" style="margin:4px auto;" ng-disabled="!nonceFlag" ng-click="resendSecondTx()">
                         Resend transaction
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exportKeyStore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Please Enter Password
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="keyPasswordForm" novalidate>
+                        <div class="input-group" ng-class="(keyPasswordForm.keystonePassword.$invalid && newAccount.keystonePassword.$dirty)?'has-danger':( keyPasswordForm.keystonePassword.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control" ng-class="(keyPasswordForm.keystonePassword.$invalid && keyPasswordForm.keystonePassword.$dirty)?'form-control-danger':(keyPasswordForm.keystonePassword.$valid?'form-control-success':'') " name="keystonePassword" ng-model="keystonePassword" required>
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="keyPasswordForm.$invalid " ng-click="downloadKeystore()">
+                                Download Keystore File(UTC/JSON)
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

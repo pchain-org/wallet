@@ -6,6 +6,8 @@
 var sqlietDb = require("../sqlite3/db");
 var Promise = require("bluebird");
 const path = require("path");
+var walletUtil = require("../utils/generateKeyStore");
+
 function importAccount (privateKey,address) {
     var responseObj ={result:'success', data:{}, error:{}};
     return new Promise(function (accept,reject) {
@@ -38,9 +40,35 @@ function addAccount (privateKey,address) {
         })
     });
 }
+
+function addErc20Account (privateKey,address) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_erc20_account(id,privateKey,address,createTime) VALUES (?,?,?,?)";
+        var array = [null, privateKey, address, new Date()]
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
 function queryAccountList() {
     return new Promise(function (accept,reject) {
         var sql = "select address from tb_account order by id desc";
+        sqlietDb.query(sql).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
+
+function queryErc20AccountList() {
+    return new Promise(function (accept,reject) {
+        var sql = "select address from tb_erc20_account order by id desc";
         sqlietDb.query(sql).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -62,9 +90,34 @@ function queryAddressExists(address) {
     });
 }
 
+function queryErc20AddressExists(address) {
+    return new Promise(function (accept,reject) {
+        var sql = "select count(*) len from tb_erc20_account where address=?";
+        var array = [address]
+        sqlietDb.queryByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
 function queryPrivateKey(address) {
     return new Promise(function (accept,reject) {
         var sql = "select privateKey from tb_account where address=?";
+        var array = [address]
+        sqlietDb.queryByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
+
+function queryErc20PrivateKey(address) {
+    return new Promise(function (accept,reject) {
+        var sql = "select privateKey from tb_erc20_account where address=?";
         var array = [address]
         sqlietDb.queryByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -398,7 +451,60 @@ function addSetBlockReward(obj) {
             accept(resObj);
         }).catch(function (e) {
             reject(e);
-            console.log("save addTransaction error:", e);
+        })
+    });
+}
+
+function exportKeystone(path,pri,pasworrd) {
+    return new Promise(function (accept,reject) {
+        walletUtil.generateKeyStore(path,pri,pasworrd).then(function (resObj) {
+            accept(resObj);
+         }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
+function importErc20Account (privateKey,address) {
+    var responseObj ={result:'success', data:{}, error:{}};
+    return new Promise(function (accept,reject) {
+        queryErc20AddressExists(address).then(function (data) {
+            if(data.result="success" && data.data.len==0){
+                return addErc20Account(privateKey,address);
+            }else{
+                responseObj.result="error";
+                responseObj.error="Erc20 Address already exists";
+                reject(responseObj);
+            }
+        }).then(function (data) {
+            if (data.result = "success") {
+                queryAddressExists(address).then(function (data) {
+                    if(data.result="success" && data.data.len==0){
+                        return addAccount(privateKey,address);
+                    }
+                }).then(function () {
+                    accept(responseObj);
+                })
+            }
+        }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
+
+/*
+   save tokenswap record
+ */
+function createTokenSwapInfo(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status,value) VALUES (?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.hash, obj.fromaddress,10,obj.toaddress,0,new Date(),1,obj.value];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save createTokenSwapInfo error:", e);
         })
     });
 }
