@@ -50,13 +50,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.getMaxSendAmount = function() {
         let b = new BigNumber($scope.balance);
-        let gl = new BigNumber($scope.gasLimit);
-        let fee = gl.times($scope.gasPrice * Math.pow(10, 9)).dividedBy(Math.pow(10, 18));
-        if (b.gt(fee)) {
-            $scope.maxSendAmount = b.minus(fee).decimalPlaces(18);
-        } else {
-            $scope.maxSendAmount = new BigNumber(0);
-        }
+        $scope.maxSendAmount = b.decimalPlaces(18);
     }
 
 
@@ -300,7 +294,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
          }else{
              $scope.keystorePath = "";
              $scope.keystoreJson = "";
-             swal("Error","Incorrect Format Keystore","error");
+             showPopup("Error","Incorrect Format Keystore","error");
          }
          $scope.$apply();
      })
@@ -308,8 +302,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
      $scope.importKeystoreFile = function(){
          const eWallet = require('ethereumjs-wallet');
          try{
-             console.log($scope.keystoreJson)
-             console.log($scope.keystorePassword)
              const keystoreInstance = eWallet.fromV3($scope.keystoreJson,$scope.keystorePassword);
              let newPrivateKey = keystoreInstance.getPrivateKey().toString("hex");
              var enPri = AESEncrypt(newPrivateKey,$scope.keystorePassword);
@@ -328,13 +320,13 @@ angularApp.controller('myCtrl', function($scope, $http) {
                      if($scope.erc20accountList.length> 0){
                          $scope.erc20account = $scope.erc20accountList[$scope.erc20accountList.length-1];
                      }
+                     if(resObj.data){
+                         $scope.accountList.push(obj);
 
-                     $scope.accountList.push(obj);
-
-                     if($scope.accountList.length> 0){
-                         $scope.account = $scope.accountList[$scope.accountList.length-1];
+                         if($scope.accountList.length> 0){
+                             $scope.account = $scope.accountList[$scope.accountList.length-1];
+                         }
                      }
-
                      $scope.getBalance();
                  }else{
                      showPopup(resObj.error,1000);
@@ -365,7 +357,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
          importErc20Account(enPri,obj.address).then(function (resObj) {
              if(resObj.result=="success"){
-                 $scope.accountList.push(obj);
                  showPopup("Import Successfully",1000);
                  $('#importAccount').modal('hide');
 
@@ -374,12 +365,14 @@ angularApp.controller('myCtrl', function($scope, $http) {
                  if($scope.erc20accountList.length> 0){
                      $scope.erc20account = $scope.erc20accountList[$scope.erc20accountList.length-1];
                  }
+                if(resObj.data){
+                    $scope.accountList.push(obj);
 
-                 $scope.accountList.push(obj);
+                    if($scope.accountList.length> 0){
+                        $scope.account = $scope.accountList[$scope.accountList.length-1];
+                    }
+                }
 
-                 if($scope.accountList.length> 0){
-                     $scope.account = $scope.accountList[$scope.accountList.length-1];
-                 }
                  $scope.getBalance();
              }
          }).catch(function (e) {

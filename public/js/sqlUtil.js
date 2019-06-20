@@ -467,6 +467,7 @@ function exportKeystone(path,pri,pasworrd) {
 
 function importErc20Account (privateKey,address) {
     var responseObj ={result:'success', data:{}, error:{}};
+    responseObj.data=false;
     return new Promise(function (accept,reject) {
         queryErc20AddressExists(address).then(function (data) {
             if(data.result="success" && data.data.len==0){
@@ -480,6 +481,7 @@ function importErc20Account (privateKey,address) {
             if (data.result = "success") {
                 queryAddressExists(address).then(function (data) {
                     if(data.result="success" && data.data.len==0){
+                        responseObj.data=true;
                         return addAccount(privateKey,address);
                     }
                 }).then(function () {
