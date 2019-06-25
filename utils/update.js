@@ -78,7 +78,7 @@ class Update {
 				 const options = {
 				    type: 'info',
 				    title: 'Update PCHAIN Wallet',
-				    message: "You are the latest version",
+				    message: "You have successfully upgraded to the latest version",
 				    buttons: ['Ok']
 				  }
 				  dialog.showMessageBox(options, function (index) {

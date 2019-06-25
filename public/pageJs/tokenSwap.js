@@ -27,7 +27,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res)
              $scope.spin = "";
              removePageLoader();
              if (res.data.result == "success") {
@@ -42,7 +41,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
          });
 
          queryTransactionChildList($scope.erc20account.address, 10).then(function(robj) {
-             console.log(robj)
              $scope.transactionList = robj.data;
              $scope.$apply();
          })
@@ -66,7 +64,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res);
              if (res.data.result == "success") {
                  $scope.nonce = Number(res.data.nonce);
                  $scope.gasPrice=res.data.gas;
@@ -197,18 +194,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
          try {
              const gasPrice = $scope.gasPrice * Math.pow(10, 9);
-             // console.log("gasPrice"+gasPrice)
              const amount = web3.toWei($scope.toAmount, "ether");
-             // console.log("amount"+amount)
              let paramArr = [swapAddr,amount];
-             // console.log("paramArr"+paramArr)
              var data = $scope.getPlayLoad(transferABI,"transfer",paramArr);
-             // console.log("data"+data)
              var nonce = $scope.nonce;
              var signRawObj = initEthSignRawContract(nonce, gasPrice, $scope.gasLimit,contractAddress,data);
-             // console.log(signRawObj)
              var signData = signEthTx($scope.currentPrivateKey, signRawObj);
-             // console.log("signData"+signData)
              $scope.currentPrivateKey = "";
 
              var obj = {};
@@ -229,8 +220,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
                  console.log(res)
                  removeLoading();
                  if (res.data.result == "success") {
+                     showPopup("Token swap is in progress, please check the balance later, thank you", 8000);
                      $('#transaction').modal('hide');
-                     showPopup("Token swap is in progress, please check the balance later, thank you", 5000);
                      var hash = res.data.data;
                      var url = "https://etherscan.io/tx/" + hash;
                      var html = 'Transaction hash:' + hash;
@@ -269,6 +260,11 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.openExternal = function(hash) {
         shell.openExternal("https://etherscan.io/tx/"+hash);
+    }
+
+
+    $scope.openExternalIntro = function() {
+        shell.openExternal("https://pchaindoc.readthedocs.io/en/latest/introduction/tokenswap.html");
     }
      $scope.cutWords = function(words) {
          let result = words;
@@ -384,8 +380,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
          })
 
      }
-
-
 
      $scope.newPrivateKet = function() {
          var newAccount = Accounts.new();

@@ -5,6 +5,8 @@ const Web3 = require("pweb3");
 const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
 const CryptoJS = require("crypto-js");
+
+
 const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
@@ -128,6 +130,7 @@ function GetQueryString(name) {
 }
 
 function priToAddress(pri) {
+    const ethUtil = require("ethereumjs-util");
     if (pri.length == 64) {
         pri = "0x" + pri;
     };
