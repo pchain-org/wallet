@@ -1,7 +1,7 @@
  angularApp.controller('myCtrl', function($scope, $http) {
 
 
-     $scope.gasLimit = 21000;
+     $scope.gasLimit = 42000;
      $scope.gasPrice = 10;
      $scope.nonce = 0;
      $scope.balance = 0;

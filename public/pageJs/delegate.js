@@ -72,6 +72,8 @@
 
          $scope.getRecommendList();
 
+         $scope.getDelegateRewardList();
+
      }
 
 
@@ -151,13 +153,11 @@
          var obj = {};
          obj.chainId = $scope.chain.id;
          var url = APIHost + "/getCandidateList";
-         console.log(obj)
          $http({
              method: 'POST',
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res);
              if (res.data.result == "success") {
                  let recommendList = res.data.data;
                  $scope.recommendList = _.concat(DefaultDelegatedListOption,recommendList);
@@ -174,8 +174,29 @@
 
      }
 
+     $scope.getDelegateRewardList = function() {
+         var obj = {};
+         obj.chainId = $scope.chain.id;
+         obj.address = $scope.account.address;
+         // obj.chainId=1;
+         // obj.address = '0xc1bad2e147c83b13d1428ce118dc836fbcc75c26';
+         var url = APIHost + "/getDelegateReward";
+         $http({
+             method: 'POST',
+             url: url,
+             data: obj
+         }).then(function successCallback(res) {
+             if (res.data.result == "success") {
+                 $scope.delegateRewardList = res.data.data;
+             } else {
+                 showPopup(res.data.message, 3000);
+             }
 
-     $scope.getRecommendList();
+         }, function errorCallback(res) {
+             showPopup("Internet error, please refresh the page");
+         });
+
+     }
 
 
      $scope.crossChain = 1;
@@ -188,6 +209,8 @@
              if ($scope.accountList.length > 0) {
                  $scope.account = $scope.accountList[0];
                  $scope.getBalance();
+                 $scope.getDelegateRewardList();
+
              }
              if ($scope.accountList.length == 0) {
                  removePageLoader();
@@ -200,7 +223,7 @@
          console.log(e, "error");
      })
 
-
+     $scope.getRecommendList();
 
      $scope.currentPrivateKey = "";
      $scope.confirmPassword = function() {

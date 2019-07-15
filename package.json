@@ -18,6 +18,7 @@
   "author": "skykingit@aliyun.com",
   "license": "ISC",
   "dependencies": {
+    "@binance-chain/javascript-sdk": "^2.14.0",
     "bignumber.js": "^8.0.1",
     "bluebird": "^3.5.3",
     "checksum": "^0.1.1",

@@ -229,6 +229,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                      shell.openExternal(url);
                      var objt = {};
                      objt.hash = hash;
+                     objt.type = 10;
                      objt.fromaddress = $scope.erc20account.address;
                      objt.toaddress = $scope.account.address;
                      objt.value=$scope.toAmount;
@@ -283,7 +284,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
      }
 
      ipcRenderer.on('selected-keystore',(event,path,fileJson)=>{
-         if(fileJson.address && fileJson.crypto && fileJson.id){
+         if(fileJson.address && (fileJson.crypto || fileJson.Crypto) && fileJson.id){
              $scope.keystorePath = path;
              $scope.keystoreJson = fileJson;
              $scope.keystoreJson.address = "0x"+$scope.keystoreJson.address;
@@ -413,5 +414,5 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
  });
  $(function() {
-     menuActive(10);
+     menuActive(9);
  });

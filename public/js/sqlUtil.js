@@ -53,6 +53,20 @@ function addErc20Account (privateKey,address) {
         })
     });
 }
+
+function addPIBNBAccount (privateKey,address) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_pibnb_account(id,privateKey,address,createTime) VALUES (?,?,?,?)";
+        var array = [null, privateKey, address, new Date()]
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
 function queryAccountList() {
     return new Promise(function (accept,reject) {
         var sql = "select address from tb_account order by id desc";
@@ -66,6 +80,7 @@ function queryAccountList() {
 }
 
 
+
 function queryErc20AccountList() {
     return new Promise(function (accept,reject) {
         var sql = "select address from tb_erc20_account order by id desc";
@@ -77,6 +92,20 @@ function queryErc20AccountList() {
         })
     });
 }
+
+
+function queryPiBnbAccountList() {
+    return new Promise(function (accept,reject) {
+        var sql = "select address from tb_pibnb_account group by address order by id desc";
+        sqlietDb.query(sql).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
 
 function queryAddressExists(address) {
     return new Promise(function (accept,reject) {
@@ -118,6 +147,18 @@ function queryPrivateKey(address) {
 function queryErc20PrivateKey(address) {
     return new Promise(function (accept,reject) {
         var sql = "select privateKey from tb_erc20_account where address=?";
+        var array = [address]
+        sqlietDb.queryByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
+function queryBNBPrivateKey(address) {
+    return new Promise(function (accept,reject) {
+        var sql = "select privateKey from tb_pibnb_account where address=?";
         var array = [address]
         sqlietDb.queryByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -194,7 +235,7 @@ function queryMultiChainTxList(address,chainId) {
 
 function queryMultiChainChildTxList(pid) {
     return new Promise(function (accept,reject) {
-        var sql = "SELECT id,chainId,chainName,fromaddress,hash,signData,status from tb_transaction  where pid=? ORDER BY id";
+        var sql = "SELECT id,chainId,chainName,fromaddress,hash,signData,createtime,status,pid,value from tb_transaction  where pid=? ORDER BY id";
         var array = [pid]
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -501,7 +542,7 @@ function importErc20Account (privateKey,address) {
 function createTokenSwapInfo(obj) {
     return new Promise(function (accept,reject) {
         var sql = "INSERT INTO tb_transaction(id,hash,fromaddress,type,toaddress,pid,createTime,status,value) VALUES (?,?,?,?,?,?,?,?,?)";
-        var array = [null, obj.hash, obj.fromaddress,10,obj.toaddress,0,new Date(),1,obj.value];
+        var array = [null, obj.hash, obj.fromaddress,obj.type,obj.toaddress,0,new Date(),1,obj.value];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {

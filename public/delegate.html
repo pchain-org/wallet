@@ -172,7 +172,7 @@
                                         </form>
                                         <div class="clearfix"></div>
                                         <div class="marginTop20 text-center">
-                                            <button class="btn btn-info" ng-disabled="cancleForm.$invalid" ng-click="showEnterPwd(1)">Cancle Delegate</button>
+                                            <button class="btn btn-info" ng-disabled="cancleForm.$invalid" ng-click="showEnterPwd(1)">Cancel Delegate</button>
                                         </div>
                                     </div>
                                 </div>
@@ -180,6 +180,39 @@
                         </div>
                     </div>
                 </div>
+
+                <!--<div class="row clearfix">-->
+                    <!--<div class="col-xl-12 col-md-12 col-lg-12">-->
+                        <!--<div class="card">-->
+                            <!--<div class="header">-->
+                                <!--<h2>Notice:Yesterday's mining awards are subject to actual income. The final interpretation is owned by PCHAIN</h2>-->
+                            <!--</div>-->
+                            <!--<div class="table-responsive">-->
+                                <!--<table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="delegateRewardList.length >0" ng-cloak>-->
+                                    <!--<thead>-->
+                                    <!--<tr>-->
+                                        <!--<th>Delegate</th>-->
+                                        <!--<th>Candidate</th>-->
+                                        <!--<th>Amont</th>-->
+                                        <!--<th>Pos mining reward yesterday</th>-->
+                                    <!--</tr>-->
+                                    <!--</thead>-->
+                                    <!--<tbody>-->
+                                    <!--<tr ng-repeat="item in delegateRewardList">-->
+                                        <!--<td ng-bind="item.address"></td>-->
+                                        <!--<td ng-bind="item.candidate"></td>-->
+                                        <!--<td ng-bind="item.amount"></td>-->
+                                        <!--<td ng-bind="item.profit"></td>-->
+                                    <!--</tr>-->
+                                    <!--</tbody>-->
+                                <!--</table>-->
+                                <!--<div class="text-center" ng-show="delegateRewardList.length == 0" ng-cloak>-->
+                                    <!--<h3>No Records</h3>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="row clearfix">
                     <div class="col-xl-12 col-md-12 col-lg-12">
                         <div class="card">
@@ -260,7 +293,7 @@
                     </button>
                     <h4 class="modal-title text-center block">
                        <span ng-show="delegateType == 0" ng-cloak>Delegate</span> 
-                       <span ng-show="delegateType == 1" ng-cloak>Cancle Delegate</span> 
+                       <span ng-show="delegateType == 1" ng-cloak>Cancel Delegate</span>
                     </h4>
                 </div>
                 <div class="modal-body">

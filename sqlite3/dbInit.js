@@ -117,6 +117,11 @@ class DB{
                 }
             }).then((result)=> {
                 if (result) {
+                    let sql5 = "CREATE TABLE IF NOT EXISTS tb_pibnb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);";
+                    return self.promiseRun(sql5);
+                }
+            }).then((result)=> {
+                if (result) {
                     resolve('ok');
                 }
             }).catch((err)=>{

@@ -20,7 +20,6 @@ class Wallet {
 		let currentTime = (new Date()).getTime();
 	    let fileName = "PchainWallet_"+currentTime+".json";
 	    DB.query("select * from tb_account").then((res)=>{
-	    	// console.log(res);
 	    	let walletDataList = res.data;
 	    	if(walletDataList.length > 0){
 	    		let walletJson = {name:"Pchain Wallet",time:currentTime};
@@ -114,7 +113,7 @@ class Wallet {
 			let sql = "select * from tb_account where address = ?";
 			let paramArr = [address];
 			DB.queryByParam(sql,paramArr).then((result)=>{
-				if(result.data.id > 0){
+				if(result.data!=undefined && result.data.id > 0){
 					accept(true);
 				}else{
 					accept(false);
@@ -158,7 +157,7 @@ class Wallet {
         	const options = {
 			    type: 'info',
 			    title: 'Wallet Recovery ',
-			    message: "Wallet Recovery Successfully"
+			    message: "Wallet recovery successfully,please reload the page"
 			}
 			dialog.showMessageBox(options);
 		}

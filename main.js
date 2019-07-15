@@ -2,12 +2,7 @@
  * Created by skykingit on 2018/12/01.
  */
 
-const electron = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
-const Menu = electron.Menu;
-const Tray = electron.Tray;
-var Promise = require("bluebird");
+const {app,BrowserWindow,Tray} = require('electron')
 const path = require('path')
 const url = require('url')
 const initMenu = require('./lib/menu.js');
@@ -41,7 +36,10 @@ function createWindow () {
     });
 
     mainWindow.on('closed', ()=> {
-        mainWindow = null
+        mainWindow = null;
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
     })
 
     UpdateChildChainUtil.checkUpdate();
@@ -53,7 +51,6 @@ function init(){
             DB.init();
         }
     }).then(function (result) {
-        console.log(result);
         setTimeout(function(){
             loadingWindow.hide();
         },1000);
@@ -90,7 +87,7 @@ app.on('ready', function(){
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
-        app.quit()
+        app.quit();
     }
 })
 
