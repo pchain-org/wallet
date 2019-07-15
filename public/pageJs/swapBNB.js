@@ -1,3 +1,5 @@
+const {shell} = require('electron');
+
 angularApp.controller('myCtrl', function($scope, $http) {
      $scope.gasLimit = 42000;
      $scope.gasPrice = 10;
@@ -307,6 +309,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     }
 
+    $scope.openExternalIntro = function() {
+        shell.openExternal("https://pchaindoc.readthedocs.io/en/latest/introduction/pitopibnb.html");
+    }
 
      $scope.cutWords = function(words) {
          let result = words;
