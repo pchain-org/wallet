@@ -278,10 +278,9 @@ async function getPIBNBBalance(address) {
     const client = await getClient();
     return new Promise(function (accept, reject) {
         client.getBalance(address).then((result) => {
-            console.log("PIBNB BALANCE",result)
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].symbol == 'PIBNB-43C') {
+                    if (result[i].symbol == symbol) {
                         accept(result[i].free);
                         break;
                     }
@@ -295,9 +294,9 @@ async function getPIBNBBalance(address) {
         });
     });
 }
+const symbol='PIBNB-43C';
 
-
-var APIHost = "https://api.pchain.org";
+const APIHost = "https://api.pchain.org";
 
 const contractAddress="0xB9bb08AB7E9Fa0A1356bd4A39eC0ca267E03b0b3";
 

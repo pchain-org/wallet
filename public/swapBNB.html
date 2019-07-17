@@ -120,7 +120,7 @@
                                     <div class="col-xl-6 col-lg-6 col-md-6">
                                         <div class="input-group " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
                                             <span class="input-group-addon">Swap Amount</span>
-                                            <input type="number" class="form-control " min="" ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'min:1000~max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,8})?$/" required>
+                                            <input type="number" class="form-control " min="1000" ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'min:1000~max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,8})?$/" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6">

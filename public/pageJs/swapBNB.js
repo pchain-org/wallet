@@ -47,9 +47,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.getBBNBalance = function() {
         var address = $scope.pibnbaccount.address;
-        console.log(address)
         getPIBNBBalance(address).then(function (result) {
-            console.log(result)
             $scope.pibnbBalance=result;
             $scope.$apply();
         });
@@ -101,7 +99,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
      $scope.pibnbaccountList = new Array();
 
      queryPiBnbAccountList().then(function(resObj) {
-         console.log(resObj.data)
          $scope.pibnbaccountList = resObj.data;
          try {
              if ($scope.pibnbaccountList.length > 0) {
@@ -253,7 +250,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
             var nonce = $scope.nonce;
 
             var signRawObj = initSignRawPAI(swap_pibnb_toAddress, amount, nonce, gasPrice, $scope.gasLimit, 'pchain');
-            console.log(swap_pibnb_toAddress, amount, nonce, gasPrice, $scope.gasLimit, 'pchain')
             if ($scope.data) signRawObj.data = $scope.data;
             var signData = signTx($scope.currentPrivateKey, signRawObj);
             $scope.currentPrivateKey = "";
@@ -381,7 +377,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
              var newPrivateKey = crypto.getPrivateKeyFromMnemonic(mnemonicTo);
              var address = crypto.getAddressFromPrivateKey(newPrivateKey, 'bnb') //bnb for mainnet,tbnb for testnet the default prefix is tbnb
              var enPri = AESEncrypt(newPrivateKey, $scope.password);
-             console.log(enPri, address)
              var obj = {};
              obj.address = address;
              newPrivateKey = "";

@@ -406,11 +406,9 @@ angularApp.controller('myCtrl', function ($scope, $http) {
         }
         if ($scope.currentResendSecondTx.chainId == 0) {
             let childToMainAmount = web3.toWei($scope.currentResendSecondTx.toAmount, "ether");
-            console.log($scope.currentResendSecondTx.firstTxHash, childToMainAmount, pid, saveflag)
             $scope.confirmChildToMain($scope.currentResendSecondTx.firstTxHash, childToMainAmount, pid, saveflag, 0);
             console.log("child to main 2rd in resendSecondTx.......");
         } else {
-            console.log($scope.currentResendSecondTx.firstTxHash, childToMainAmount, pid, saveflag)
             $scope.confirmMainToChild($scope.currentResendSecondTx.firstTxHash, pid, saveflag, 0);//
             console.log("main to child 2rd in resendSecondTx.......");
         }
@@ -813,9 +811,15 @@ angularApp.controller('myCtrl', function ($scope, $http) {
                 }
 
             } else {
+                if ($scope.pwdFormtype == 2) {
+                    jQuery('#resendTransaction').modal('hide');
+                }
                 swal("Error", res.data.error, "error");
             }
         }, function errorCallback(res) {
+            if ($scope.pwdFormtype == 2) {
+                jQuery('#resendTransaction').modal('hide');
+            }
             swal("Error", "Internet error, please refresh the page", "error");
         });
 
