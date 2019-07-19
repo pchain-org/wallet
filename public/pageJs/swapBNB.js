@@ -329,7 +329,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
          var obj = {};
 
-         obj.address =crypto.getAddressFromPrivateKey(newPrivateKey);
+         obj.address =crypto.getAddressFromPrivateKey(newPrivateKey, 'bnb');
 
          var enPri = AESEncrypt(newPrivateKey,$scope.password2);
          $scope.password2 = "";
