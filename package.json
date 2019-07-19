@@ -1,6 +1,6 @@
 {
   "name": "piwallet",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "pchain wallet ",
   "main": "main.js",
   "scripts": {
@@ -8,9 +8,9 @@
     "build:mac": "./node_modules/.bin/electron-rebuild",
     "build:win": ".\\node_modules\\.bin\\electron-rebuild.cmd",
     "build:linux": "./node_modules/.bin/electron-rebuild",
-    "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.5 --overwrite --icon=public/img/logo.hqx ",
-    "packager:win": "electron-packager ./ PIWallet --platform=win32 --arch=x64 --architecture=all --out=./app --asar --app-version 1.0.5 --overwrite --icon=public/img/logo.ico",
-    "packager:liunx": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.5 --overwrite"
+    "packager:mac": "electron-packager ./ PIWallet --platform=darwin --out ./app --app-version 1.0.6 --overwrite --icon=public/img/logo.hqx ",
+    "packager:win": "electron-packager ./ PIWallet --platform=win32 --arch=x64 --architecture=x86 --out=./app --asar --app-version 1.0.6 --overwrite --icon=public/img/logo.ico",
+    "packager:liunx": "electron-packager ./ PIWallet --platform=linux --arch=x64 --out=./app --asar --app-version 1.0.6 --overwrite"
   },
   "keywords": [
     "pchain wallet"
