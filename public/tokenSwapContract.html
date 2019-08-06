@@ -1,0 +1,461 @@
+ <!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Pchain Wallet">
+    <title>PCHAIN Wallet</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/angular.min.js"></script>
+</head>
+
+<body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+                <p>Please wait...</p>
+            </div>
+        </div>
+        <div ng-include="'./head.html'"></div>
+        <section class="content">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card mycard">
+                            <div class="body block-header">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-4 col-sm-2 col-2">
+                                        <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                        <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
+                                        <ul class="breadcrumb p-l-0 p-b-0 ">
+                                            <li class="breadcrumb-item"><a href="index.html"><i class="icon icon-home"></i></a></li>
+                                            <li class="breadcrumb-item active">token Swap Contract</li>
+                                            <li class="active"><a href="javascript:void(0)" class="marginLeft10" ng-click="openExternalIntro()">(Introduction)</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-6 col-md-8 col-sm-10 col-10 text-right">
+                                        <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
+                                        <button class="btn btn-primary btn-round btn-simple float-right  m-l-10" data-toggle="modal" data-target="#importKeystore">Import Keystore</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-xl-7 col-lg-7 col-md-6">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>My ERC20 Account</strong>  <span class="copyBtn" data-clipboard-text="{{erc20account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">ERC20 Address</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="erc20account" ng-options="erc20account as erc20account.address  for erc20account in erc20accountList" ng-change="selectErc20Account()"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Balance<i class="icon icon-refresh pointer" ng-class="spin" ng-click="getBalance()"></i></strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-3 my-input-group">
+                                    <span class="input-group-addon">Balance</span>
+                                    <div class="form-control">
+                                        <div class="value" ng-bind="balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Latest 10 ERC20 transaction records</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionERC20List.length > 0" ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th>Hash</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Value</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in transactionERC20List">
+
+                                        <td ng-bind="cutWords(item.hash)"></td>
+                                        <td ng-bind="item.fromaddress"></td>
+                                        <td ng-bind="item.toaddress"></td>
+                                        <td ng-bind="item.value+' PI'"></td>
+
+                                        <td ng-if="item.status=='0x0' && item.funCode=='newContract' && item.chainId=='Ropsten'" >
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                            <button ng-click="refund(item.ethContractId)" class="badge badge-info radiusBtn">Refund</button>
+                                        </td>
+
+                                        <td ng-if="item.status=='0x1' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center" ng-show="transactionERC20List.length == 0" ng-cloak>
+                                    <h3>No Records</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="clearfix"></div>
+                <div class="row clearfix" ng-cloak>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                                    <div class="header">
+                                        <h2><strong>My Native PI Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-4 marginTop20 paddingRight40">
+                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" data-toggle="modal" data-target="#newAccount">Create Wallet</button>
+                                </div>
+                            </div>
+                            <div class="body">
+                                <!--<div class="row">-->
+                                <form name="Form" novalidate="" class="row clearfix">
+                                    <div class="col-xl-6 col-lg-6 col-md-6">
+                                        <div class="input-group my-input-group">
+                                            <span class="input-group-addon">Native PI Address</span>
+                                            <div class="form-control">
+                                                <select class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="selectAccount()"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6">
+                                        <div class="input-group " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
+                                            <span class="input-group-addon">Swap Amount</span>
+                                            <input type="text" class="form-control " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 text-center marginTop20">
+                                        <button class="btn btn-primary btn-round btn-simple  m-l-10" data-toggle="modal" ng-disabled="Form.$invalid"  ng-click="showEnterPwd()">Token Swap Contract</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Latest 10 transaction records</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionList.length > 0" ng-cloak>
+                                    <thead>
+                                        <tr>
+                                            <th>Hash</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Value</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in transactionList">
+
+                                            <td ng-bind="cutWords(item.hash)"></td>
+                                            <td ng-bind="item.fromaddress"></td>
+                                            <td ng-bind="item.toaddress"></td>
+                                            <td ng-bind="item.value+' PI'"></td>
+
+                                            <td ng-if="item.status=='0x0' && item.funCode=='withdraw' && item.chainId=='child_0'" >
+                                                <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Detail</a>
+                                                <button ng-click="refund(item.ethContractId)" class="badge badge-info radiusBtn">Refund</button>
+                                            </td>
+
+                                            <td ng-if="item.status=='0x1' && item.funCode=='withdraw' && item.chainId=='child_0'" >
+                                                <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Detail</a>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center" ng-show="transactionList.length == 0" ng-cloak>
+                                    <h3>No Records</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- enterPassword -->
+        <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 525px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
+                            Please Enter Password
+                    </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="passwordForm" novalidate>
+                            <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                                <span class="input-group-addon">Password</span>
+                                <input type="password" placeholder="" class="form-control" ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                    Confirm
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    <!-- confirm transaction -->
+    <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Swap Info
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">ERC20 Address </span>
+                            <div class="form-control" ng-bind="erc20account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Native PI Address</span>
+                            <div class="form-control" ng-bind="account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Amount to send</span>
+                            <div class="form-control" ng-bind="toAmount+' PI'"></div>
+                            <!-- <div class="form-control" id="modalToAmount"></div> -->
+                        </div>
+                        <!--                       <div class="input-group marginTop10">
+                            <span class="input-group-addon">Gas Limit</span>
+                            <div class="form-control" ng-bind="gasLimit"></div>
+                        </div>
+
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Gas Price</span>
+                            <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
+                        </div> -->
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Max Fee</span>
+                            <div class="form-control" ng-bind="txFee+' ETH'"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Nonce</span>
+                            <div class="form-control" ng-bind="nonce"></div>
+                        </div>
+                        <div class="input-group marginTop10" ng-show="data" ng-cloak>
+                            <b>Input Data</b><br>
+                            <div class="textArea" ng-bind="data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <div class="block text-center">
+                        <button type="button" class="btn btn-primary" ng-disabled="!nonceFlag" ng-click="sendTx()">
+                            Send Transaction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- import keystore -->
+    <div class="modal fade" id="importKeystore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog maxModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Import Keystore
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="importKeystore" novalidate>
+                        <div class="text-center">
+                            <button class="btn btn-primary" ng-click="selectKeystore()">Select Keystore File</button>
+                        </div>
+                        <div class="input-group mb-3 my-input-group marginTop20" ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Keystore Path</span>
+                            <div class="form-control">
+                                <div class="value" ng-bind="keystorePath"></div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3 my-input-group" ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Address</span>
+                            <div class="form-control">
+                                <div class="value" ng-bind=" keystoreJson.address"></div>
+                            </div>
+                        </div>
+                        <div class="input-group" ng-class="(importKeystore.keystorePassword.$invalid && importKeystore.keystorePassword.$dirty)?'has-danger':( importKeystore.keystorePassword.$valid?'has-success':'') " ng-show="keystorePath" ng-cloak>
+                            <span class="input-group-addon">Keystore Password</span>
+                            <input type="text" class="form-control" ng-class="(importKeystore.keystorePassword.$invalid && importKeystore.keystorePassword.$dirty)?'form-control-danger':(importKeystore.keystorePassword.$valid?'form-control-success':'') " name="keystorePassword" ng-model="keystorePassword" required>
+                        </div>
+                        <div class="alert alert-danger" ng-show="keystorePath" ng-cloak>
+                            <div class="container">
+                                <div class="alert-icon">
+                                    <i class="icon icon-warning-sign"></i>
+                                </div>
+                                <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
+                            </div>
+                        </div>
+                        <div class="marginTop10 text-center" ng-show="keystorePath" ng-cloak>
+                            <button type="button" class="btn btn-primary" ng-disabled="importKeystore.$invalid " ng-click="importKeystoreFile()">
+                                Import
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- import account -->
+    <div class="modal fade" id="importAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog maxModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Import Wallet
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="importAccount" novalidate>
+                        <div class="input-group" ng-class="(importAccount.newPrivate.$invalid && importAccount.newPrivate.$dirty)?'has-danger':( importAccount.newPrivate.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Private Key</span>
+                            <input type="text" class="form-control" ng-class="(importAccount.newPrivate.$invalid && importAccount.newPrivate.$dirty)?'form-control-danger':(importAccount.newPrivate.$valid?'form-control-success':'') " name="newPrivate" ng-model="newPrivate" ng-pattern="/^[a-fA-F0-9]{64}$/" required>
+                        </div>
+                        <div class="input-group" ng-class="(importAccount.password2.$invalid && importAccount.password2.$dirty)?'has-danger':( importAccount.password2.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control" ng-class="(importAccount.password2.$invalid && importAccount.password2.$dirty)?'form-control-danger':(importAccount.password2.$valid?'form-control-success':'') " name="password2" ng-model="password2" required>
+                        </div>
+                        <div class="input-group" ng-class="((password2 != repeatPassword2) && importAccount.repeatPassword2.$dirty)?'has-danger':( importAccount.repeatPassword2.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Repeat Password</span>
+                            <input type="password" class="form-control" ng-class="( (password2 != repeatPassword2) && importAccount.repeatPassword2.$dirty)?'form-control-danger':((password2 == repeatPassword2)?'form-control-success':'') " name="repeatPassword2" ng-model="repeatPassword2" required>
+                        </div>
+                        <div class="alert alert-danger">
+                            <div class="container">
+                                <div class="alert-icon">
+                                    <i class="icon icon-warning-sign"></i>
+                                </div>
+                                <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
+                            </div>
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="importAccount.$invalid || (password2 != repeatPassword2) " ng-click="importPrivateKey()">
+                                Import
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- new account -->
+    <div class="modal fade" id="newAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Create Wallet
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form name="newAccount" novalidate>
+                        <div class="input-group" ng-class="(newAccount.password.$invalid && newAccount.password.$dirty)?'has-danger':( newAccount.password.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Password</span>
+                            <input type="password" placeholder="" class="form-control" ng-class="(newAccount.password.$invalid && newAccount.password.$dirty)?'form-control-danger':(newAccount.password.$valid?'form-control-success':'') " name="password" ng-model="password" required>
+                        </div>
+                        <div class="input-group" ng-class="((password != repeatPassword) && newAccount.repeatPassword.$dirty)?'has-danger':( newAccount.repeatPassword.$valid?'has-success':'') ">
+                            <span class="input-group-addon">Repeat Password</span>
+                            <input type="password" class="form-control" ng-class="( (password != repeatPassword) && newAccount.repeatPassword.$dirty)?'form-control-danger':((password == repeatPassword)?'form-control-success':'') " name="repeatPassword" ng-model="repeatPassword" required>
+                        </div>
+                        <div class="alert alert-danger">
+                            <i class="icon icon-warning-sign"></i>
+                            <strong>Notice:</strong> PCHAIN can't recover your password. Please backup cautiously.
+                        </div>
+                        <div class="marginTop10 text-center">
+                            <button type="button" class="btn btn-primary" ng-disabled="newAccount.$invalid || (password != repeatPassword) " ng-click="add()">
+                                Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+    window.$ = window.jQuery = require('jquery');
+    </script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/ethereumjs-accounts.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/sqlUtil.js"></script>
+    <script type="text/javascript" src="pageJs/tokenSwapContract.js"></script>
+</body>
+
+</html>
