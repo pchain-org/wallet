@@ -277,7 +277,7 @@
 
              var signData = signTx($scope.currentPrivateKey, signRawObj);
              $scope.currentPrivateKey = "";
-             
+
              var obj = {};
              obj.chainId = $scope.chain.id;
              obj.signData = signData;
@@ -342,5 +342,5 @@
 
  });
  $(function() {
-     menuActive(11);
+     menuActive(12);
  });

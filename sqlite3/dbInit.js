@@ -27,7 +27,7 @@ class DB{
                 }
             });
         });
-         
+
     }
 
     promiseRun(sql){
@@ -119,6 +119,11 @@ class DB{
                 if (result) {
                     let sql5 = "CREATE TABLE IF NOT EXISTS tb_pibnb_account(id integer PRIMARY KEY, privateKey text,address text,createTime text);";
                     return self.promiseRun(sql5);
+                }
+            }).then((result)=> {
+                if (result) {
+                    let sql6 = "CREATE TABLE IF NOT EXISTS tb_erc20_pi_transaction(id integer PRIMARY KEY, chainId text,funCode text,preimage text,ethContractId text,hash text,fromaddress text,toaddress text,value text,status integer,createTime text);";
+                    return self.promiseRun(sql6);
                 }
             }).then((result)=> {
                 if (result) {

@@ -174,7 +174,7 @@ function queryChainList() {
         const childChainJsonPath = path.join(__dirname,"../childChain.json");
         var childChainJson = require(childChainJsonPath);
         var obj = {};
-        obj.data = childChainJson.chain; 
+        obj.data = childChainJson.chain;
         accept(obj);
     });
 }
@@ -548,6 +548,50 @@ function createTokenSwapInfo(obj) {
         }).catch(function (e) {
             reject(e);
             console.log("save createTokenSwapInfo error:", e);
+        })
+    });
+}
+
+
+function createErc20PiInfo(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "INSERT INTO tb_erc20_pi_transaction(id,chainId,funCode,preimage,ethContractId,hash,fromaddress,toaddress,value,status,createTime) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.chainId, obj.funCode, obj.preimage, obj.ethContractId, obj.hash, obj.fromaddress,obj.toaddress,obj.value,obj.status,new Date()];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("save createTokenSwapInfo error:", e);
+        })
+    });
+}
+
+
+function queryErc20PiInfoTXList(address) {
+    return new Promise(function (accept,reject) {
+        var sql = "select funCode,preimage,ethContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? order by id desc limit 10";
+        var array = [address];
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
+/*
+ *   update status
+ */
+function updateErc20PiInfo(obj) {
+    return new Promise(function (accept,reject) {
+        var sql = "update tb_erc20_pi_transaction set status=? where hash=? and ethContractId=?";
+        var array = [obj.status,obj.ethContractIdHash,obj.ethContractId];
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log("update Transaction status error:", e);
         })
     });
 }

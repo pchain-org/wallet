@@ -237,7 +237,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
          $('#transaction').modal('show');
      }
 
-     
+
      $scope.gasChanged = function() {
          $scope.gasPrice = jQuery("#gasPrice").val();
 
@@ -405,5 +405,5 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
  });
  $(function() {
-     menuActive(10);
+     menuActive(11);
  });

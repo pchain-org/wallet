@@ -10,18 +10,48 @@ const BnbApiClient = require('@binance-chain/javascript-sdk');
 const crypto = BnbApiClient.crypto
 
 
+
+const cryptoConst = require('crypto');
+// Format required for sending bytes through eth client:
+//  - hex string representation
+//  - prefixed with 0x
+const bufToStr = b => '0x' + b.toString('hex');
+
+const sha256 = x =>
+    cryptoConst
+        .createHash('sha256')
+        .update(x)
+        .digest();
+
+const random32 = () => cryptoConst.randomBytes(32);
+
+isSha256Hash = hashStr => /^0x[0-9a-f]{64}$/i.test(hashStr);
+
+newSecretHashPair = () => {
+    const secret = random32();
+    const hash = sha256(secret);
+    return {
+        secret: bufToStr(secret),
+        hash: bufToStr(hash),
+    }
+}
+
+nowSeconds = () => Math.floor(Date.now() / 1000);
+
+
+
 const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
 
-angularApp.filter('gmtTime', function() { 
+angularApp.filter('gmtTime', function() {
         return function(d) {
             var gt = new Date(d*1000);
             return gt.toGMTString();
         }
 });
 
-angularApp.filter('weiToPI', function() { 
+angularApp.filter('weiToPI', function() {
         return function(v) {
             const web3 = new Web3();
             return web3.fromWei(v,'ether')+" PI";
@@ -475,3 +505,165 @@ var transferABI=[{
         "type": "function"
     }];
 
+
+const PAIStandardTokenContractAddress = "0x06091e0f826a0e8ab813d77205b59ab639e02229";
+
+const HashedTimelockERC20ContractAddress = "0x18c273ece5141d2fbd89fe7a10114e66c851df52";
+
+const HashedTimelockContractAddress = "0xe6aab1405e169145d459473f075c7bd38b68460c";
+
+const company = "0xa393DeDb5CbE5D3BEDbc15E01576A5B3C2bA7834";
+
+const companyPriv = "0ABD275800893FAD6E5976E121A9F13009836D61196FFCFC39648EDF0461D52A";
+
+const NEWCONTRACT = "newContract";
+
+const WITHDRAW = "withdraw";
+
+const REFUND = "refund";
+
+const APPROVE = "approve";
+
+const ethChainId = "Ropsten";
+
+const piChainId = "child_0";
+
+const wrul = "http://192.168.1.37:3000";
+
+const localhostHost = "http://localhost:3038";
+
+var newContractABIETH = [
+    {
+        "varant": false,
+        "inputs": [
+            {
+                "name": "_receiver",
+                "type": "address"
+            },
+            {
+                "name": "_hashlock",
+                "type": "bytes32"
+            },
+            {
+                "name": "_timelock",
+                "type": "uint256"
+            },
+            {
+                "name": "_tokenContract",
+                "type": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "name": "_swapTo",
+                "type": "address"
+            }
+        ],
+        "name": "newContract",
+        "outputs": [
+            {
+                "name": "contractId",
+                "type": "bytes32"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];
+
+
+var withdrawABIPI = [
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_contractId",
+                "type": "bytes32"
+            },
+            {
+                "name": "_preimage",
+                "type": "bytes32"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];
+
+
+var refundABI = [
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_contractId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "refund",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];
+
+
+var allowanceABI = [
+    {
+        "constant": true,
+        "inputs": [{
+            "name": "_owner",
+            "type": "address"
+        }, {
+            "name": "_spender",
+            "type": "address"
+        }],
+        "name": "allowance",
+        "outputs": [{
+            "name": "remaining",
+            "type": "uint256"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
+
+var approveABI = [
+    {
+        "constant": false,
+        "inputs": [{
+            "name": "_spender",
+            "type": "address"
+        }, {
+            "name": "_value",
+            "type": "uint256"
+        }],
+        "name": "approve",
+        "outputs": [{
+            "name": "success",
+            "type": "bool"
+        }],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];
