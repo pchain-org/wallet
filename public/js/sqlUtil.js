@@ -555,8 +555,8 @@ function createTokenSwapInfo(obj) {
 
 function createErc20PiInfo(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_erc20_pi_transaction(id,chainId,funCode,preimage,ethContractId,hash,fromaddress,toaddress,value,status,createTime) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        var array = [null, obj.chainId, obj.funCode, obj.preimage, obj.ethContractId, obj.hash, obj.fromaddress,obj.toaddress,obj.value,obj.status,new Date()];
+        var sql = "INSERT INTO tb_erc20_pi_transaction(id,chainId,funCode,preimage,ethContractId,piContractId,hash,fromaddress,toaddress,value,status,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.chainId, obj.funCode, obj.preimage, obj.ethContractId, obj.piContractId, obj.hash, obj.fromaddress,obj.toaddress,obj.value,obj.status,new Date()];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -566,11 +566,37 @@ function createErc20PiInfo(obj) {
     });
 }
 
-
-function queryErc20PiInfoTXList(address) {
+function queryTOaddress(hash,address) {
     return new Promise(function (accept,reject) {
-        var sql = "select funCode,preimage,ethContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? order by id desc limit 10";
-        var array = [address];
+        var sql = "select ethContractId,piContractId,preimage from tb_erc20_pi_transaction where hash=? and toaddress=? ";
+        var array = [hash,address];
+        sqlietDb.queryByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+        })
+    });
+}
+
+
+
+function queryErc20PiInfoTXList(address,chainId) {
+    return new Promise(function (accept,reject) {
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? order by id desc limit 10";
+        var array = [address,chainId];
+        sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
+function queryErc20PiStatusList(address,chainId,status) {
+    return new Promise(function (accept,reject) {
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id desc";
+        var array = [address,chainId,status];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -585,8 +611,9 @@ function queryErc20PiInfoTXList(address) {
  */
 function updateErc20PiInfo(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "update tb_erc20_pi_transaction set status=? where hash=? and ethContractId=?";
-        var array = [obj.status,obj.ethContractIdHash,obj.ethContractId];
+        var sql = "update tb_erc20_pi_transaction set status=?,ethContractId=?,piContractId=? where hash=? and chainId=?";
+
+        var array = [obj.status,obj.ethContractId,obj.piContractId,obj.hash,obj.chainId];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
