@@ -522,11 +522,20 @@ const WITHDRAW = "withdraw";
 
 const REFUND = "refund";
 
+const ALLOWANCE = "allowance";
+
+const crossType = "erc20-pi";
+
 const APPROVE = "approve";
 
 const ethChainId = "Ropsten";
 
 const piChainId = "child_0";
+
+const STATUS_SUCCESS = "0x1";
+
+const STATUS_FAIL = "0x0";
+
 
 const wrul = "http://192.168.1.37:3000";
 
