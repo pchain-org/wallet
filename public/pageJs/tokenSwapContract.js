@@ -823,11 +823,16 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                         for (var i=0; i<robj.data.length; i++) {
 
+
                             var hash = robj.data[i].hash;
 
                             var funCode = robj.data[i].funCode;
 
-                            $scope.getReceipt(hash,funCode,chainId);
+                            var ethContractId = robj.data[i].ethContractId;
+
+                            var piContractId = robj.data[i].piContractId;
+
+                            $scope.getReceipt(ethContractId,piContractId,hash,funCode,chainId);
                         }
 
                     } else {
@@ -967,6 +972,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                     });
                                 }
                                 if (funCode == WITHDRAW && chainId == piChainId) {
+                                    $scope.refundFlag = true;
                                     queryErc20PiInfoTXList($scope.account.address,piChainId).then(function(wdata) {
                                         $scope.transactionList = wdata.data;
                                         $scope.$apply();
