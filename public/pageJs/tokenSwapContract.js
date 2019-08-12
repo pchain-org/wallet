@@ -82,6 +82,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.childNonceFlag = true;
     $scope.getChildNonce = function() {
+
         $scope.childNonceFlag = false;
         var obj = {};
         obj.address = $scope.swapTo;
@@ -129,9 +130,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
         });
     }
 
-
-    $scope.withdrawFlag = false;
-    $scope.refundFlag = false;
 
      $scope.accountList = new Array();
 
@@ -289,7 +287,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
         }).then(function successCallback(res) {
             if (res.data.result == "success") {
 
-                console.log(res);
+                $scope.allowance = res.data.allowance;
 
                 if (res.data.allowance == 0) {
 
@@ -354,9 +352,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                     console.log("Approve Success!");
 
-                    if ($scope.amount == 0) {
-                        $scope.approve($scope.toAmount);
-                    }
+                    // if ($scope.allowance < $scope.toAmount) {
+                    //     $scope.approve($scope.toAmount);
+                    // }
 
                 } else {
                     showPopup("Approve Error!",res.message.toString(),5000);
@@ -546,8 +544,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                             if (wobj.result == "success") {
                                                 queryErc20PiInfoTXList($scope.swapTo,piChainId).then(function(wdata) {
                                                     $scope.transactionList = wdata.data;
-                                                    $scope.$apply();
-
                                                     var uobj = {};
                                                     uobj.hash = $scope.swapToHash;
                                                     uobj.ethContractId = $scope.ethContractId;
@@ -557,7 +553,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                                     updateErc20PiInfo(uobj).then(function(wdobj) {
                                                         console.log(wdobj, "----withdraw----createErc20PiInfo-------------");
                                                         if (wdobj.result == "success") {
-                                                            queryErc20PiInfoTXList($scope.erc20account.address,piChainId).then(function(wddata) {
+                                                            queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(wddata) {
                                                                 $scope.transactionERC20List = wddata.data;
                                                                 $scope.$apply();
                                                             });
@@ -565,6 +561,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                                     });
                                                 });
                                             }
+
                                         });
 
                                         var hash = wres.data.hash;
@@ -725,7 +722,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         console.log(udata, "修改数据库并且可以进行withdraw");
 
                         if (udata.result == "success") {
-                            $scope.withdrawFlag = true;
                             queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(urdata) {
                                 $scope.transactionERC20List = urdata.data;
                                 $scope.$apply();
@@ -744,7 +740,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         console.log(udata, "当前没有返回piContractId可以进行refound");
 
                         if (udata.result == "success") {
-                            $scope.refundFlag = true;
                             queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(urdata) {
                                 $scope.transactionERC20List = urdata.data;
                                 $scope.$apply();
@@ -935,13 +930,23 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 });
                             }
                             if (funCode == APPROVE && $scope.receiptChainId == ethChainId) {
-                                $scope.sendTx();
+                                if ($scope.allowance == 0 || $scope.amount >= $scope.toAmount) {
+                                    $scope.sendTx();
+                                }
+
+                                if ($scope.allowance < $scope.toAmount) {
+                                    $scope.approve($scope.toAmount);
+                                }
+
                                 queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(robj) {
                                     $scope.transactionERC20List = robj.data;
                                     $scope.$apply();
                                 });
                             }
                             if (funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
+
+                                console.log("withdraw成功后,修改远程数据库！");
+
                                 queryErc20PiInfoTXList($scope.account.address,piChainId).then(function(wdata) {
                                     $scope.transactionList = wdata.data;
                                     $scope.$apply();
@@ -972,7 +977,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                     });
                                 }
                                 if (funCode == WITHDRAW && chainId == piChainId) {
-                                    $scope.refundFlag = true;
                                     queryErc20PiInfoTXList($scope.account.address,piChainId).then(function(wdata) {
                                         $scope.transactionList = wdata.data;
                                         $scope.$apply();

@@ -595,7 +595,7 @@ function queryErc20PiInfoTXList(address,chainId) {
 
 function queryErc20PiStatusList(address,chainId,status) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id desc";
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id asc";
         var array = [address,chainId,status];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);

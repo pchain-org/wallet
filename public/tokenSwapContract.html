@@ -159,12 +159,12 @@
 
                                         <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
                                             <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
-                                            <button ng-click="showEnterPwdPI(item.piContractId)" class="badge badge-info radiusBtn" ng-disabled="!withdrawFlag" target="_blank">withdraw</button>
+                                            <button ng-click="showEnterPwdPI(item.hash,item.toaddress)" class="badge badge-info radiusBtn" target="_blank">withdraw</button>
                                         </td>
 
                                         <td ng-if="item.status=='0x2' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
                                             <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
-                                            <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn"  ng-disabled="!refundFlag" target="_blank">Refund</button>
+                                            <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
                                         </td>
 
                                           <td ng-if="item.status=='0x3' && item.funCode=='newContract' && item.chainId=='Ropsten'">
