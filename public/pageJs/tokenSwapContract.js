@@ -889,6 +889,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
             obj.signedTx = hash;
             obj.funCode = funCode;
             obj.chainId = chainId;
+            obj.ethContractId = ethContractId;
+            obj.piContractId = piContractId;
+
             var url = localhostHost + "/getReceipt";
             // var url =  APIHost + "/getReceipt";
             $http({

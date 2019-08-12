@@ -154,7 +154,7 @@
                                          <!-- <td ng-bind="item.value+' PI'"></td> -->
 
                                         <td ng-if="item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending</a>
                                         </td>
 
                                         <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
@@ -163,7 +163,7 @@
                                         </td>
 
                                         <td ng-if="item.status=='0x2' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Fail</a>
                                             <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
                                         </td>
 
@@ -213,7 +213,7 @@
                     <!-- <td ng-bind="item.value+' PI'"></td> -->
 
                 <td ng-if="item.status=='0x0' && item.funCode=='withdraw' && item.chainId=='child_0'" >
-                    <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Detail</a>
+                    <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Pending</a>
                 </td>
 
                 <td ng-if="item.status=='0x1' && item.funCode=='withdraw' && item.chainId=='child_0'" >
@@ -221,7 +221,7 @@
                 </td>
 
                 <td ng-if="item.status=='0x4' && item.funCode=='withdraw' && item.chainId=='child_0'" >
-                    <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Detail</a>
+                    <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Fail</a>
                     <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" ng-disabled="!refundFlag" target="_blank">Refund</button>
                 </td>
 
