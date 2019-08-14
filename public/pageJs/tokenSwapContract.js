@@ -278,13 +278,16 @@ angularApp.controller('myCtrl', function($scope, $http) {
         obj.spender = HashedTimelockERC20ContractAddress;
         obj.PAIStandardTokenContractAddress = PAIStandardTokenContractAddress;
         obj.amount = $scope.toAmount;
+        console.log(obj);
 
-        var url = localhostHost + "/checkAllowance";
+        var url = //localhostHost + "/checkAllowance";
+            localhostHost + "/checkAllowance";
         $http({
             method: 'POST',
             url: url,
             data: obj
         }).then(function successCallback(res) {
+            console.log(res,"-----------------------------------");
             if (res.data.result == "success") {
 
                 $scope.allowance = res.data.allowance;
@@ -343,6 +346,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             obj.chainId = ethChainId;
 
             var url = localhostHost + "/sendRawTxCrossToken";
+            //APIHost
             $http({
                 method: 'POST',
                 url: url,
@@ -797,15 +801,23 @@ angularApp.controller('myCtrl', function($scope, $http) {
     schedule.scheduleJob(rule1, function(){
         b++;
 
-        console.log(b, "执行任务 sysReceipt : ", new Date().toLocaleString());
+        if ($scope.erc20account.address) {
 
-        $scope.sysReceiptETH($scope.erc20account.address,ethChainId,STATUS_FAIL);
+            console.log(b, "执行任务 sysReceipt : ", new Date().toLocaleString());
 
-        console.log(b, "执行任务 sysNewContractIdPI : ", new Date().toLocaleString());
+            $scope.sysReceiptETH($scope.erc20account.address,ethChainId,STATUS_FAIL);
 
-        $scope.sysNewContractIdPI($scope.erc20account.address,ethChainId,STATUS_SUCCESS);
+            console.log(b, "执行任务 sysNewContractIdPI : ", new Date().toLocaleString());
 
-        $scope.sysReceiptPI($scope.account.address,piChainId,STATUS_FAIL);
+            $scope.sysNewContractIdPI($scope.erc20account.address,ethChainId,STATUS_SUCCESS);
+        }
+
+        if ($scope.account.address) {
+
+            console.log(b, "执行任务 sysReceiptPI : ", new Date().toLocaleString());
+
+            $scope.sysReceiptPI($scope.account.address,piChainId,STATUS_FAIL);
+        }
 
     });
 
@@ -892,17 +904,18 @@ angularApp.controller('myCtrl', function($scope, $http) {
             obj.ethContractId = ethContractId;
             obj.piContractId = piContractId;
 
-            var url = localhostHost + "/getReceipt";
-            // var url =  APIHost + "/getReceipt";
+            // var url = localhostHost + "/getReceiptCrossToken";
+            var url =  localhostHost + "/getReceiptCrossToken";
             $http({
                 method: 'POST',
                 url: url,
                 data: obj
             }).then(function successCallback(res) {
 
-                if (res.data.result == "success" && res.data.receipt.status == "0x1") {
+                console.log("-----getReceiptCrossToken--result------------", res);
 
-                    console.log("-----getReceipt--result------------", res);
+
+                if (res.data.result == "success" && res.data.receipt.status == "0x1") {
 
                     var obj = {};
 
@@ -926,13 +939,18 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     updateErc20PiInfo(obj).then(function(aobj) {
                         if (aobj.result == "success") {
                             if (funCode == NEWCONTRACT && $scope.receiptChainId == ethChainId) {
-                                $scope.newContractIdPI($scope.transactionHash, $scope.ethContractId);
+                                queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(robj) {
+                                    $scope.transactionERC20List = robj.data;
+                                    $scope.$apply();
+
+                                    $scope.newContractIdPI($scope.transactionHash, $scope.ethContractId);
+                                });
+                            }
+                            if (funCode == APPROVE && $scope.receiptChainId == ethChainId) {
                                 queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(robj) {
                                     $scope.transactionERC20List = robj.data;
                                     $scope.$apply();
                                 });
-                            }
-                            if (funCode == APPROVE && $scope.receiptChainId == ethChainId) {
                                 if ($scope.allowance == 0 || $scope.amount >= $scope.toAmount) {
                                     $scope.sendTx();
                                 }
@@ -941,10 +959,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                     $scope.approve($scope.toAmount);
                                 }
 
-                                queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(robj) {
-                                    $scope.transactionERC20List = robj.data;
-                                    $scope.$apply();
-                                });
                             }
                             if (funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
 
@@ -958,7 +972,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         }
                     });
                 } else {
-                    if (res.data.receipt.blockNumber != undefined && res.data.receipt.status == "0x0") {
+                    if (res.data.receipt != undefined && res.data.receipt.status == "0x0") {
                         var eobj = {};
                         eobj.ethContractId = 0;
                         eobj.piContractId = 0;
