@@ -153,54 +153,55 @@
                                           <td ng-bind="item.toaddress"></td>
                                          <!-- <td ng-bind="item.value+' PI'"></td> -->
 
-                                        <td ng-if="item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending</a>
+                                        <td ng-if="item.status=='0x0' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending(NewContractIdETH)</a>
                                         </td>
 
-                                        <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
-                                            <button ng-click="showEnterPwdPI(item.hash,item.toaddress)" class="badge badge-info radiusBtn" target="_blank">withdraw</button>
-                                        </td>
+                                          <td ng-if="item.status=='0x1' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">NewContractIdETH(Success)</a>
+                                          </td>
 
-                                        <td ng-if="item.status=='0x2' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Fail</a>
-                                            <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
-                                        </td>
+
+                                          <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">NewContractIdPI(Success)</a>
+                                              <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
+
+                                          </td>
 
                                           <td ng-if="item.status=='0x3' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Withdraw(Success)</a>
                                           </td>
 
                                           <td ng-if="item.status=='0x4' && item.funCode=='newContract' && item.chainId=='Ropsten'">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
+                                              <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
                                           </td>
 
-                                      </tr>
-                                    </tbody>
-                                </table>
-                                <div class="text-center" ng-show="transactionERC20List.length == 0" ng-cloak>
-                                    <h3>No Records</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                         </tr>
+                                       </tbody>
+                                   </table>
+                                   <div class="text-center" ng-show="transactionERC20List.length == 0" ng-cloak>
+                                       <h3>No Records</h3>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
 
-
-                <div class="row clearfix">
-                <div class="col-xl-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Latest 10 transaction records</strong></h2>
-                    </div>
-                <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionList.length > 0" ng-cloak>
-                    <thead>
-                    <tr>
-                        <th>Hash</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <!--   <th>Value</th>-->
+                <!--
+                   <div class="row clearfix">
+                   <div class="col-xl-12 col-md-12 col-lg-12">
+                   <div class="card">
+                       <div class="header">
+                           <h2><strong>Latest 10 transaction records</strong></h2>
+                       </div>
+                   <div class="table-responsive">
+                   <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionList.length > 0" ng-cloak>
+                       <thead>
+                       <tr>
+                           <th>Hash</th>
+                           <th>From</th>
+                           <th>To</th>
                         <th>Operation</th>
                     </tr>
                     </thead>
@@ -210,7 +211,6 @@
                     <td ng-bind="cutWords(item.hash)"></td>
                     <td ng-bind="item.fromaddress"></td>
                     <td ng-bind="item.toaddress"></td>
-                    <!-- <td ng-bind="item.value+' PI'"></td> -->
 
                 <td ng-if="item.status=='0x0' && item.funCode=='withdraw' && item.chainId=='child_0'" >
                     <a href="{{'index.html?key='+item.hash+'&chain='+1}}" class="badge badge-info radiusBtn" target="_blank">Pending</a>
@@ -234,7 +234,7 @@
                 </div>
                 </div>
                 </div>
-                </div>
+                </div> -->
 
             </div>
             </div>
@@ -254,9 +254,17 @@
                     </div>
                     <div class="modal-body">
                         <form name="passwordForm" novalidate>
+
+                            <div>
+                                <div class="input-group marginTop10">
+                                    <span class="input-group-addon">ERC20 Address </span>
+                                    <div class="form-control" ng-bind="erc20account.address"></div>
+                                </div>
+
                             <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
                                 <span class="input-group-addon">Password</span>
                                 <input type="password" placeholder="" class="form-control" ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword" required>
+                            </div>
                             </div>
                             <div class="marginTop10 text-center">
                                 <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
@@ -271,7 +279,7 @@
 
 
 
-<!-- enterPasswordPI -->
+<!-- enterPasswordPI
 <div class="modal fade" id="enterPasswordPI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 525px">
         <div class="modal-content">
@@ -283,8 +291,15 @@
                     Please Enter Password
                 </h4>
             </div>
+
             <div class="modal-body">
                 <form name="passwordFormPI" novalidate>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">ERC20 Address </span>
+                        <div class="form-control" ng-bind="erc20account.address"></div>
+                    </div>
+
                     <div class="input-group" ng-class="(passwordFormPI.inputPasswordPI.$invalid && newAccount.inputPasswordPI.$dirty)?'has-danger':( passwordFormPI.inputPasswordPI.$valid?'has-success':'') ">
                         <span class="input-group-addon">Password</span>
                         <input type="password" placeholder="" class="form-control" ng-class="(passwordFormPI.inputPasswordPI.$invalid && passwordFormPI.inputPasswordPI.$dirty)?'form-control-danger':(passwordFormPI.inputPasswordPI.$valid?'form-control-success':'') " name="inputPasswordPI" ng-model="inputPasswordPI" required>
@@ -300,7 +315,7 @@
     </div>
 </div>
 
-
+-->
 
 <!-- enterPasswordRefundPI -->
 <div class="modal fade" id="enterPasswordRefundPI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -316,9 +331,16 @@
             </div>
             <div class="modal-body">
                 <form name="passwordFormRefundPI" novalidate>
+                    <div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">ERC20 Address </span>
+                            <div class="form-control" ng-bind="erc20account.address"></div>
+                        </div>
+
                     <div class="input-group" ng-class="(passwordFormRefundPI.inputPasswordRefundPI.$invalid && newAccount.inputPasswordRefundPI.$dirty)?'has-danger':( passwordFormRefundPI.inputPasswordRefundPI.$valid?'has-success':'') ">
                         <span class="input-group-addon">Password</span>
                         <input type="password" placeholder="" class="form-control" ng-class="(passwordFormRefundPI.inputPasswordRefundPI.$invalid && passwordFormRefundPI.inputPasswordRefundPI.$dirty)?'form-control-danger':(passwordFormRefundPI.inputPasswordRefundPI.$valid?'form-control-success':'') " name="inputPasswordRefundPI" ng-model="inputPasswordRefundPI" required>
+                    </div>
                     </div>
                     <div class="marginTop10 text-center">
                         <button type="button" class="btn btn-primary" ng-disabled="passwordFormRefundPI.$invalid " ng-disabled="!refundNonceFlag" ng-click="refund()">

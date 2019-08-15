@@ -39,7 +39,6 @@ newSecretHashPair = () => {
 nowSeconds = () => Math.floor(Date.now() / 1000);
 
 
-
 const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
@@ -508,9 +507,9 @@ var transferABI=[{
 
 const PAIStandardTokenContractAddress = "0x06091e0f826a0e8ab813d77205b59ab639e02229";
 
-const HashedTimelockERC20ContractAddress = "0x18c273ece5141d2fbd89fe7a10114e66c851df52";
+const HashedTimelockERC20ContractAddress = "0xd21b4d93b1b7eb982867da4b2662ae97603b9273";
 
-const HashedTimelockContractAddress = "0xe6aab1405e169145d459473f075c7bd38b68460c";
+const HashedTimelockContractAddress = "0x0429658b97a75f7160ca551f72b6f85d6fa10439";
 
 const company = "0xa393DeDb5CbE5D3BEDbc15E01576A5B3C2bA7834";
 
@@ -532,9 +531,11 @@ const ethChainId = "Ropsten";
 
 const piChainId = "child_0";
 
+const STATUS_FAIL = "0x4";
+
 const STATUS_SUCCESS = "0x1";
 
-const STATUS_FAIL = "0x0";
+const STATUS_DEFAULT = "0x0";
 
 
 const wrul = "http://192.168.1.37:3000";
@@ -543,10 +544,18 @@ const localhostHost = "http://localhost:3038";
 
 var newContractABIETH = [
     {
-        "varant": false,
+        "constant": false,
         "inputs": [
             {
                 "name": "_receiver",
+                "type": "address"
+            },
+            {
+                "name": "_swapTo",
+                "type": "address"
+            },
+            {
+                "name": "_withdrawHelper",
                 "type": "address"
             },
             {
@@ -564,10 +573,6 @@ var newContractABIETH = [
             {
                 "name": "_amount",
                 "type": "uint256"
-            },
-            {
-                "name": "_swapTo",
-                "type": "address"
             }
         ],
         "name": "newContract",
