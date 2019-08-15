@@ -639,12 +639,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
             //生成k,v
             var newPrivateKey = $scope.newPrivateKet();
 
-            // $scope.withdrawHelper = priToAddress(newPrivateKey);
-            //
-            // $scope.withdrawHelperPriv = newPrivateKey;
+            $scope.withdrawHelper = priToAddress(newPrivateKey);
 
-            $scope.withdrawHelper = "0x65d6FD881E23c8E92a911A69b65f01F6f07194c1";
-            $scope.withdrawHelperPriv = "01e88c4ea402d73e8507edfdbd4f17a93048f9cc305e1098f27174d8d0d6e543";
+            $scope.withdrawHelperPriv = newPrivateKey;
+
+            // $scope.withdrawHelper = "0x65d6FD881E23c8E92a911A69b65f01F6f07194c1";
+            // $scope.withdrawHelperPriv = "01e88c4ea402d73e8507edfdbd4f17a93048f9cc305e1098f27174d8d0d6e543";
 
             var paramArr = [company, $scope.account.address, $scope.withdrawHelper, hashlock, timelock, PAIStandardTokenContractAddress, toAmount];
 
