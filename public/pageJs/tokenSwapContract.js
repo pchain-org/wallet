@@ -240,9 +240,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                         $scope.refundFrom = refundFrom;
 
-                        console.log(res.data.contract.sender,res.data.contract.timelock,nowSeconds(),res.data.contract.withdrawn,"=============getContract=============");
+                        console.log(res.data.contract.sender,res.data.contract.timelock,nowSeconds(),res.data.contract.withdrawn,"=============getContract");
 
-                        if ($scope.refundFrom == res.data.contract.sender && res.data.contract.withdrawn == false && res.data.contract.timelock > nowSeconds()) {
+                        if ($scope.refundFrom == res.data.contract.sender && res.data.contract.withdrawn == false && res.data.contract.timelock < nowSeconds()) {
 
                             console.log("可以执行refund ! ");
                             $scope.getErc20RefundFromNonce();
@@ -250,6 +250,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
                             $('#enterPasswordRefundPI').modal('show');
 
                         } else {
+
+                            $scope.refundFrom = "";
+
                             console.log("不执行refund ! ");
 
                             swal("Refund Message",res.data.message.toString(),"error");
