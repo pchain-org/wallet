@@ -133,7 +133,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
     $scope.getRecommendList = function() {
         var obj = {};
         obj.address = $scope.account.address;
-        var url = APILocalHost + "/getCandidateList";
+        var url = APIHost + "/queryCandidateList";
         $http({
             method: 'POST',
             url: url,
