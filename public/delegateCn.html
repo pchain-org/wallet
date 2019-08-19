@@ -1,0 +1,518 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Pchain Wallet">
+    <title>PCHAIN Wallet</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+    <link href="css/angular-csp.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="css/lib/bootstrap2.css">-->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/page.css">
+    <script src="js/angular.min.js"></script>
+
+</head>
+
+<body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+                <p>Please wait...</p>
+            </div>
+        </div>
+        <div ng-include="'./head.html'"></div>
+        <section class="content">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <div class="card mycard">
+                            <div class="body block-header">
+                                <div class="row">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                                        <h2 class="hidden-sm-down">Welcome To PCHAIN Wallet</h2>
+                                        <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
+                                        <ul class="breadcrumb p-l-0 p-b-0 ">
+                                            <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                                            <li class="breadcrumb-item active">Delegate</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                        <a href="delegateCn.html">中文</a><span>/</span>
+                                        <a href="delegateEn.html">English</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>我的地址</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (复制地址 <i class="icon icon-copy "  ></i>)</span> </h2>
+                            </div>
+                            <div class="body">
+                                <div class="input-group mb-12 my-input-group">
+                                    <span class="input-group-addon">地址</span>
+                                    <div class="form-control">
+                                        <select class="mySelect" ng-model="account" ng-options="account as account.address  for account in accountList" ng-change="selectAccount()"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-xl-3 col-lg-3 col-md-3">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>我的委托(PI)</strong></h2>
+                                <p class="marginTop20"><span ng-bind="delegateAmount">0</span></p>
+                                <p class="marginTop15"><span>委托在<span ng-bind="cnum">0</span>个候选节点</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-3 col-md-3">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>我的奖励(PI)</strong></h2>
+                                <p class="marginTop20"><span ng-bind="allRewards">0</span></p>
+                                <p class="marginTop40"></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-3 col-md-3">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>年收益率</strong></h2>
+                                <p class="marginTop20"><span ng-bind="rateOfReturn">0</span></p>
+                                <p class="marginTop40"></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-3 col-md-3">
+                        <div class="card mycard">
+                            <div class="header">
+                                <h2><strong>退款中(PI)</strong></h2>
+                                <p class="marginTop20"><span ng-bind="refunding">0</span></p>
+                                <p class="marginTop40"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>提示：总奖励以实际收入为准。 最终解释权归PCHAIN所有</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th>周期数</th>
+                                        <th>主/子链</th>
+                                        <th>被委托地址</th>
+                                        <th>我的委托(PI)</th>
+                                        <th>交易状态</th>
+                                        <th>总奖励(PI)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in delegateRewardList">
+                                        <td ng-bind="item.number"></td>
+                                        <td ng-if="item.chainId==0"><span>主链</span></td>
+                                        <td ng-if="item.chainId==1"><span>子链1</span></td>
+                                        <td ng-bind="item.address"></td>
+                                        <td ng-bind="item.amount"></td>
+                                        <td ng-if="item.tx_status==2"><span>进行中</span></td>
+                                        <td ng-if="item.tx_status==1"><span>成功</span></td>
+                                        <td ng-if="item.tx_status==-1"><span>已退出</span></td>
+                                        <td ng-bind="item.totalRewardBalance"></td>
+                                        <td>
+                                        <span ng-if="item.tx_status==1 || item.tx_status==-1"><button ng-click="showDetail(item.id)" class="badge badge-info radiusBtn">明细</button></span>
+                                        <span ng-if="item.tx_status!=-1"><button ng-click="checkDelegate(item)" class="badge badge-info radiusBtn">追加</button></span>
+                                        <span ng-if="item.tx_status!=-1"><button ng-click="cancelDelegate(item)" class="badge badge-info radiusBtn">取消</button></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>申请预估时间(UTC)：</strong>
+                                    <strong ng-bind="pchainTime"></strong>
+                                    <strong ng-bind="childTime" class="marginLeft20"></strong>
+                                    <span class="customize-btn"><button  ng-click="checkDelegate()" class="badge badge-info radiusBtn">自定义加入</button></span>
+                                </h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th>主/子链</th>
+                                        <th>用户名</th>
+                                        <th>地址</th>
+                                        <th>佣金(0%-100%)</th>
+                                        <th>总抵押数(PI)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in recommendList">
+                                        <td ng-if="item.chainId==0"><span>主链</span></td>
+                                        <td ng-if="item.chainId==1"><span>子链1</span></td>
+                                        <td ng-bind="item.username"></td>
+                                        <td ng-bind="item.address"></td>
+                                        <td ng-bind="item.commission"></td>
+                                        <td ng-bind="item.allProxiedBalance"></td>
+                                        <td><button ng-click="checkDelegate(item)" class="badge badge-info radiusBtn">加入</button>
+                                        <button ng-click="showIntroduction(item.introduction)" class="badge badge-info radiusBtn">介绍</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>委托历史记录</strong></h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-cloak>
+                                    <thead>
+                                    <tr>
+                                        <th>时间</th>
+                                        <th>周期编号</th>
+                                        <th>委托地址</th>
+                                        <th>主子链</th>
+                                        <th>我的委托(PI)</th>
+                                        <th>操作状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in delegateHistoryList">
+                                        <td ng-bind="item.updatetime"></td>
+                                        <td ng-bind="item.number"></td>
+                                        <td ng-bind="item.candidate"></td>
+                                        <td ng-if="item.chainId==0"><span>主链</span></td>
+                                        <td ng-if="item.chainId==1"><span>子链1</span></td>
+                                        <td ng-bind="item.amount"></td>
+                                        <td ng-if="item.status==1"><span>加入</span></td>
+                                        <td ng-if="item.status==0"><span>取消</span></td>
+                                        <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">详细</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+
+        <!-- enterPassword -->
+        <div class="modal fade" id="enterPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title text-center block">
+                            请输入密码
+                    </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="passwordForm" novalidate>
+                            <div class="input-group" ng-class="(passwordForm.inputPassword.$invalid && newAccount.inputPassword.$dirty)?'has-danger':( passwordForm.inputPassword.$valid?'has-success':'') ">
+                                <span class="input-group-addon">密码</span>
+                                <input type="password" placeholder="" class="form-control" ng-class="(passwordForm.inputPassword.$invalid && passwordForm.inputPassword.$dirty)?'form-control-danger':(passwordForm.inputPassword.$valid?'form-control-success':'') " name="inputPassword" ng-model="inputPassword" required>
+                            </div>
+                            <div class="marginTop10 text-center">
+                                <button type="button" class="btn btn-primary" ng-disabled="passwordForm.$invalid " ng-click="confirmPassword()">
+                                    确认
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- confirm transaction -->
+    <div class="modal fade" id="transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                       <span ng-show="delegateType == 0" ng-cloak>委托</span>
+                       <span ng-show="delegateType == 1" ng-cloak>取消委托</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="input-group marginTop10" ng-show="delegateType == 0" ng-cloak>
+                            <span class="input-group-addon">被委托地址 </span>
+                            <div class="form-control" ng-bind="toAddress" ></div>
+                        </div>
+                        <div class="input-group marginTop10"  ng-show="delegateType == 1" ng-cloak>
+                            <span class="input-group-addon">被委托地址 </span>
+                            <div class="form-control" ng-bind="cancleCandidate"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">我的地址</span>
+                            <div class="form-control" ng-bind="account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10" ng-show="delegateType == 0" ng-cloak>
+                            <span class="input-group-addon">委托数量</span>
+                            <div class="form-control" ng-bind="toAmount+' PI'" ></div>
+                        </div>
+                        <div class="input-group marginTop10" ng-show="delegateType == 1" ng-cloak>
+                            <span class="input-group-addon">取消数量</span>
+                            <div class="form-control" ng-bind="cancleAmount+' PI'" ></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">最高手续费</span>
+                            <div class="form-control" ng-bind="txFee+' PI'"></div>
+                        </div>
+                        <div class="input-group marginTop10">
+                            <span class="input-group-addon">Nonce</span>
+                            <div class="form-control" ng-bind="nonce"></div>
+                        </div>
+
+                        <div class="input-group marginTop10" ng-show="invitationiCode" ng-cloak>
+                            <span class="input-group-addon">邀请码</span>
+                            <div class="form-control" ng-bind="invitationiCode">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <div class="block text-center">
+                        <button type="button" class="btn btn-primary" ng-disabled="!nonceFlag" ng-click="sendTx()">
+                            发送交易
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="delegateInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                            <form name="Form" novalidate="" class="row clearfix">
+                                <div class="col-xl-12 col-lg-12 col-md-12" ng-show="custom">
+                                    <div class="input-group ">
+                                    <span class="input-group-addon">主/子链</span>
+                                        <select class="form-control" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList" style="height: 2.7rem" ng-change="selectchain(chain.id)"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="input-group my-input-group " ng-class="(Form.toAddress.$invalid && Form.toAddress.$dirty)?'has-danger':( Form.toAddress.$valid?'has-success':'') ">
+                                        <span class="input-group-addon">被委托地址</span>
+                                        <input type="text" class="form-control " ng-class="(Form.toAddress.$invalid && Form.toAddress.$dirty)?'form-control-danger':(Form.toAddress.$valid?'form-control-success':'') " name="toAddress" ng-model="toAddress" ng-pattern="/^[a-fA-F0-9]{40}$|^(0x)?[0-9a-fA-F]{40}$/" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="input-group " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
+                                        <span class="input-group-addon">委托数量</span>
+                                        <input type="text" class="form-control" ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'min:1000~max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="input-group ">
+                                        <span class="input-group-addon">邀请码</span>
+                                        <input type="text"  class="form-control " ng-class="(Form.invitationiCode.$invalid && Form.invitationiCode.$dirty)?'form-control-danger':(Form.invitationiCode.$valid?'form-control-success':'') " name="invitationiCode" ng-model="invitationiCode">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="clearfix"></div>
+                            <div class="marginTop20 text-center">
+                                <button class="btn btn-info" ng-disabled="Form.$invalid" ng-click="showEnterPwd(0)">确认</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="cancelDelegateInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                            <form name="cancleForm" novalidate="" class="row clearfix">
+                                <div class="clearfix marginTop10"></div>
+                                <input type="hidden"  name="cancleId" ng-model="cancleId">
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="input-group my-input-group " ng-class="(cancleForm.cancleCandidate.$invalid && cancleForm.cancleCandidate.$dirty)?'has-danger':( cancleForm.cancleCandidate.$valid?'has-success':'') ">
+                                        <span class="input-group-addon">被委托地址</span>
+                                        <input type="text" class="form-control" ng-class="(cancleForm.cancleCandidate.$invalid && cancleForm.cancleCandidate.$dirty)?'cancleForm-control-danger':(cancleForm.cancleCandidate.$valid?'cancleForm-control-success':'') " name="cancleCandidate" ng-model="cancleCandidate" ng-pattern="/^[a-fA-F0-9]{40}$|^(0x)?[0-9a-fA-F]{40}$/" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div class="input-group " ng-class="(cancleForm.cancleAmount.$invalid && cancleForm.cancleAmount.$dirty)?'has-danger':( cancleForm.cancleAmount.$valid?'has-success':'') ">
+                                        <span class="input-group-addon">取消委托数量</span>
+                                        <input type="text" class="form-control" ng-class="(cancleForm.cancleAmount.$invalid && cancleForm.cancleAmount.$dirty)?'cancleForm-control-danger':(cancleForm.cancleAmount.$valid?'cancleForm-control-success':'') " name="cancleAmount" ng-model="cancleAmount"  ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
+                                    </div>
+                                </div>
+                            </form>
+                        <div class="clearfix"></div>
+                        <div class="marginTop20 text-center">
+                            <button class="btn btn-info" ng-disabled="cancleForm.$invalid" ng-click="showEnterPwd(1)">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="delegateIntroduction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <span ng-bind="introduction"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="rewardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                    </h4>
+                </div>
+                <div class="modal-body" style="line-height: 1">
+                    <div class="text-center">
+                        <div class="row clearfix">
+                            <div class="col-xl-12 col-md-12 col-lg-12">
+                                <div class="card">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  ng-cloak>
+                                            <thead>
+                                            <tr>
+                                                <th>时间</th>
+                                                <th>收益(PI)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="item in rewardDetailList">
+                                                <td ng-bind="item.rewardTime"></td>
+                                                <td ng-bind="item.profit"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <nav>
+                                            <ul class="pagination">
+                                                <li>
+                                                    <a ng-click="Previous()">
+                                                        <span>《</span>
+                                                    </a>
+                                                </li>
+                                                <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}" >
+                                                    <a ng-click="selectPage(page)" >{{ page }}</a>
+                                                </li>
+                                                <li>
+                                                    <a ng-click="Next()">
+                                                        <span>》</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    window.$ = window.jQuery = require('jquery');
+    </script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="lib/sweetalert/sweetalert-dev.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/sqlUtil.js"></script>
+    <script type="text/javascript" src="pageJs/delegateCn.js"></script>
+
+</body>
+
+</html>
