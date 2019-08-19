@@ -244,7 +244,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                         if ($scope.refundFrom == res.data.contract.sender && res.data.contract.withdrawn == false && res.data.contract.timelock < nowSeconds()) {
 
-                            console.log("可以执行refund ! ");
                             $scope.getErc20RefundFromNonce();
 
                             $('#enterPasswordRefundPI').modal('show');
@@ -252,8 +251,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         } else {
 
                             $scope.refundFrom = "";
-
-                            console.log("不执行refund ! ");
 
                             swal("Refund Message",res.data.message.toString(),"error");
                         }
@@ -336,21 +333,21 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                 if (res.data.allowance == 0) {
 
-                    console.log("直接调用approve");
+                    // console.log("直接调用approve");
 
                     $scope.approve($scope.toAmount);
 
                 } else if (res.data.allowance >= $scope.toAmount) {
 
-                    console.log("直接运行newContract");
+                    // console.log("直接运行newContract");
 
                     $scope.sendTx();
 
                 } else if (res.data.allowance < $scope.toAmount) {
 
-                    console.log("先把amount设置为0，然后再设置成当前amount");
+                    // console.log("先把amount设置为0，然后再设置成当前amount");
 
-                    $scope.approve(0);
+                    $scope.approve(0); //0 , 5,     ====> 3 < 5
 
                 }
             } else {
@@ -398,10 +395,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                     console.log("Approve Success!");
 
-                    // if ($scope.allowance < $scope.toAmount) {
-                    //     $scope.approve($scope.toAmount);
-                    // }
-
                 } else {
                     showPopup("Approve Error!",res.message.toString(),5000);
                 }
@@ -441,8 +434,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 var GASLIMIT = 600000;
 
                                 var signRawObj = initEthSignRawContract(nonce, GASPRICE, GASLIMIT,HashedTimelockERC20ContractAddress,data);
-
-                                // console.log($scope.currentPrivateKey);
 
                                 var signData = signEthTx($scope.currentPrivateKeyETH, signRawObj);
 
@@ -487,9 +478,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 });
 
                             } else {
-
                                 $('#enterPasswordPI').modal('hide');
-                                console.log("当前数据不存在！");
                                 swal("Query error");
                             }
 
@@ -609,7 +598,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         }
                     });
                 } else {
-                    console.log("当前数据不存在！");
+                    console.log("Query is null ！");
                 }
 
             });
@@ -636,15 +625,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             var toAmount = 1;
 
-            //生成k,v
+            // k,v
             var newPrivateKey = $scope.newPrivateKet();
 
             $scope.withdrawHelper = priToAddress(newPrivateKey);
 
             $scope.withdrawHelperPriv = newPrivateKey;
-
-            // $scope.withdrawHelper = "0x65d6FD881E23c8E92a911A69b65f01F6f07194c1";
-            // $scope.withdrawHelperPriv = "01e88c4ea402d73e8507edfdbd4f17a93048f9cc305e1098f27174d8d0d6e543";
 
             var paramArr = [company, $scope.account.address, $scope.withdrawHelper, hashlock, timelock, PAIStandardTokenContractAddress, toAmount];
 
@@ -769,7 +755,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     uobj.chainId = ethChainId;
                     updateErc20PiInfo(uobj).then(function(udata) {
                         if (udata.result == "success") {
-                            console.log(udata, "修改数据库并且可以进行withdraw");
+                            console.log(udata, "update data or withdraw");
 
                             $scope.withdraw($scope.ethContractIdHash,ethChainId);
 
@@ -787,8 +773,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     uobj.status = "0x4";
                     uobj.chainId = ethChainId;
                     updateErc20PiInfo(uobj).then(function(udata) {
-
-                        console.log(udata, "当前没有返回piContractId可以进行refound");
 
                         if (udata.result == "success") {
                             queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(urdata) {
@@ -824,7 +808,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                     } else {
 
-                        console.log(" sysNewContractIdPI , 当前没有需要修改的数据!");
+                        console.log(" sysNewContractIdPI , There is currently no data that needs to be modified !");
 
                     }
                 });
@@ -850,15 +834,15 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
         if ($scope.erc20account.address != undefined) {
 
-            console.log(b, "执行任务 sysReceipt : ", new Date().toLocaleString());
+            console.log(b, " : Task  sysReceipt : ", new Date().toLocaleString());
 
             $scope.sysReceiptETH($scope.erc20account.address,ethChainId,STATUS_DEFAULT);
 
-            // console.log(b, "执行任务 sysNewContractIdPI : ", new Date().toLocaleString());
+            // console.log(b, "Task sysNewContractIdPI : ", new Date().toLocaleString());
             //
             // $scope.sysNewContractIdPI($scope.erc20account.address,ethChainId,STATUS_SUCCESS);
             //
-            // console.log(b, "执行任务 sysReceiptPI : ", new Date().toLocaleString());
+            // console.log(b, "Task sysReceiptPI : ", new Date().toLocaleString());
             //
             // $scope.sysReceiptPI($scope.erc20account.address,ethChainId,"0x2");
 
@@ -889,7 +873,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                     } else {
 
-                        console.log("sysReceipt , 当前没有需要修改的数据!");
+                        console.log("sysReceipt , There is currently no data that needs to be modified !");
 
                     }
                 });
@@ -924,7 +908,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                     } else {
 
-                        console.log("sysReceipt , 当前没有需要修改的数据!");
+                        console.log("sysReceipt , There is currently no data that needs to be modified !");
 
                     }
                 });
@@ -1011,7 +995,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                             if (funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
 
-                                console.log("withdraw成功后,修改远程数据库！");
+                                // console.log("withdraw成功后,修改远程数据库！");
 
                                 queryErc20PiInfoTXList($scope.account.address,ethChainId).then(function(wdata) {
                                     $scope.transactionERC20List = wdata.data;
@@ -1037,7 +1021,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                             }
                         });
                     } else {
-                        console.log("getReceipt , 当前数据hash还没打包进块！");
+                        console.log("getReceipt , Current hash is not packaged in blocks ！");
                     }
                 }
             }, function errorCallback(res) {

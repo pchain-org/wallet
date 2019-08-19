@@ -141,8 +141,7 @@
                                         <th>Hash</th>
                                         <th>From</th>
                                         <th>To</th>
-                                        <!--   <th>Value</th>-->
-                                          <th>Operation</th>
+                                        <th>Operation</th>
                                       </tr>
                                       </thead>
                                       <tbody>
@@ -151,7 +150,6 @@
                                           <td ng-bind="cutWords(item.hash)"></td>
                                           <td ng-bind="item.fromaddress"></td>
                                           <td ng-bind="item.toaddress"></td>
-                                         <!-- <td ng-bind="item.value+' PI'"></td> -->
 
                                         <td ng-if="item.status=='0x0' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
                                             <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending(NewContractIdETH)</a>
