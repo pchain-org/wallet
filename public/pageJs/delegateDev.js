@@ -2,6 +2,9 @@
      $scope.gasPrice = 10;
      $scope.balance = 0;
      $scope.amount = 1000;
+     $scope.dminAmount = 1000;
+     $scope.cminAmount = 1;
+
 
      let web3Util = new Web3();     
 
@@ -75,6 +78,12 @@
      }
 
      $scope.cancelDelegate = function(){
+         if ($scope.cminAmount>( new BigNumber($scope.amount))) {
+             let tips1 = "Amount error";
+             let tips2 = "min :" + $scope.cminAmount + " PI"
+             swal(tips1, tips2, "error");
+             return;
+         }
          let amount= "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
          let gasPrice =null;
          console.log($scope.account,$scope.candidate,amount)
@@ -115,6 +124,12 @@
 
 
      $scope.delegate = function(){
+         if ($scope.dminAmount>( new BigNumber($scope.amount))) {
+             let tips1 = "Amount error";
+             let tips2 = "min :" + $scope.dminAmount + " PI"
+             swal(tips1, tips2, "error");
+             return;
+         }
          let amount= "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
          let gasPrice =null;
          console.log($scope.account,$scope.candidate,amount)

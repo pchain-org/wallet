@@ -676,6 +676,14 @@
     background: #e47297;
     color: #fff
 }
+.card .header span{
+  font-size: 16px;
+}
+
+.card .header .customize-btn{
+    float: right;
+    margin-right: 30px;
+}
 
 .theme-blush .nav-tabs .nav-link.active {
     border: 1px solid #e47297 !important;
@@ -3753,6 +3761,8 @@ fieldset[disabled] .btn-link.active {
     right: 8px
 }
 
+
+
 .form-control::-moz-placeholder {
     color: #9A9A9A;
     opacity: 1;
@@ -4440,6 +4450,16 @@ textarea.form-control:active {
     font-weight: 400
 }
 
+.del-badge {
+    padding: 4px 8px;
+    font-size: .7142em;
+    line-height: 12px;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: .875rem;
+    font-weight: 400
+}
+
 .badge-icon {
     padding: 0.4em 0.55em
 }
@@ -4461,6 +4481,11 @@ textarea.form-control:active {
 .badge-info {
     border-color: #2CA8FF;
     color: #2CA8FF
+}
+
+.del-badge-info {
+    border-color: #254b9e;
+    color: #254b9e
 }
 
 .badge-success {

@@ -308,7 +308,6 @@ angularApp.controller('myCtrl', function ($scope, $http) {
                 if (dePri) {
                     $scope.currentPrivateKey = dePri;
                     $scope.inputPassword = "";
-                    $scope.$apply();
                     $('#enterPassword').modal('hide');
 
                     if ($scope.pwdFormtype == 1) { //export Private key
@@ -317,10 +316,13 @@ angularApp.controller('myCtrl', function ($scope, $http) {
                     } else if ($scope.pwdFormtype == 2) { //send tx
                         $scope.getNonce($scope.currentResendSecondTx.chainId, 1);  //Get Second Chain Nonce
                         $('#resendTransaction').modal('show');
-
+                    }else if($scope.pwdFormtype == 3){
+                        $scope.delAddress=$scope.account.address;
+                        $('#delAccount').modal('show');
                     } else {
                         $scope.submit();
                     }
+                    $scope.$apply();
                 } else {
                     swal("Error", "Password error", "error");
                 }
@@ -668,6 +670,7 @@ angularApp.controller('myCtrl', function ($scope, $http) {
         });
     }
 
+
     $scope.childToMainAmount;
     $scope.childToMain = function () {
         try {
@@ -937,6 +940,33 @@ angularApp.controller('myCtrl', function ($scope, $http) {
             swal("Error", "Internet error, please refresh the page", "error");
 
         });
+    }
+
+    /**
+     * del account
+     */
+
+    $scope.confirmDelAddress=function () {
+        delAccount($scope.delAddress).then(function (resObj) {
+            if (resObj.result == "success") {
+                queryAccountList().then(function (resObj) {
+                    $scope.accountList = resObj.data;
+                    if ($scope.accountList.length > 0) {
+                        $scope.account = $scope.accountList[0];
+                        $scope.getBalance();
+                    }
+                    $scope.$apply();
+                }).catch(function (e) {
+                    console.log(e, "error");
+                })
+                showPopup("Delete Successfully", 1000);
+                $('#delAccount').modal('hide');
+
+            }
+        }).catch(function (e) {
+            showPopup(e.error, 1000);
+        })
+
     }
 
 

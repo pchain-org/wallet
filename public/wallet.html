@@ -56,7 +56,8 @@
                     <div class="col-xl-7 col-lg-7 col-md-6">
                         <div class="card mycard">
                             <div class="header">
-                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                                <h2><strong>My Account</strong>  <span class="copyBtn" data-clipboard-text="{{account.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span>
+                                    <span><button ng-click="enterPassword(3)"  class="del-badge del-badge-info radiusBtn customize-btn">Delete</button></span> </h2>
                             </div>
                             <div class="body">
                                 <div class="input-group mb-3 my-input-group">
@@ -554,6 +555,34 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Private key -->
+    <div class="modal fade" id="delAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title text-center block">
+                        Confirm to delete this account?
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="dangerArea">
+                            <span ng-bind="delAddress"></span>
+                        </div>
+                    </div>
+                    <div class="marginTop10 text-center">
+                        <button type="button" class="btn btn-primary copyBtn3" ng-click="confirmDelAddress()">
+                            Confirm
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

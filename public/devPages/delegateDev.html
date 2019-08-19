@@ -163,7 +163,7 @@
                         </div>
                         <div class="input-group" ng-class="(cancelDelegateForm.amount.$invalid && cancelDelegateForm.amount.$dirty)?'has-danger':(cancelDelegateForm.amount.$valid?'has-success':'') ">
                             <span class="input-group-addon">Amount</span>
-                            <input type="number" min="1" placeholder="amount" class="form-control" ng-class="(cancelDelegateForm.amount.$invalid && cancelDelegateForm.amount.$dirty)?'form-control-danger':(cancelDelegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
+                            <input type="text"  placeholder="min:1 PI" class="form-control" ng-class="(cancelDelegateForm.amount.$invalid && cancelDelegateForm.amount.$dirty)?'form-control-danger':(cancelDelegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
                         </div>
 
                         <div class="marginTop10 text-center">
@@ -202,7 +202,7 @@
                         </div>
                         <div class="input-group" ng-class="(delegateForm.amount.$invalid && delegateForm.amount.$dirty)?'has-danger':(delegateForm.amount.$valid?'has-success':'') ">
                             <span class="input-group-addon">Amount</span>
-                            <input type="number" min="1000" placeholder="amount" class="form-control" ng-class="(delegateForm.amount.$invalid && delegateForm.amount.$dirty)?'form-control-danger':(delegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" required>
+                            <input type="text"  placeholder="min:‭1,000‬ PI" placeholder="amount" class="form-control" ng-class="(delegateForm.amount.$invalid && delegateForm.amount.$dirty)?'form-control-danger':(delegateForm.amount.$valid?'form-control-success':'') " name="amount" ng-model="amount" ng-pattern="/^[0-9]+(.[0-9]{1,18})?$/" required>
                         </div>
 
                         <div class="marginTop10 text-center">

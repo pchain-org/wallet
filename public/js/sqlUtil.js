@@ -41,6 +41,20 @@ function addAccount (privateKey,address) {
     });
 }
 
+
+function delAccount (address) {
+    return new Promise(function (accept,reject) {
+        var sql = "delete from tb_account where address=?";
+        var array = [address]
+        sqlietDb.execute(sql, array).then(function (resObj) {
+            accept(resObj);
+        }).catch(function (e) {
+            reject(e);
+            console.log(e, "error");
+        })
+    });
+}
+
 function addErc20Account (privateKey,address) {
     return new Promise(function (accept,reject) {
         var sql = "INSERT INTO tb_erc20_account(id,privateKey,address,createTime) VALUES (?,?,?,?)";

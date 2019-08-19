@@ -2,7 +2,7 @@
      $scope.gasPrice = 10;
      $scope.balance = 0;
      $scope.minValidators = 1;
-     $scope.minDepositAmount = 100000;
+     $scope.minDepositAmount = 10000;
 
      let web3Util = new Web3();     
 
@@ -118,6 +118,12 @@
 
 
      $scope.applyCandidate = function(){
+         if ($scope.minDepositAmount>( new BigNumber($scope.securityDeposit))) {
+             let tips1 = "Amount error";
+             let tips2 = "min :" + $scope.minDepositAmount + " PI"
+             swal(tips1, tips2, "error");
+             return;
+         }
          let securityDeposit= "0x"+decimalToHex(web3Util.toWei($scope.securityDeposit,'ether'));
          let gasPrice =null;
          console.log($scope.account,securityDeposit,$scope.commission)
