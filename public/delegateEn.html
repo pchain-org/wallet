@@ -98,7 +98,7 @@
             <div class="col-xl-3 col-lg-3 col-md-3">
                 <div class="card mycard">
                     <div class="header">
-                        <h2><strong>ROI</strong></h2>
+                        <h2><strong>Annual rate of return</strong></h2>
                         <p class="marginTop20"><span ng-bind="rateOfReturn">0</span></p>
                         <p class="marginTop40"></p>
                     </div>
@@ -219,7 +219,6 @@
                                 <th>Chain</th>
                                 <th>Amount(PI)</th>
                                 <th>Operation Type</th>
-                                <th>Tx Status</th>
                                 <th>Operation</th>
                             </tr>
                             </thead>
@@ -233,8 +232,6 @@
                                 <td ng-bind="item.amount"></td>
                                 <td ng-if="item.status==1"><span>Join</span></td>
                                 <td ng-if="item.status==0"><span>Cancel</span></td>
-                                <td ng-if="item.tx_status==1"><span>Success</span></td>
-                                <td ng-if="item.tx_status==0"><span>Failure</span></td>
                                 <td><a href="{{'index.html?key='+item.hash+'&chain='+item.chainId}}" class="badge badge-info radiusBtn">Detail</a></td>
                             </tr>
                             </tbody>

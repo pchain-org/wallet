@@ -50,7 +50,6 @@
              $scope.spin = "";
              if (res.data.result == "success") {
                  $scope.balance = res.data.data;
-                 $scope.toAmount=res.data.data;
                  $scope.getMaxSendAmount();
              } else {
                  swal("Error", res.data.error, "error");
@@ -99,17 +98,8 @@
 
      }
 
-     // $scope.chainList = new Array();
-     // $scope.chainList = [
-     //     { name: "主链", id: 0, chainId: "pchain"},
-     //     { name: "子链", id: 1, chainId: "child_0"}
-     // ];
-     //
-     // $scope.chain = $scope.chainList[0];
-
      $scope.chainList = new Array();
      $scope.chainList = [
-         // { name: "Main Chain", id: 0, chainId: "pchain" }
          { name: "Main Chain", id: 0, chainId: "pchain"}
      ];
 
@@ -138,7 +128,6 @@
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             console.log(res.data)
              if (res.data.result == "success") {
                  $scope.childTime="子链1: "+res.data.estimatedtime[0].estimatedTime;
                  $scope.pchainTime="主链: "+res.data.estimatedtime[1].estimatedTime;
@@ -299,9 +288,11 @@
          if(item==undefined){
              $scope.custom=true;
              $scope.chainId=0;
+             $scope.chain = $scope.chainList[$scope.chainId];
          }else {
              $scope.custom="";
              $scope.chainId=item.chainId;
+             $scope.chain = $scope.chainList[item.chainId];
              $scope.toAddress=item.address;
          }
          $scope.getBalance();
@@ -421,16 +412,15 @@
                  //delegate
                  amount = "0x" + decimalToHex(web3.toWei($scope.toAmount, 'ether'));
                  funcData = $scope.getPlayLoad(DelegateABI, "Delegate", [$scope.toAddress]);
-                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chainId, amount);
-                 if ($scope.invitationiCode) signRawObj.data = $scope.invitationiCode;
+                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
+                 console.log(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chainId, $scope.chain.chainId, amount,$scope.toAddress,$scope.invitationiCode)
              } else if ($scope.delegateType == 1) {
                  //cancle delegate
                  amount = "0x" + decimalToHex(web3.toWei($scope.cancleAmount, 'ether'));
                  funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate, amount]);
                  amount = 0;
-                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chainId, amount);
+                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
              }
-
              var signData = signTx($scope.currentPrivateKey, signRawObj);
              $scope.currentPrivateKey = "";
 
@@ -461,6 +451,7 @@
                          objt.status = 1;
                          objt.amount = $scope.toAmount;
                          objt.chainId = $scope.chainId;
+                         objt.invcode =$scope.invitationiCode;
                          $scope.addDelegateInfo(objt);
                      } else if ($scope.delegateType == 1) {
                          objt.hash = hash;
@@ -496,6 +487,7 @@
              if (res.data.result == "success") {
                  $scope.getDelegateRewardList();
                  $scope.getDelegateHistoryList();
+                 $scope.getDelegateRewardInfo();
                  $scope.$apply();
              }
          }, function errorCallback(res) {
