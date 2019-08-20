@@ -141,6 +141,7 @@
                                         <th>Hash</th>
                                         <th>From</th>
                                         <th>To</th>
+                                        <th>Value</th>
                                         <th>Operation</th>
                                       </tr>
                                       </thead>
@@ -150,29 +151,31 @@
                                           <td ng-bind="cutWords(item.hash)"></td>
                                           <td ng-bind="item.fromaddress"></td>
                                           <td ng-bind="item.toaddress"></td>
+                                          <td ng-bind="item.value+' PI'"></td>
 
-                                        <td ng-if="item.status=='0x0' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending(NewContractIdETH)</a>
+                                        <td ng-if="item.status=='0x0' && item.piContractId=='0' && item.funCode=='newContract' ">
+                                            <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending(ETH)</a>
                                         </td>
 
-                                          <td ng-if="item.status=='0x1' && item.piContractId=='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">NewContractIdETH(Success)</a>
+                                          <td ng-if="item.status=='0x1' && item.piContractId=='0' && item.funCode=='newContract' ">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">ETH(Success)</a>
                                           </td>
 
-
-                                          <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                          <td ng-if="item.status=='0x2' && item.piContractId!='0' && item.funCode=='newContract' ">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">NewContractIdPI(Success)</a>
-                                              <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
-
                                           </td>
 
-                                          <td ng-if="item.status=='0x3' && item.funCode=='newContract' && item.chainId=='Ropsten'">
-                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Withdraw(Success)</a>
+                                          <td ng-if="item.status=='0x3' && item.funCode=='newContract' ">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Pending(Withdraw)</a>
                                           </td>
 
-                                          <td ng-if="item.status=='0x4' && item.funCode=='newContract' && item.chainId=='Ropsten'">
+                                          <td ng-if="item.status=='0x4' && item.funCode=='newContract' ">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
                                               <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
+                                          </td>
+
+                                          <td ng-if="item.status=='0xs' && item.funCode=='newContract' ">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Success</a>
                                           </td>
 
                                          </tr>

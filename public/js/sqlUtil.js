@@ -555,8 +555,8 @@ function createTokenSwapInfo(obj) {
 
 function createErc20PiInfo(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "INSERT INTO tb_erc20_pi_transaction(id,chainId,funCode,preimage,ethContractId,piContractId,withdrawHelper,withdrawHelperPriv,hash,fromaddress,toaddress,value,status,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        var array = [null, obj.chainId, obj.funCode, obj.preimage, obj.ethContractId, obj.piContractId, obj.withdrawHelper, obj.withdrawHelperPriv, obj.hash, obj.fromaddress,obj.toaddress,obj.value,obj.status,new Date()];
+        var sql = "INSERT INTO tb_erc20_pi_transaction(id,chainId,funCode,preimage,ethContractId,piContractId,withdrawHelper,withdrawHelperPriv,withdrawHash,hash,fromaddress,toaddress,value,status,createTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        var array = [null, obj.chainId, obj.funCode, obj.preimage, obj.ethContractId, obj.piContractId, obj.withdrawHelper, obj.withdrawHelperPriv, 0, obj.hash, obj.fromaddress,obj.toaddress,obj.value,obj.status,new Date()];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {
@@ -568,7 +568,7 @@ function createErc20PiInfo(obj) {
 
 function queryTOChainIdHash(hash,chainId) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,fromaddress,ethContractId,piContractId,preimage,withdrawHelper,withdrawHelperPriv,status from tb_erc20_pi_transaction where hash=? and chainId=? ";
+        var sql = "select chainId,fromaddress,ethContractId,piContractId,preimage,withdrawHelper,withdrawHelperPriv,withdrawHash,status from tb_erc20_pi_transaction where hash=? and chainId=? ";
         var array = [hash,chainId];
         sqlietDb.queryByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -582,7 +582,7 @@ function queryTOChainIdHash(hash,chainId) {
 
 function queryErc20PiInfoTXList(address,chainId) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where hash != 0 and fromaddress=? and chainId=? order by id desc limit 10";
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where hash != 0 and fromaddress=? and chainId=? order by id desc limit 10";
         var array = [address,chainId];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -595,7 +595,7 @@ function queryErc20PiInfoTXList(address,chainId) {
 
 function queryErc20PiStatusList(address,chainId,status) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id asc";
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id desc";
         var array = [address,chainId,status];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -611,9 +611,15 @@ function queryErc20PiStatusList(address,chainId,status) {
  */
 function updateErc20PiInfo(obj) {
     return new Promise(function (accept,reject) {
-        var sql = "update tb_erc20_pi_transaction set status=?,ethContractId=?,piContractId=? where hash=? and chainId=?";
+        var sql = "update tb_erc20_pi_transaction set status=?,ethContractId=?,piContractId=?,withdrawHash=? where hash=? and chainId=?";
 
-        var array = [obj.status,obj.ethContractId,obj.piContractId,obj.hash,obj.chainId];
+        if (obj.withdrawHash) {
+            console.log("obj.withdrawHash===============",obj.withdrawHash);
+        } else {
+            obj.withdrawHash = 0;
+        }
+
+        var array = [obj.status,obj.ethContractId,obj.piContractId,obj.withdrawHash,obj.hash,obj.chainId];
         sqlietDb.execute(sql, array).then(function (resObj) {
             accept(resObj);
         }).catch(function (e) {

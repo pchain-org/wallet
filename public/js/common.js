@@ -533,14 +533,16 @@ const piChainId = "child_0";
 
 const STATUS_FAIL = "0x4";
 
+const STATUS_WITHDRAW = "0x3";
+
 const STATUS_SUCCESS = "0x1";
 
 const STATUS_DEFAULT = "0x0";
 
 
-const wrul = "http://192.168.1.37:3000";
-
-const localhostHost = "http://localhost:3038";
+// const wrul = "http://192.168.1.37:3000";
+const wrul = "http://192.168.1.37:3038";
+const localhostHost = "http://192.168.1.37:3038";
 
 var newContractABIETH = [
     {

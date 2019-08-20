@@ -122,7 +122,7 @@ class DB{
                 }
             }).then((result)=> {
                 if (result) {
-                    let sql6 = "CREATE TABLE IF NOT EXISTS tb_erc20_pi_transaction(id integer PRIMARY KEY, chainId text,funCode text,preimage text,ethContractId text,piContractId text,withdrawHelper text,withdrawHelperPriv text,hash text,fromaddress text,toaddress text,value text,status integer,createTime text);";
+                    let sql6 = "CREATE TABLE IF NOT EXISTS tb_erc20_pi_transaction(id integer PRIMARY KEY, chainId text,funCode text,preimage text,ethContractId text,piContractId text,withdrawHelper text,withdrawHelperPriv text,withdrawHash text,hash text,fromaddress text,toaddress text,value text,status integer,createTime text);";
                     return self.promiseRun(sql6);
                 }
             }).then((result)=> {

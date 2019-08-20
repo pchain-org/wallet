@@ -81,11 +81,10 @@ angularApp.controller('myCtrl', function($scope, $http) {
      }
 
     $scope.childNonceFlag = true;
-    $scope.getChildNonce = function(fromaddress) {
-
+    $scope.getChildNonce = function(withdrawHelper) {
         $scope.childNonceFlag = false;
         var obj = {};
-        obj.address = fromaddress;
+        obj.address = withdrawHelper;
         // var url = APIHost + "/getNonce";
         var url = localhostHost + "/getChildNonce";
         $http({
@@ -93,8 +92,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
             url: url,
             data: obj
         }).then(function successCallback(res) {
+            console.log(res, " ====================getChildNonce============== " );
             if (res.data.result == "success") {
-                console.log(res);
+                // console.log(res);
                 $scope.childNonce = Number(res.data.nonce);
                 $scope.childNonceFlag = true;
             } else {
@@ -283,13 +283,15 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.showEnterPwd = function() {
         $scope.getMaxSendAmount();
-        if ($scope.maxSendAmount.lt(new BigNumber($scope.toAmount))) {
-            let tips1 = "Insufficient Balance ";
-            let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI";
-            swal(tips1, tips2, "error");
-        } else {
-            $('#enterPassword').modal('show');
-        }
+        // prd
+        // if ($scope.maxSendAmount.lt(new BigNumber($scope.toAmount))) {
+        //     let tips1 = "Insufficient Balance ";
+        //     let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI";
+        //     swal(tips1, tips2, "error");
+        // } else {
+        //     $('#enterPassword').modal('show');
+        // }
+        $('#enterPassword').modal('show');
     }
 
     $scope.getPlayLoad = function(abi, funName, paramArr) {
@@ -318,7 +320,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
         obj.spender = HashedTimelockERC20ContractAddress;
         obj.PAIStandardTokenContractAddress = PAIStandardTokenContractAddress;
         obj.amount = $scope.toAmount;
-        console.log(obj);
+        // console.log(obj);
 
         var url = //localhostHost + "/checkAllowance";
             localhostHost + "/checkAllowance";
@@ -353,6 +355,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             } else {
                 showPopup(res.data.message, 3000);
                 $('#transaction').modal('hide');
+
             }
         }, function errorCallback(res) {
             showPopup("Internet error, please refresh the page");
@@ -420,10 +423,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     if (accountPri) {
                         $scope.currentPrivateKeyETH = accountPri;
 
-                        // queryTOChainIdHash($scope.refundHash,ethChainId).then(function(wdata) {
-                        //     if (wdata.result == "success") {
-                                // $scope.ethContractId = wdata.data.ethContractId;
-
                                 var paramArr = [$scope.ethContractId];
 
                                 var data = $scope.getPlayLoad(refundABI,REFUND,paramArr);
@@ -481,19 +480,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 $('#enterPasswordPI').modal('hide');
                                 swal("Query error");
                             }
-
-                    //     });
-                    // } else {
-                    //     $('#enterPasswordPI').modal('hide');
-                    //     swal("Query error");
-                    // }
                 } else {
 
                     $('#enterPasswordPI').modal('hide');
                     swal("Query error");
                 }
             }).catch(function(e) {
-
                 $('#enterPasswordPI').modal('hide');
                 swal("Query error");
             });
@@ -506,9 +498,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
     $scope.withdraw = function(ethContractIdHash,chainId) {
         try {
 
-            console.log(ethContractIdHash, "============================");
+            $scope.ethContractIdHash = ethContractIdHash;
 
-            queryTOChainIdHash(ethContractIdHash,chainId).then(function(wddata) {
+            queryTOChainIdHash($scope.ethContractIdHash,chainId).then(function(wddata) {
 
                 if (wddata.result == "success") {
 
@@ -518,10 +510,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     $scope.ethContractId = wddata.data.ethContractId;
                     $scope.piContractId = wddata.data.piContractId;
                     $scope.preimage = wddata.data.preimage;
-                    $scope.withdrawHelper = wddata.data.withdrawHelper;
+                    // $scope.withdrawHelper = wddata.data.withdrawHelper;
                     $scope.withdrawHelperPriv = wddata.data.withdrawHelperPriv;
-
-                    $scope.getChildNonce($scope.fromaddress);
 
                     var wparamArr = [$scope.piContractId, $scope.preimage];
 
@@ -553,42 +543,34 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         url: wurl,
                         data: obj
                     }).then(function successCallback(wres) {
-                        // showPopup("Token swap is in progress, please check the balance later, thank you", 8000);
-                        // $('#enterPasswordPI').modal('hide');
-
                         if (wres.data.result == "success") {
                             console.log("------success------wres-------", wres);
                             var uobj = {};
-                            uobj.hash = ethContractIdHash;
+                            uobj.hash = $scope.ethContractIdHash;
                             uobj.ethContractId = $scope.ethContractId;
                             uobj.piContractId = $scope.piContractId;
                             uobj.status = "0x3";
                             uobj.chainId = ethChainId;
+                            uobj.withdrawHash = wres.data.hash;
                             updateErc20PiInfo(uobj).then(function(wdobj) {
-                                console.log(wdobj, "----withdraw-----------------");
+                                // console.log(wdobj, "----withdraw-----------------");
                                 if (wdobj.result == "success") {
-                                    queryErc20PiInfoTXList($scope.fromaddress,ethChainId).then(function(wsdata) {
+                                    queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(wsdata) {
                                         $scope.transactionERC20List = wsdata.data;
                                         $scope.$apply();
                                     });
                                 }
                             });
-                            // var hash = wres.data.hash;
-                            // var url = "index.html?key=" + hash + "&chain=1";
-                            // var html = '<a href="' + url + '"  >Transaction hash:' + hash + '</a>';
-                            // successNotify(html);
-                            // swal("Success!",wres.data.message.toString(),"success");
                         } else {
-                            var uobj = {};
-                            uobj.hash = ethContractIdHash;
-                            uobj.ethContractId = $scope.ethContractId;
-                            uobj.piContractId = $scope.piContractId;
-                            uobj.status = STATUS_FAIL;
-                            uobj.chainId = ethChainId;
-                            updateErc20PiInfo(uobj).then(function(wdobj) {
-                                console.log(wdobj, "----withdraw-----------------");
-                                if (wdobj.result == "success") {
-                                    queryErc20PiInfoTXList($scope.fromaddress,ethChainId).then(function(wddata) {
+                            var ueobj = {};
+                            ueobj.hash = $scope.ethContractIdHash;
+                            ueobj.ethContractId = $scope.ethContractId;
+                            ueobj.piContractId = $scope.piContractId;
+                            ueobj.status = STATUS_FAIL;
+                            ueobj.chainId = ethChainId;
+                            updateErc20PiInfo(ueobj).then(function(wdeobj) {
+                                if (wdeobj.result == "success") {
+                                    queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(wddata) {
                                         $scope.transactionERC20List = wddata.data;
                                         $scope.$apply();
                                     });
@@ -603,8 +585,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             });
         } catch (e) {
-            console.log(e);
-            $('#enterPasswordPI').modal('hide');
+            // console.log(e);
+            // $('#enterPasswordPI').modal('hide');
             showPopup("Internet error, please refresh the page");
         }
     }
@@ -616,14 +598,14 @@ angularApp.controller('myCtrl', function($scope, $http) {
             var hashlock = hashPair.hash;
             var preimage = hashPair.secret;
 
-            var duration = 3600 * 4;
+            var duration = 3600;
             var timelock = nowSeconds() + duration;
 
             // $scope.preimageAESEncrypt = AESEncrypt(hashPair.secret,$scope.currentPrivateKey);
             // console.log(hashPair.secret, "+" , $scope.currentPrivateKey,"preimageAESEncrypt==============",preimageAESEncrypt);
             // var gasPrice = $scope.gasPrice * Math.pow(10, 9);
 
-            var toAmount = 1;
+            var toAmount = $scope.toAmount;
 
             // k,v
             var newPrivateKey = $scope.newPrivateKet();
@@ -631,6 +613,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             $scope.withdrawHelper = priToAddress(newPrivateKey);
 
             $scope.withdrawHelperPriv = newPrivateKey;
+
 
             var paramArr = [company, $scope.account.address, $scope.withdrawHelper, hashlock, timelock, PAIStandardTokenContractAddress, toAmount];
 
@@ -647,13 +630,13 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             $scope.currentPrivateKey = "";
 
-            loading();
-
             var obj = {};
             obj.crossType = crossType;
             obj.signData = signData;
             obj.funCode = NEWCONTRACT;
             obj.chainId = ethChainId;
+
+            loading();
 
             var url = localhostHost + "/sendRawTxCrossToken";
             // var url =  APIHost + "/sendRawTxCrossToken";
@@ -667,6 +650,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 $('#transaction').modal('hide');
 
                 if (res.data.result == "success") {
+
                     var objt = {};
                     objt.chainId = ethChainId;
                     objt.funCode = NEWCONTRACT;
@@ -735,27 +719,30 @@ angularApp.controller('myCtrl', function($scope, $http) {
         try {
 
             $scope.ethContractIdHash = ethContractIdHash;
+            $scope.ethContractId = ethContractId;
 
             var rawdata = {};
-            rawdata.ethContractId = ethContractId;
+            rawdata.ethContractId = $scope.ethContractId;
             var objData = require('querystring').stringify(rawdata);
             $http({
                 method: 'POST',
                 url: wrul + "/newContractOnPchain?" + objData
             }).then(function successCallback(pres) {
 
-                console.log(pres.data.result, "-----newContractOnPchain--result------------", pres);
+                console.log(pres.data.result, "-----newContractOnPchain--result------------", pres.data.piContractId);
 
-                if (pres.data.result == "success" && pres.data.piContractId != undefined) {
+                $scope.piContractId = pres.data.piContractId;
+
+                if (pres.data.result == "success") {
                     var uobj = {};
                     uobj.hash = $scope.ethContractIdHash;
-                    uobj.ethContractId = ethContractId;
-                    uobj.piContractId = pres.data.piContractId;
+                    uobj.ethContractId = $scope.ethContractId;
+                    uobj.piContractId = $scope.piContractId;
                     uobj.status = "0x2";
                     uobj.chainId = ethChainId;
                     updateErc20PiInfo(uobj).then(function(udata) {
                         if (udata.result == "success") {
-                            console.log(udata, "update data or withdraw");
+                            console.log( "update data or withdraw");
 
                             $scope.withdraw($scope.ethContractIdHash,ethChainId);
 
@@ -766,22 +753,20 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         }
                     });
                 } else {
-                    var uobj = {};
-                    uobj.hash = ethContractIdHash;
-                    uobj.ethContractId = ethContractId;
-                    uobj.piContractId = 0;
-                    uobj.status = "0x4";
-                    uobj.chainId = ethChainId;
-                    updateErc20PiInfo(uobj).then(function(udata) {
-
-                        if (udata.result == "success") {
-                            queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(urdata) {
-                                $scope.transactionERC20List = urdata.data;
+                    var pobj = {};
+                    pobj.hash = ethContractIdHash;
+                    pobj.ethContractId = ethContractId;
+                    pobj.piContractId = 0;
+                    pobj.status = "0x4";
+                    pobj.chainId = ethChainId;
+                    updateErc20PiInfo(pobj).then(function(pudata) {
+                        if (pudata.result == "success") {
+                            queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(ursdata) {
+                                $scope.transactionERC20List = ursdata.data;
                                 $scope.$apply();
                             });
                         }
                     });
-                    swal("transaction Error",e.toString(),"error");
                 }
             });
         } catch (e) {
@@ -838,15 +823,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             $scope.sysReceiptETH($scope.erc20account.address,ethChainId,STATUS_DEFAULT);
 
-            // console.log(b, "Task sysNewContractIdPI : ", new Date().toLocaleString());
-            //
-            // $scope.sysNewContractIdPI($scope.erc20account.address,ethChainId,STATUS_SUCCESS);
-            //
-            // console.log(b, "Task sysReceiptPI : ", new Date().toLocaleString());
-            //
-            // $scope.sysReceiptPI($scope.erc20account.address,ethChainId,"0x2");
+            $scope.sysReceiptPI($scope.erc20account.address,ethChainId,STATUS_SUCCESS);
 
-            // $scope.sysReceiptPI($scope.erc20account.address,ethChainId,"0x3");
+            $scope.sysReceiptPI($scope.erc20account.address,ethChainId,"0x2");
+            //
+            $scope.sysReceiptPI($scope.erc20account.address,ethChainId,STATUS_WITHDRAW);
+
         }
     });
 
@@ -859,7 +841,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                         for (var i=0; i<robj.data.length; i++) {
 
-
                             var hash = robj.data[i].hash;
 
                             var funCode = robj.data[i].funCode;
@@ -868,7 +849,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
                             var piContractId = robj.data[i].piContractId;
 
-                            $scope.getReceipt(ethContractId,piContractId,hash,funCode,chainId);
+                            var withdrawHash = robj.data[i].withdrawHash;
+
+                            $scope.getReceipt(ethContractId,piContractId,hash,withdrawHash,funCode,chainId,status);
                         }
 
                     } else {
@@ -891,25 +874,31 @@ angularApp.controller('myCtrl', function($scope, $http) {
             if (address) {
                 queryErc20PiStatusList(address,chainId,status).then(function(robj) {
                     if (robj.data.length > 0) {
+
                         console.log("sysReceipt : ",robj);
 
                         for (var i=0; i<robj.data.length; i++) {
 
-                            var hash = robj.data[i].hash;
+                            if (robj.data[i].ethContractId != undefined) {
 
-                            var funCode = robj.data[i].funCode;
+                                $scope.newContractIdPI(robj.data[i].hash, robj.data[i].ethContractId);
 
-                            var ethContractId = robj.data[i].ethContractId;
+                            } else {
+                                var hash = robj.data[i].hash;
 
-                            var piContractId = robj.data[i].piContractId;
+                                var funCode = robj.data[i].funCode;
 
-                            $scope.getReceipt(ethContractId,piContractId,hash,funCode,chainId);
+                                var ethContractId = robj.data[i].ethContractId;
+
+                                var piContractId = robj.data[i].piContractId;
+
+                                var withdrawHash = robj.data[i].withdrawHash;
+
+                                $scope.getReceipt(ethContractId,piContractId,hash,withdrawHash,funCode,chainId,status);
+                            }
                         }
-
                     } else {
-
                         console.log("sysReceipt , There is currently no data that needs to be modified !");
-
                     }
                 });
             } else {
@@ -922,53 +911,68 @@ angularApp.controller('myCtrl', function($scope, $http) {
     }
 
 
-    $scope.getReceipt = function(ethContractId,piContractId,hash,funCode,chainId) {
+    $scope.getReceipt = function(ethContractId,piContractId,hash,withdrawHash,funCode,chainId,status) {
         try {
-            $scope.receiptChainId = chainId;
+            var object = {};
 
-            var obj = {};
-            obj.signedTx = hash;
-            obj.funCode = funCode;
-            obj.chainId = chainId;
-            obj.ethContractId = ethContractId;
-            obj.piContractId = piContractId;
+            $scope.receiptChainId = chainId;
+            $scope.ethHash = hash;
+            $scope.funCode = funCode;
+
+            if (status == STATUS_WITHDRAW) {
+                object.signedTx = withdrawHash;
+                object.funCode = WITHDRAW;
+                $scope.receiptChainId = piChainId;
+                $scope.funCode = WITHDRAW;
+            } else {
+                object.signedTx = $scope.ethHash;
+                object.funCode = NEWCONTRACT;
+                $scope.receiptChainId = ethChainId;
+            }
+            // object.signedTx = $scope.ethHash;
+            // object.funCode = funCode;
+            object.chainId = $scope.receiptChainId;
+            object.ethContractId = ethContractId;
+            object.piContractId = piContractId;
 
             // var url = localhostHost + "/getReceiptCrossToken";
             var url =  localhostHost + "/getReceiptCrossToken";
             $http({
                 method: 'POST',
                 url: url,
-                data: obj
+                data: object
             }).then(function successCallback(res) {
-
-                console.log("-----getReceiptCrossToken--result------------", res);
-
 
                 if (res.data.result == "success" && res.data.receipt.status == "0x1") {
 
                     var obj = {};
-                    if (funCode == APPROVE && $scope.receiptChainId == ethChainId) {
+                    if ($scope.funCode == APPROVE && $scope.receiptChainId == ethChainId) {
                         obj.ethContractId = ethContractId;
                         obj.piContractId = piContractId;
                         obj.status= "0xa";
-                    } else if (funCode == NEWCONTRACT && $scope.receiptChainId == ethChainId) {
+                    } else if ($scope.funCode == NEWCONTRACT && $scope.receiptChainId == ethChainId) {
                         $scope.ethContractId = res.data.receipt.logs[1].topics[1];
                         $scope.transactionHash = res.data.receipt.transactionHash;
 
                         obj.ethContractId = res.data.receipt.logs[1].topics[1];
                         obj.piContractId = piContractId;
                         obj.status= "0x1";
-                    } else if (funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
+                        $scope.status = "0x1";
+                    } else if ($scope.funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
                         obj.ethContractId = ethContractId;
                         obj.piContractId = piContractId;
-                        obj.status= "0x3";
+                        obj.withdrawHash = withdrawHash;
+                        obj.status= "0xs";
+                        $scope.status = "0xs";
                     }
-                    obj.chainId = $scope.receiptChainId;
-                    obj.hash = res.data.receipt.transactionHash;
+                    obj.chainId = ethChainId;
+                    obj.hash = $scope.ethHash;
                     updateErc20PiInfo(obj).then(function(aobj) {
+
+
                         if (aobj.result == "success") {
 
-                            if (funCode == APPROVE && $scope.receiptChainId == ethChainId) {
+                            if ($scope.funCode == APPROVE && $scope.receiptChainId == ethChainId) {
                                 if ($scope.allowance == 0 || $scope.amount >= $scope.toAmount) {
                                     $scope.sendTx();
                                 }
@@ -981,9 +985,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                     $scope.transactionERC20List = robj.data;
                                     $scope.$apply();
                                 });
-                            }
-
-                            if (funCode == NEWCONTRACT && $scope.receiptChainId == ethChainId) {
+                            }else if ($scope.funCode == NEWCONTRACT && $scope.receiptChainId == ethChainId &&  $scope.status == "0x1") {
 
                                 $scope.newContractIdPI($scope.transactionHash, $scope.ethContractId);
 
@@ -991,17 +993,18 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                     $scope.transactionERC20List = robj.data;
                                     $scope.$apply();
                                 });
-                            }
-
-                            if (funCode == WITHDRAW && $scope.receiptChainId == piChainId) {
-
-                                // console.log("withdraw成功后,修改远程数据库！");
-
-                                queryErc20PiInfoTXList($scope.account.address,ethChainId).then(function(wdata) {
+                            } else {
+                                queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(wdata) {
                                     $scope.transactionERC20List = wdata.data;
                                     $scope.$apply();
                                 });
                             }
+                            // if ($scope.funCode == WITHDRAW ) {
+                            //     queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(wdata) {
+                            //         $scope.transactionERC20List = wdata.data;
+                            //         $scope.$apply();
+                            //     });
+                            // }
                         }
                     });
                 } else {
@@ -1010,8 +1013,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         eobj.ethContractId = 0;
                         eobj.piContractId = 0;
                         eobj.chainId = $scope.receiptChainId;
-                        eobj.hash = res.data.receipt.transactionHash;
-                        eobj.status= "0x4";
+                        eobj.hash = $scope.ethHash;
+                        eobj.status= STATUS_FAIL;
                         updateErc20PiInfo(eobj).then(function(errobj) {
                             if (errobj.result == "success") {
                                 queryErc20PiInfoTXList($scope.erc20account.address,ethChainId).then(function(robj) {
