@@ -550,11 +550,11 @@ const E_FINISH = "0xs";
 const E_FAIL = "0xf";
 
 // testnet
-// const wrul = "http://3.15.202.23:3038";
-// const localhostHost = "http://3.15.202.23:3038";
+const wrul = "http://3.15.202.23:3038";
+const localhostHost = "http://3.15.202.23:3038";
 
-const wrul = "http://localhost:3038";
-const localhostHost = "http://localhost:3038";
+// const wrul = "http://localhost:3038";
+// const localhostHost = "http://localhost:3038";
 
 var newContractABIETH = [
     {

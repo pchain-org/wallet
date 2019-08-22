@@ -230,7 +230,10 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 obj.ethContractId = $scope.ethContractId;
                 obj.HashedTimelockERC20ContractAddress = HashedTimelockERC20ContractAddress;
 
-                var url = localhostHost + "/getContract";
+                // var url = localhostHost + "/getContract";
+
+                var url = APIHost + "/getContract";
+
                 $http({
                     method: 'POST',
                     url: url,
@@ -322,8 +325,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
         obj.amount = $scope.toAmount;
         // console.log(obj);
 
-        var url = //localhostHost + "/checkAllowance";
-            localhostHost + "/checkAllowance";
+        var url =   APIHost + "/checkAllowance";
+                    // localhostHost + "/checkAllowance";
         $http({
             method: 'POST',
             url: url,
@@ -387,8 +390,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
             obj.funCode = APPROVE;
             obj.chainId = ethChainId;
 
-            var url = localhostHost + "/sendRawTxCrossToken";
-            //APIHost
+            var url = APIHost + "/sendRawTxCrossToken";
+            //APIHost  localhostHost
             $http({
                 method: 'POST',
                 url: url,
@@ -445,8 +448,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 obj.funCode = REFUND;
                                 obj.chainId = ethChainId;
 
-                                var wurl = localhostHost + "/sendRawTxCrossToken";
-                                // var wurl = APIHost + "/sendRawTxCrossToken";
+                                // var wurl = localhostHost + "/sendRawTxCrossToken";
+                                var wurl = APIHost + "/sendRawTxCrossToken";
                                 $http({
                                     method: 'POST',
                                     url: wurl,
@@ -536,9 +539,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
                     obj.funCode = WITHDRAW;
                     obj.chainId = piChainId;
 
-                    var wurl = localhostHost + "/sendRawTxCrossToken";
+                    // var wurl = localhostHost + "/sendRawTxCrossToken";
 
-                    // var wurl = APIHost + "/sendRawTxCrossToken";
+                    var wurl = APIHost + "/sendRawTxCrossToken";
                     $http({
                         method: 'POST',
                         url: wurl,
@@ -641,8 +644,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             loading();
 
-            var url = localhostHost + "/sendRawTxCrossToken";
-            // var url =  APIHost + "/sendRawTxCrossToken";
+            // var url = localhostHost + "/sendRawTxCrossToken";
+            var url =  APIHost + "/sendRawTxCrossToken";
             $http({
                 method: 'POST',
                 url: url,
@@ -923,7 +926,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             var object = {};
 
             if (status == STATUS_WITHDRAW) {
-                object.signedTx = withdrawHash;
+                object.hash = withdrawHash;
                 object.funCode = WITHDRAW;
                 object.chainId = piChainId;
             } else if (status == STATUS_REFUND) {
@@ -942,8 +945,8 @@ angularApp.controller('myCtrl', function($scope, $http) {
             object.ethContractId = ethContractId;
             object.piContractId = piContractId;
 
-            // var url = localhostHost + "/getReceiptCrossToken";
-            var url =  localhostHost + "/getReceiptCrossToken";
+            // var url = localhostHost + "/getTransactionReceipt";
+            var url =  APIHost + "/getTransactionReceipt";
             $http({
                 method: 'POST',
                 url: url,
