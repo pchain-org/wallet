@@ -469,7 +469,7 @@ var ChainABI = [{
 
 
 var balanceABI =[{
-        "constant": true,
+        "constant": false,
         "inputs": [{
             "name": "_owner",
             "type": "address"
@@ -527,6 +527,8 @@ const crossType = "erc20-pi";
 
 const APPROVE = "approve";
 
+const STATUS_APPROVE = "0xa";
+
 const ethChainId = "Ropsten";
 
 const piChainId = "child_0";
@@ -537,12 +539,22 @@ const STATUS_WITHDRAW = "0x3";
 
 const STATUS_SUCCESS = "0x1";
 
+const STATUS_SUCCESS2 = "0x2";
+
 const STATUS_DEFAULT = "0x0";
 
+const STATUS_REFUND = "0";
 
-// const wrul = "http://192.168.1.37:3000";
-const wrul = "http://192.168.1.37:3038";
-const localhostHost = "http://192.168.1.37:3038";
+const E_FINISH = "0xs";
+
+const E_FAIL = "0xf";
+
+// testnet
+// const wrul = "http://3.15.202.23:3038";
+// const localhostHost = "http://3.15.202.23:3038";
+
+const wrul = "http://localhost:3038";
+const localhostHost = "http://localhost:3038";
 
 var newContractABIETH = [
     {
