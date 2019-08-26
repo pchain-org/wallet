@@ -132,7 +132,11 @@
                     <div class="col-xl-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>Latest 10 ERC20 transaction records</strong></h2>
+                                <h2>
+                                    <strong>Latest 10 ERC20 transaction records</strong>
+                                    <strong style="color:red">The swap process may take 5 ~ 15 min. Please be patient, stay on this page until returning the result.</strong>
+                                </h2>
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable" ng-show="transactionERC20List.length > 0" ng-cloak>
@@ -153,22 +157,27 @@
                                           <td ng-bind="item.toaddress"></td>
                                           <td ng-bind="item.value+' PI'"></td>
 
-                                          <td ng-if="item.status!='0xs' && item.withdrawHash=='0' && item.funCode=='newContract' ">
+                                          <td ng-if="item.status!='0x4' && item.status!='0xs' && item.status!='0xa'">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="" target="_blank">Pending...</a>
                                           </td>
 
-                                          <td ng-if="item.status=='0x4' && item.funCode=='newContract' ">
+                                          <td ng-if="item.status=='0x4' && ethContractId!='0' ">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a>
                                               <button ng-click="showEnterRefundPI(item.hash,item.fromaddress)" class="badge badge-info radiusBtn" target="_blank">Refund</button>
                                           </td>
 
-                                          <td ng-if="item.status=='0xs' && item.funCode=='newContract' ">
+                                          <td ng-if="item.status=='0xs'">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Success</a>
                                           </td>
 
-                                          <td ng-if="item.status=='0xf' && item.funCode=='newContract' ">
+                                          <td ng-if="item.status=='0xf'">
                                               <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Fail</a>
                                           </td>
+
+                                          <td ng-if="item.status=='0x4' && ethContractId=='0' ">
+                                              <a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Fail</a>
+                                          </td>
+
 
                                          </tr>
                                        </tbody>

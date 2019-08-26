@@ -568,7 +568,7 @@ function createErc20PiInfo(obj) {
 
 function queryTOChainIdHash(hash,chainId) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,fromaddress,ethContractId,piContractId,preimage,withdrawHelper,withdrawHelperPriv,withdrawHash,status from tb_erc20_pi_transaction where hash=? and chainId=? ";
+        var sql = "select chainId,fromaddress,ethContractId,piContractId,preimage,withdrawHelper,withdrawHelperPriv,withdrawHash,value,status from tb_erc20_pi_transaction where hash=? and chainId=? ";
         var array = [hash,chainId];
         sqlietDb.queryByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -582,7 +582,7 @@ function queryTOChainIdHash(hash,chainId) {
 
 function queryErc20PiInfoTXList(address,chainId) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where hash != 0 and fromaddress=? and chainId=? order by id desc limit 10";
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where status != '0xa' and status != '0xapp' and hash != 0 and fromaddress=? and chainId=? order by id desc limit 10";
         var array = [address,chainId];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
@@ -595,7 +595,7 @@ function queryErc20PiInfoTXList(address,chainId) {
 
 function queryErc20PiStatusList(address,chainId,status) {
     return new Promise(function (accept,reject) {
-        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id desc";
+        var sql = "select chainId,funCode,preimage,ethContractId,piContractId,withdrawHash,withdrawHelper,hash,toaddress,fromaddress,value,status from tb_erc20_pi_transaction where fromaddress=? and chainId=? and status=? order by id desc";
         var array = [address,chainId,status];
         sqlietDb.queryAllByParam(sql,array).then(function (resObj) {
             accept(resObj);
