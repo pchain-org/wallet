@@ -454,7 +454,6 @@ angularApp.controller('myCtrl', function($scope, $http) {
                         objt.invcode =$scope.invitationiCode;
                         $scope.addDelegateInfo(objt);
                     } else if ($scope.delegateType == 1) {
-                        console.log("cancle delegate>>>>>>>>>>>>>>>>>>>>>>>>>.")
                         objt.hash = hash;
                         objt.address = $scope.account.address;
                         objt.candidate = $scope.cancleCandidate;
