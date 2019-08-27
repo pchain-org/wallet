@@ -171,6 +171,7 @@
                             <thead>
                             <tr>
                                 <th>Chain</th>
+                                <th>Elected</th>
                                 <th>UserName</th>
                                 <th>Candidate</th>
                                 <th>Commission(0%-100%)</th>
@@ -182,6 +183,8 @@
                             <tr ng-repeat="item in recommendList">
                                 <td ng-if="item.chainId==0"><span>Main Chain</span></td>
                                 <td ng-if="item.chainId==1"><span>Child Chain 1</span></td>
+                                <td ng-if="item.elected==0"><span>N</span></td>
+                                <td ng-if="item.elected==1"><span>Y</span></td>
                                 <td ng-bind="item.username"></td>
                                 <td ng-bind="item.address"></td>
                                 <td ng-bind="item.commission"></td>

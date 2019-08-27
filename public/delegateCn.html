@@ -171,6 +171,7 @@
                                     <thead>
                                     <tr>
                                         <th>主/子链</th>
+                                        <th>当选</th>
                                         <th>用户名</th>
                                         <th>地址</th>
                                         <th>佣金(0%-100%)</th>
@@ -182,6 +183,8 @@
                                     <tr ng-repeat="item in recommendList">
                                         <td ng-if="item.chainId==0"><span>主链</span></td>
                                         <td ng-if="item.chainId==1"><span>子链1</span></td>
+                                        <td ng-if="item.elected==0"><span>否</span></td>
+                                        <td ng-if="item.elected==1"><span>是</span></td>
                                         <td ng-bind="item.username"></td>
                                         <td ng-bind="item.address"></td>
                                         <td ng-bind="item.commission"></td>
