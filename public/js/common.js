@@ -159,6 +159,16 @@ function signTx(pri, txObj) {
 }
 
 
+function signMsg(pri) {
+    const ethUtil = require("ethereumjs-util");
+    const privateKey = new Buffer(pri, 'hex');
+    const msg=ethUtil.rlphash("pchain");
+    var msgdata=ethUtil.ecsign(msg, privateKey);
+    var msgStr=ethUtil.toRpcSig(msgdata.v,msgdata.r,msgdata.s);
+    return msgStr;
+}
+
+
 function signEthTx(pri, txObj) {
 
     var Tx = require("ethereumjs-tx");
