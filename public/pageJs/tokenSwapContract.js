@@ -219,7 +219,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
         $scope.refundHash = refundHash;
 
 
-        queryTOChainIdHash($scope.refundHash,ethChainId).then(function(wdata) {
+        queryToChainIdHash($scope.refundHash,ethChainId).then(function(wdata) {
             if (wdata.result == "success") {
 
                 console.log(wdata);
@@ -881,7 +881,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                                 $scope.getErc20Nonce();
 
                                 setTimeout(function() {
-                                    queryTOChainIdHash($scope.transactionHash,ethChainId).then(function(app) {
+                                    queryToChainIdHash($scope.transactionHash,ethChainId).then(function(app) {
 
                                         // console.log(app);
 
@@ -1057,7 +1057,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
             $scope.ethContractIdHash = ethContractIdHash;
 
-            queryTOChainIdHash($scope.ethContractIdHash,chainId).then(function(wddata) {
+            queryToChainIdHash($scope.ethContractIdHash,chainId).then(function(wddata) {
 
                 if (wddata.result == "success") {
 

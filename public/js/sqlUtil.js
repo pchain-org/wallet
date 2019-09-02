@@ -566,7 +566,7 @@ function createErc20PiInfo(obj) {
     });
 }
 
-function queryTOChainIdHash(hash,chainId) {
+function queryToChainIdHash(hash,chainId) {
     return new Promise(function (accept,reject) {
         var sql = "select chainId,fromaddress,ethContractId,piContractId,preimage,withdrawHelper,withdrawHelperPriv,withdrawHash,value,status from tb_erc20_pi_transaction where hash=? and chainId=? ";
         var array = [hash,chainId];
