@@ -303,6 +303,7 @@
      $scope.cancelDelegate=function(item){
          $scope.cancleAmount="";
          $scope.chainId=item.chainId;
+         $scope.chain = $scope.chainList[item.chainId];
          $scope.txStatus=item.tx_status;
          $scope.cancleCandidate=item.address;
          $('#cancelDelegateInfo').modal('show');
@@ -378,7 +379,7 @@
              $('#enterPassword').modal('show');
          }
      }
-     
+
      $scope.showIntroduction=function (introduction) {
          $scope.introduction=introduction;
          $('#delegateIntroduction').modal('show');

@@ -301,6 +301,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
     $scope.cancelDelegate=function(item){
         $scope.cancleAmount="";
         $scope.chainId=item.chainId;
+        $scope.chain = $scope.chainList[item.chainId];
         $scope.txStatus=item.tx_status;
         $scope.cancleCandidate=item.address;
         $('#cancelDelegateInfo').modal('show');
@@ -419,6 +420,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate, amount]);
                 amount = 0;
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
+                console.log(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount)
             }
 
             var signData = signTx($scope.currentPrivateKey, signRawObj);
