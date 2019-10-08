@@ -1,9 +1,9 @@
- angularApp.controller('myCtrl', function($scope, $http) { 
+ angularApp.controller('myCtrl', function($scope, $http) {
      $scope.gasPrice = 0;
      $scope.balance = 0;
-     $scope.minVoteAmount = 100000;
+     // $scope.minVoteAmount = 100000;
 
-     let web3Util = new Web3();     
+     let web3Util = new Web3();
 
      $scope.accountList = new Array();
 
@@ -46,7 +46,7 @@
             if(!err){
                 $scope.accountList = result;
                 if(result.length > 0){
-                    $scope.account = $scope.accountList[0];  
+                    $scope.account = $scope.accountList[0];
                     $scope.getBalance();
                 }
                 $scope.getCurrentEpoch();
@@ -149,14 +149,15 @@
      }
      $scope.voteNextEpoch = function(){
         //num to hex string
-         if ($scope.minVoteAmount>( new BigNumber($scope.amount))) {
-             let tips1 = "Amount error";
-             let tips2 = "min :" + $scope.minVoteAmount + " PI"
-             swal(tips1, tips2, "error");
-             return;
-         }
-        let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
-        let voteHash = web3Util.getVoteHash($scope.account,$scope.pubKey,voteAmount,$scope.salt);
+        //  if ($scope.minVoteAmount>( new BigNumber($scope.amount))) {
+        //      let tips1 = "Amount error";
+        //      let tips2 = "min :" + $scope.minVoteAmount + " PI"
+        //      swal(tips1, tips2, "error");
+        //      return;
+        //  }
+        //  console.log($scope.account,$scope.pubKey,$scope.salt,$scope.amount)
+         let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
+         let voteHash = web3Util.getVoteHash($scope.account,$scope.pubKey,voteAmount,$scope.salt);
         web3Util.tdm.voteNextEpoch($scope.account,voteHash,(err,result)=>{
             if(!err){
                 jQuery("#voteNextEpochModal").modal("hide");
@@ -174,12 +175,13 @@
 
      $scope.revealVote = function(){
         //num to hex string
-         if ($scope.minVoteAmount>( new BigNumber($scope.amount))) {
-             let tips1 = "Amount error";
-             let tips2 = "min :" + $scope.minVoteAmount + " PI"
-             swal(tips1, tips2, "error");
-             return;
-         }
+        //  if ($scope.minVoteAmount>( new BigNumber($scope.amount))) {
+        //      let tips1 = "Amount error";
+        //      let tips2 = "min :" + $scope.minVoteAmount + " PI"
+        //      swal(tips1, tips2, "error");
+        //      return;
+        //  }
+        //  console.log($scope.account,$scope.pubKey,$scope.salt,$scope.amount)
         let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
          web3Util.chain.signAddress($scope.account,"0x"+$scope.blsPrivateKey,(err,signature)=>{
             if(!err){
