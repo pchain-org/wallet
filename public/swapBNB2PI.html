@@ -41,20 +41,57 @@
                                         <h2 class="hidden-sm-up">PCHAIN Wallet</h2>
                                         <ul class="breadcrumb p-l-0 p-b-0 ">
                                             <li class="breadcrumb-item"><a href="index.html"><i class="icon icon-home"></i></a></li>
-                                            <li class="breadcrumb-item active">PI to PIBNB</li>
+                                            <li class="breadcrumb-item active">PIBNB to PI</li>
                                             <li class="active"><a href="javascript:void(0)" class="marginLeft10" ng-click="openExternalIntro()">(Introduction)</a></li>
 
                                         </ul>
                                     </div>
                                     <div class="col-lg-6 col-md-8 col-sm-10 col-10 text-right">
-                                        <a href="swapBNB2PI.html" class="btn btn-primary btn-round btn-simple"><i class="icon-exchange"></i> PIBNB TO PI</a>
-
+                                        <a href="swapBNB.html" class="btn btn-primary btn-round btn-simple"><i class="icon-exchange"></i> PI to PIBNB</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row clearfix" ng-cloak>
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-3 col-sm-5 col-6">
+                                    <div class="header">
+                                        <h2><strong>My PIBNB Account</strong>  <span class="copyBtn" data-clipboard-text="{{pibnbaccount.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-9 col-sm-7 col-6 text-right marginTop20">
+                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="enterPassword()">Export Private Key</button>
+                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="importWalletSeed()">Import Wallet Seed</button>
+                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
+                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="newBNBAccount()">Create PIBNB</button>
+                                </div>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6">
+                                        <div class="input-group my-input-group">
+                                            <span class="input-group-addon">PIBNB Address</span>
+                                            <div class="form-control">
+                                                <select class="mySelect" ng-model="pibnbaccount" ng-options="pibnbaccount as pibnbaccount.address  for pibnbaccount in pibnbaccountList" ng-change="selectPIBNBAccount()"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6">
+                                        <div class="input-group ">
+                                            <span class="input-group-addon">PIBNB Balance</span>
+                                            <div type="text" class="form-control "  name="pibnbBalance" ng-value="0" ng-model="pibnbBalance" ng-bind="pibnbBalance" readonly="readonly"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row clearfix">
                     <div class="col-xl-7 col-lg-7 col-md-6">
                         <div class="card mycard">
@@ -87,45 +124,18 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="clearfix"></div>
                 <div class="row clearfix" ng-cloak>
                     <div class="col-xl-12">
                         <div class="card">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-3 col-sm-5 col-6">
-                                    <div class="header">
-                                        <h2><strong>My PIBNB Account</strong>  <span class="copyBtn" data-clipboard-text="{{pibnbaccount.address}}"> (Copy Your Address <i class="icon icon-copy "  ></i>)</span> </h2>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-9 col-sm-7 col-6 text-right marginTop20">
-                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="enterPassword()">Export Private Key</button>
-                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="importWalletSeed()">Import Wallet Seed</button>
-                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" data-toggle="modal" data-target="#importAccount">Import Private Key</button>
-                                    <button class="btn btn-primary btn-round btn-simple float-right m-l-10" ng-click="newBNBAccount()">Create PIBNB</button>
-                                </div>
-                            </div>
                             <div class="body">
                                 <!--<div class="row">-->
                                 <form name="Form" novalidate="" class="row clearfix">
                                     <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="input-group my-input-group">
-                                            <span class="input-group-addon">PIBNB Address</span>
-                                            <div class="form-control">
-                                                <select class="mySelect" ng-model="pibnbaccount" ng-options="pibnbaccount as pibnbaccount.address  for pibnbaccount in pibnbaccountList" ng-change="selectPIBNBAccount()"></select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
-                                        <div class="input-group ">
-                                            <span class="input-group-addon">PIBNB Balance</span>
-                                            <div type="text" class="form-control "  name="pibnbBalance" ng-value="0" ng-model="pibnbBalance" ng-bind="pibnbBalance" readonly="readonly"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6">
                                         <div class="input-group " ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'has-danger':( Form.toAmount.$valid?'has-success':'') ">
                                             <span class="input-group-addon">Swap Amount</span>
-                                            <input type="number" class="form-control " min="1000" ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'min:1000~max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,8})?$/" required>
+                                            <input type="number" class="form-control " min="1" ng-class="(Form.toAmount.$invalid && Form.toAmount.$dirty)?'form-control-danger':(Form.toAmount.$valid?'form-control-success':'') " name="toAmount" ng-model="toAmount" placeholder={{'min:1~max:'+maxSendAmount}} ng-pattern="/^[0-9]+(.[0-9]{1,8})?$/" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6">
@@ -136,6 +146,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="row clearfix">
                     <div class="col-xl-12 col-md-12 col-lg-12">
@@ -159,8 +170,9 @@
                                             <td ng-bind="cutWords(item.hash)"></td>
                                             <td ng-bind="item.fromaddress"></td>
                                             <td ng-bind="item.toaddress"></td>
-                                            <td ng-bind="valueFormat(item.value)+' PI'"></td>
-                                            <td><a href="{{'index.html?key='+item.hash+'&chain=0'}}" class="badge badge-info radiusBtn">Detail</a></td>
+                                            <td ng-bind="valueFormat(item.value)+' PIBNB'"></td>
+                                            <td><a href="javascript:void(0)" class="badge badge-info radiusBtn" ng-click="openExternal(item.hash)" target="_blank">Detail</a></td>
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -183,7 +195,7 @@
                             &times;
                         </button>
                         <h4 class="modal-title text-center block">
-                            Please Enter PI Account Password
+                            Please Enter PIBNB Account Password
                     </h4>
                     </div>
                     <div class="modal-body">
@@ -251,45 +263,26 @@
                 <div class="modal-body">
                     <div>
                         <div class="input-group marginTop10">
-                            <span class="input-group-addon">Native PI Address </span>
-                            <div class="form-control" ng-bind="account.address"></div>
-                        </div>
-                        <div class="input-group marginTop10">
                             <span class="input-group-addon">PIBNB Address</span>
                             <div class="form-control" ng-bind="pibnbaccount.address"></div>
                         </div>
                         <div class="input-group marginTop10">
+                            <span class="input-group-addon">Native PI Address </span>
+                            <div class="form-control" ng-bind="account.address"></div>
+                        </div>
+                        <div class="input-group marginTop10">
                             <span class="input-group-addon">Amount to send</span>
-                            <div class="form-control" ng-bind="valueFormat(toAmount)+' PI'"></div>
-                            <!-- <div class="form-control" id="modalToAmount"></div> -->
-                        </div>
-                        <!--                       <div class="input-group marginTop10">
-                            <span class="input-group-addon">Gas Limit</span>
-                            <div class="form-control" ng-bind="gasLimit"></div>
-                        </div>
-
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">Gas Price</span>
-                            <div class="form-control" ng-bind="gasPrice+' GWEI'"></div>
-                        </div> -->
-                        <div class="input-group marginTop10">
-                            <span class="input-group-addon">Max Fee</span>
-                            <div class="form-control" ng-bind="txFee+' PI'"></div>
+                            <div class="form-control" ng-bind="valueFormat(toAmount)+' PIBNB'"></div>
                         </div>
                         <div class="input-group marginTop10">
-                            <span class="input-group-addon">Nonce</span>
-                            <div class="form-control" ng-bind="nonce"></div>
-                        </div>
-                        <div class="input-group marginTop10" ng-show="data" ng-cloak>
-                            <b>Input Data</b><br>
-                            <div class="textArea" ng-bind="data">
-                            </div>
+                            <span class="input-group-addon">Fee</span>
+                            <div class="form-control" ng-bind="bnbFee+' BNB'"></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer text-center">
                     <div class="block text-center">
-                        <button type="button" class="btn btn-primary" ng-disabled="!nonceFlag" ng-click="sendTx()">
+                        <button type="button" class="btn btn-primary"  ng-click="transfer()">
                             Send Transaction
                         </button>
                     </div>
@@ -531,7 +524,7 @@
     <script src="js/ethereumjs-accounts.js"></script>
     <script src="js/common.js"></script>
     <script src="js/sqlUtil.js"></script>
-    <script type="text/javascript" src="pageJs/swapBNB.js"></script>
+    <script type="text/javascript" src="pageJs/swapBNB2PI.js"></script>
 </body>
 
 </html>

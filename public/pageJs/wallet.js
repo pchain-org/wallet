@@ -850,7 +850,7 @@ angularApp.controller('myCtrl', function ($scope, $http) {
     ipcRenderer.on('selected-keystore', (event, path, fileJson) => {
         if (fileJson.address && (fileJson.crypto || fileJson.Crypto) && fileJson.id) {
             $scope.keystorePath = path;
-            $scope.keystoreJson = fileJson;
+            $scope.keystoreJson = JSON.parse(JSON.stringify(fileJson).toLowerCase());
             $scope.keystoreJson.address = "0x" + $scope.keystoreJson.address;
         } else {
             $scope.keystorePath = "";

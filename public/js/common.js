@@ -5,23 +5,19 @@ const Web3 = require("pweb3");
 const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
 const CryptoJS = require("crypto-js");
-
 const BnbApiClient = require('@binance-chain/javascript-sdk');
-const crypto = BnbApiClient.crypto
-
-
 const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
 
-angularApp.filter('gmtTime', function() { 
+angularApp.filter('gmtTime', function() {
         return function(d) {
             var gt = new Date(d*1000);
             return gt.toGMTString();
         }
 });
 
-angularApp.filter('weiToPI', function() { 
+angularApp.filter('weiToPI', function() {
         return function(v) {
             const web3 = new Web3();
             return web3.fromWei(v,'ether')+" PI";
@@ -278,8 +274,9 @@ function initEthSignRawContract(nonce, gasPrice, gasLimit, contract, data) {
     return rawTx;
 }
 
+
 const getClient = async () => {
-    const client = new BnbApiClient('https://dex.binance.org/')
+    const client = new BnbApiClient(APIBNB)
     await client.initChain();
     return client
 }
@@ -304,15 +301,21 @@ async function getPIBNBBalance(address) {
         });
     });
 }
+
+
 const symbol='PIBNB-43C';
 
 const APIHost = "https://api.pchain.org";
+
+const APIBNB = 'https://dex.binance.org/'; /// api string
 
 const contractAddress="0xB9bb08AB7E9Fa0A1356bd4A39eC0ca267E03b0b3";
 
 const swapAddr="0x7429f3eca2dca9f12fe0728c2f1ac198dbb64f85";
 
 const swap_pibnb_toAddress="0xc66e0de96483fcaec958cf25e1d9cbfaba145e65";
+
+const swap_bnbpi_toAddress="bnb1p0t3yamtw0qkecvf2m435zkvz9sv4uyrw8dhqz";
 
 
 var crossChainABI = [{

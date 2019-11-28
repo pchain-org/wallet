@@ -67,12 +67,19 @@
                                     </tr>
                                     <tr ng-repeat="(key,value) in result.data" ng-show="value != null" ng-hide="key == 'fromAddress' || key == 'toAddress'" ng-cloak>
                                         <td><code class="w3-codespan" ng-bind="key"></code></td>
-                                        <td ng-bind="value" ng-hide="key == 'transactionsCount' || key == 'blockNumber' " ng-class="(key == 'input' || key == 'extraData')?'longText':''"></td>
+                                        <td ng-bind="value" ng-hide="key == 'transactionsCount' || key == 'blockNumber' || key=='from' || key=='to'" ng-class="(key == 'input' || key == 'extraData')?'longText':''"></td>
                                         <td  ng-show="key == 'transactionsCount' " >
                                             <a ng-href="{{'?key='+result.data.hash+'&chain='+result.data.chainId+'&type=1'}}" ng-bind="value" ng-cloak></a>
                                         </td>
                                         <td  ng-show="key == 'blockNumber' " >
                                             <a ng-href="{{'?key='+result.data.blockNumber+'&chain='+result.data.chainId}}" ng-bind="value" ng-cloak></a>
+                                        </td>
+
+                                        <td  ng-show="key == 'from' " >
+                                            <a ng-href="{{'?key='+result.data.from+'&chain='+result.data.chainId}}" ng-bind="value" ng-cloak></a>
+                                        </td>
+                                        <td  ng-show="key == 'to' " >
+                                            <a ng-href="{{'?key='+result.data.to+'&chain='+result.data.chainId}}" ng-bind="value" ng-cloak></a>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -188,7 +188,7 @@ function queryChainList() {
         const childChainJsonPath = path.join(__dirname,"../childChain.json");
         var childChainJson = require(childChainJsonPath);
         var obj = {};
-        obj.data = childChainJson.chain; 
+        obj.data = childChainJson.chain;
         accept(obj);
     });
 }
@@ -565,3 +565,4 @@ function createTokenSwapInfo(obj) {
         })
     });
 }
+
