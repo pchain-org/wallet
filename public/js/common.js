@@ -6,6 +6,7 @@ const EthTx = require("pchainjs-tx");
 const TxData = require("txdata");
 const CryptoJS = require("crypto-js");
 const BnbApiClient = require('@binance-chain/javascript-sdk');
+const crypto = BnbApiClient.crypto
 const BigNumber = require('bignumber.js');
 const _ = require("lodash");
 window.angularApp = angular.module('myApp', []);
