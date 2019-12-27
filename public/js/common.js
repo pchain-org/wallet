@@ -489,3 +489,16 @@ var transferABI=[{
         "type": "function"
     }];
 
+var extractRewardABI=[
+    {
+        "type": "function",
+        "name": "ExtractReward",
+        "constant": false,
+        "inputs": [{
+            "name": "address",
+            "type": "address"
+        }],
+        "outputs": []
+    }
+]
+

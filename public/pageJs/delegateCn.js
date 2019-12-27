@@ -205,11 +205,8 @@
              url: url,
              data: obj
          }).then(function successCallback(res) {
-             if (res.data.result == "success") {
-                 console.log(res.data)
+             if (res.data!=null && res.data.result == "success") {
                  $scope.delegateHistoryList = res.data.data;
-             } else {
-                 showPopup(res.data.message, 3000);
              }
 
          }, function errorCallback(res) {
@@ -352,6 +349,7 @@
 
      $scope.delegateType;
      $scope.showEnterPwd = function(type) {
+         $scope.delegateType = type;
          if(type==0){
              if ($scope.dminAmount>( new BigNumber($scope.toAmount))) {
                  let tips1 = "Amount error";
@@ -360,7 +358,7 @@
                  return;
              }
              $('#delegateInfo').modal('hide');
-         }else{
+         }else if(type==1){
              if ($scope.cminAmount>( new BigNumber($scope.cancleAmount))) {
                  let tips1 = "Amount error";
                  let tips2 = "最小数量 :" + $scope.cminAmount + " PI"
@@ -368,15 +366,19 @@
                  return;
              }
              $('#cancelDelegateInfo').modal('hide');
-         }
-        $scope.delegateType = type;
-         $scope.getMaxSendAmount();
-         if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
-             let tips1 = "余额不足 ";
-             let tips2 = "最大数量 :" + $scope.maxSendAmount + " PI"
-             swal(tips1, tips2, "error");
-         } else {
+         }else{
+             $('#extractReward').modal('hide');
              $('#enterPassword').modal('show');
+         }
+         if(type!=2){
+             $scope.getMaxSendAmount();
+             if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
+                 let tips1 = "余额不足 ";
+                 let tips2 = "最大数量 :" + $scope.maxSendAmount + " PI"
+                 swal(tips1, tips2, "error");
+             } else {
+                 $('#enterPassword').modal('show');
+             }
          }
      }
 
@@ -389,7 +391,11 @@
          $scope.getNonce();
          var txFee = $scope.gasLimit * $scope.gasPrice * Math.pow(10, 9);
          $scope.txFee = web3.fromWei(txFee, 'ether');
-         $('#transaction').modal('show');
+         if($scope.delegateType==2){
+             $scope.sendTx();
+         }else{
+             $('#transaction').modal('show');
+         }
      }
 
      $scope.gasChanged = function() {
@@ -421,6 +427,12 @@
                  funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate, amount]);
                  amount = 0;
                  signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
+             }else{
+                 console.log($scope.account.address)
+                 funcData = $scope.getPlayLoad(extractRewardABI, "ExtractReward", [$scope.account.address]);
+                 amount = 0;
+                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
+                 console.log(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount)
              }
              var signData = signTx($scope.currentPrivateKey, signRawObj);
              $scope.currentPrivateKey = "";

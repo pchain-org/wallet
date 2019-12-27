@@ -116,7 +116,9 @@
             <div class="col-xl-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Notice:Awards are subject to actual income. The final interpretation is owned by PCHAIN</strong></h2>
+                        <h2><strong>Notice:Awards are subject to actual income. The final interpretation is owned by PCHAIN</strong>
+                            <span class="customize-btn"><button   data-toggle="modal" data-target="#extractReward" class="badge badge-info radiusBtn">Extract Reward</button></span>
+                        </h2>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  ng-cloak>
@@ -386,6 +388,7 @@
 
 
 
+
 <div class="modal fade" id="cancelDelegateInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -424,7 +427,35 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="extractReward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title text-center block">
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <form name="extractForm" novalidate="" class="row clearfix">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <div class="input-group ">
+                                <span class="input-group-addon">Chain</span>
+                                <select class="form-control" ng-model="chain" ng-options="  chain as chain.name  for chain in chainList"  style="height: 2.7rem" ng-change="selectchain(chain.id)"></select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                    <div class="marginTop20 text-center">
+                        <button class="btn btn-info" ng-disabled="extractForm.$invalid" ng-click="showEnterPwd(2)">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="delegateIntroduction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

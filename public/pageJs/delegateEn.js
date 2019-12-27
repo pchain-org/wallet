@@ -203,11 +203,9 @@ angularApp.controller('myCtrl', function($scope, $http) {
             url: url,
             data: obj
         }).then(function successCallback(res) {
-            if (res.data.result == "success") {
-                console.log(res.data)
+            console.log(res)
+            if (res.data!=null && res.data.result == "success") {
                 $scope.delegateHistoryList = res.data.data;
-            } else {
-                showPopup(res.data.message, 3000);
             }
 
         }, function errorCallback(res) {
@@ -351,6 +349,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
 
     $scope.delegateType;
     $scope.showEnterPwd = function(type) {
+        $scope.delegateType = type;
         if(type==0){
             if ($scope.dminAmount>( new BigNumber($scope.toAmount))) {
                 let tips1 = "Amount error";
@@ -359,7 +358,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 return;
             }
             $('#delegateInfo').modal('hide');
-        }else{
+        }else if(type==1){
             if ($scope.cminAmount>( new BigNumber($scope.cancleAmount))) {
                 let tips1 = "Amount error";
                 let tips2 = "min :" + $scope.cminAmount + " PI"
@@ -367,16 +366,21 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 return;
             }
             $('#cancelDelegateInfo').modal('hide');
-        }
-        $scope.delegateType = type;
-        $scope.getMaxSendAmount();
-        if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
-            let tips1 = "Insufficient Balance ";
-            let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
-            swal(tips1, tips2, "error");
-        } else {
+        }else{
+            $('#extractReward').modal('hide');
             $('#enterPassword').modal('show');
         }
+        if(type!=2){
+            $scope.getMaxSendAmount();
+            if (  $scope.maxSendAmount.lt( new BigNumber($scope.toAmount))) {
+                let tips1 = "Insufficient Balance ";
+                let tips2 = "Max Amount :" + $scope.maxSendAmount + " PI"
+                swal(tips1, tips2, "error");
+            } else {
+                $('#enterPassword').modal('show');
+            }
+        }
+
     }
 
     $scope.showIntroduction=function (introduction) {
@@ -388,7 +392,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
         $scope.getNonce();
         var txFee = $scope.gasLimit * $scope.gasPrice * Math.pow(10, 9);
         $scope.txFee = web3.fromWei(txFee, 'ether');
-        $('#transaction').modal('show');
+        if($scope.delegateType==2){
+            $scope.sendTx();
+        }else{
+            $('#transaction').modal('show');
+        }
+
     }
 
     $scope.gasChanged = function() {
@@ -418,6 +427,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
                 //cancle delegate
                 amount = "0x" + decimalToHex(web3.toWei($scope.cancleAmount, 'ether'));
                 funcData = $scope.getPlayLoad(DelegateABI, "CancelDelegate", [$scope.cancleCandidate, amount]);
+                amount = 0;
+                signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
+                console.log(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount)
+            }else {
+                console.log($scope.account.address)
+                funcData = $scope.getPlayLoad(extractRewardABI, "ExtractReward", [$scope.account.address]);
                 amount = 0;
                 signRawObj = initSignBuildInContract(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount);
                 console.log(funcData, nonce, gasPrice, $scope.gasLimit, $scope.chain.chainId, amount)
@@ -474,6 +489,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             });
 
         } catch (e) {
+            console.log(e)
             swal(e.toString());
         }
 
