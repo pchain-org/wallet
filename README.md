@@ -1,4 +1,4 @@
-# PCHAIN Wallet<sup>1.0.9</sup>
+# PCHAIN Wallet<sup>1.1.0</sup>
 
 ### Dependencies
 
