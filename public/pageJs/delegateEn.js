@@ -88,6 +88,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
         }).then(function successCallback(res) {
             if (res.data.result == "success") {
                 $scope.nonce = Number(res.data.data);
+                console.log('91===',$scope.nonce)
                 $scope.nonceFlag = true;
             } else {
                 showPopup(res.data.message, 3000);
@@ -367,6 +368,7 @@ angularApp.controller('myCtrl', function($scope, $http) {
             }
             $('#cancelDelegateInfo').modal('hide');
         }else{
+            $scope.getNonce();
             $('#extractReward').modal('hide');
             $('#enterPassword').modal('show');
         }
@@ -389,12 +391,12 @@ angularApp.controller('myCtrl', function($scope, $http) {
     }
 
     $scope.submit = function() {
-        $scope.getNonce();
         var txFee = $scope.gasLimit * $scope.gasPrice * Math.pow(10, 9);
         $scope.txFee = web3.fromWei(txFee, 'ether');
         if($scope.delegateType==2){
             $scope.sendTx();
         }else{
+            $scope.getNonce();
             $('#transaction').modal('show');
         }
 

@@ -367,6 +367,7 @@
              }
              $('#cancelDelegateInfo').modal('hide');
          }else{
+             $scope.getNonce();
              $('#extractReward').modal('hide');
              $('#enterPassword').modal('show');
          }
@@ -388,12 +389,12 @@
      }
 
      $scope.submit = function() {
-         $scope.getNonce();
          var txFee = $scope.gasLimit * $scope.gasPrice * Math.pow(10, 9);
          $scope.txFee = web3.fromWei(txFee, 'ether');
          if($scope.delegateType==2){
              $scope.sendTx();
          }else{
+             $scope.getNonce();
              $('#transaction').modal('show');
          }
      }
