@@ -1,6 +1,6 @@
 # PCHAIN Wallet<sup>1.3.0</sup>
 
-### Dependencies
+## Dependencies
 
 To run PCHAIN Wallet in development you need:
 
@@ -8,35 +8,66 @@ To run PCHAIN Wallet in development you need:
 - [Yarn](https://yarnpkg.com/) package manager
 
 
-### Initialization
+## Initialization
 
 Now you're ready to initialize PCHAIN Wallet for development:
 
 ```bash
-$ git clone https://github.com/pchain-org/wallet.git
-$ cd wallet
-$ yarn
-$ yarn build:mac  #mac
-$ yarn build:win   #windows
+git clone https://github.com/pchain-org/wallet.git
+cd wallet
+yarn
 ```
 
-### Run PCHAIN Wallet
+## Build PCHAIN Wallet
+
+### For Linux
 
 ```bash
-$ yarn start
+yarn build:linux
+```
+
+### For Mac
+
+```bash
+yarn build:mac
+```
+
+### For Windows
+
+```bash
+yarn build:win
+```
+
+## Run PCHAIN Wallet
+
+```bash
+yarn start
 ```
 
 
-### Generate packages
+## Generate packages
 
 To build binaries for specific platforms, use the following flags:
 
+### For Linux
+
 ```bash
-$ yarn packager:mac  #mac
-$ yarn packager:win  #windows
+yarn packager:linux
 ```
 
-### Config folder
+### For Mac
+
+```bash
+yarn packager:mac
+```
+
+### For Windows
+
+```bash
+yarn packager:win
+```
+
+## Config folder
 
 The data folder for Pchain wallet depends on your operating system:
 
