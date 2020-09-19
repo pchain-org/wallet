@@ -23,6 +23,7 @@ yarn
 ### For Linux
 
 ```bash
+sudo apt install libudev-dev
 yarn build:linux
 ```
 
