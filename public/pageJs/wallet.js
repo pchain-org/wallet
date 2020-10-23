@@ -319,6 +319,10 @@ angularApp.controller('myCtrl', function ($scope, $http) {
                     }else if($scope.pwdFormtype == 3){
                         $scope.delAddress=$scope.account.address;
                         $('#delAccount').modal('show');
+                    } else if($scope.pwdFormtype == 4) {
+                        $scope.selectedChain = '0'
+                        $scope.getNonce(0, 1);
+                        $('#resendModal').modal('show')
                     } else {
                         $scope.submit();
                     }
@@ -970,7 +974,110 @@ angularApp.controller('myCtrl', function ($scope, $http) {
     }
 
 
+    $scope.selectedChain = '0'
+    $scope.hash = ''
+    $scope.resendAmount = ''
+    $scope.confirmResend = function () {
+        if (!$scope.hash) {
+            swal("Error", "Please enter hash", "error")
+            return
+        }
+        if (!$scope.resendAmount && $scope.selectedChain !== '1') {
+            swal("Error", "Please enter amount", "error")
+            return
+        }
+        if ($scope.selectedChain === '1') {
+            $scope.resendMainToChild($scope.hash)
+        } else {
+            $scope.resendChildToMain($scope.hash, $scope.resendAmount)
+        }
+    }
+
+    $scope.changeChain = function () {
+        if ($scope.selectedChain === '1') {
+            $scope.getNonce(1, 1);
+        } else if ($scope.selectedChain === '0') {
+            $scope.getNonce(0, 1);
+        }
+    }
+
+    $scope.resendChildToMain = function (depositeHash, childToMainAmount, pid, flag, num) {
+        const gasPrice = $scope.gasPrice * Math.pow(10, 9);
+        const amount = web3.toWei(childToMainAmount, "ether")
+        let childChainId = "child_0"
+        var funcData = $scope.getPlayLoad(crossChainABI, "WithdrawFromMainChain", [childChainId, amount, depositeHash]);
+        var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, gasPrice, 0, "pchain");
+        var signData = signTx($scope.currentPrivateKey, signRawObj);
+
+        var obj2 = {};
+        obj2.chainId = 0;
+        obj2.signData = signData;
+        obj2.childId = 1;
+        var url = APIHost + "/sendTx";
+        $http({
+            method: 'POST',
+            url: url,
+            data: obj2
+        }).then(function successCallback(res) {
+            removeLoading();
+            if (res.data.result == "success") {
+                $('#resendModal').modal('hide');
+                var hash = depositeHash;
+                var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
+                var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
+                successNotify(html);
+            } else {
+                swal("Error", res.data.error, "error");
+            }
+        }, function errorCallback(res) {
+            if ($scope.pwdFormtype == 2) {
+                jQuery('#resendTransaction').modal('hide');
+            }
+            swal("Error", "Internet error, please refresh the page", "error");
+        });
+
+    }
+
+    $scope.resendMainToChild = function (depositeHash, pid, flag, num) {
+        let childChainId = "child_0";
+        const gasPrice = $scope.gasPrice * Math.pow(10, 9);
+
+        var funcData = $scope.getPlayLoad(crossChainABI, "DepositInChildChain", [childChainId, depositeHash]);
+        var signRawObj = initSignRawCrosschain(funcData, $scope.nonce2, gasPrice, 0, childChainId);
+        var signData = signTx($scope.currentPrivateKey, signRawObj);
+
+        var obj2 = {};
+        obj2.chainId = 1;
+        obj2.signData = signData;
+        var url = APIHost + "/sendTx";
+        $http({
+            method: 'POST',
+            url: url,
+            data: obj2
+        }).then(function successCallback(res) {
+            removeLoading();
+            if (res.data.result == "success") {
+                $('#resendModal').modal('hide');
+                var hash = depositeHash;
+                var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
+                var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
+                successNotify(html);
+            } else {
+                swal("Error", res.data.error, "error");
+            }
+
+        }, function errorCallback(res) {
+            swal("Error", "Internet error, please refresh the page", "error");
+        });
+    }
+
+
 });
 $(function () {
     menuActive(2);
+    $('.help').hover(() => {
+        $('.help-img').show()
+    }, () => {
+        $('.help-img').hide()
+    })
 });
