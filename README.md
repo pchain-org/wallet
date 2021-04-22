@@ -1,4 +1,4 @@
-# PLIAN Wallet<sup>1.3.0.1</sup>
+# PLIAN Wallet<sup>2.0.1</sup>
 
 ### Dependencies
 
