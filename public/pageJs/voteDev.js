@@ -185,6 +185,7 @@
         let voteAmount = "0x"+decimalToHex(web3Util.toWei($scope.amount,'ether'));
          web3Util.chain.signAddress($scope.account,"0x"+$scope.blsPrivateKey,(err,signature)=>{
             if(!err){
+                console.log($scope.account,$scope.pubKey,voteAmount,$scope.salt,signature)
                 web3Util.tdm.revealVote($scope.account,$scope.pubKey,voteAmount,$scope.salt,signature,(err,result)=>{
                     if(!err){
                         jQuery("#revealVoteModal").modal("hide");

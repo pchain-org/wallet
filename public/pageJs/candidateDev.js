@@ -1,14 +1,13 @@
- angularApp.controller('myCtrl', function($scope, $http) { 
+ angularApp.controller('myCtrl', function($scope, $http) {
      $scope.gasPrice = 10;
      $scope.balance = 0;
      $scope.minValidators = 1;
      $scope.minDepositAmount = 10000;
 
-     let web3Util = new Web3();     
+     let web3Util = new Web3();
 
      $scope.accountList = new Array();
 
-     // $scope.RPCUrl = "http://54.189.122.88:6969/pchain";
 
     $scope.getBalance = function(){
         $scope.spin = "myIconSpin";
@@ -34,7 +33,7 @@
             if(!err){
                 $scope.accountList = result;
                 if(result.length > 0){
-                    $scope.account = $scope.accountList[0];  
+                    $scope.account = $scope.accountList[0];
                     $scope.getBalance();
                 }
                 $scope.$apply();

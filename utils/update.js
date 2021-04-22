@@ -8,7 +8,7 @@ const Promise = require("bluebird");
 const electron = require('electron')
 const {dialog} = require('electron')
 
-const gitPackageJsonUrl = "https://raw.githubusercontent.com/pchain-org/wallet/master/package.json";  
+const gitPackageJsonUrl = "https://raw.githubusercontent.com/pchain-org/wallet/master/package.json";
 let self;
 class Update {
 	constructor(){
@@ -28,7 +28,7 @@ class Update {
 				}).catch(function(err){
 					reject(err);
 				})
-	        	
+
 			}catch(error){
 				reject(error);
 			}
@@ -65,24 +65,24 @@ class Update {
 			if(flag){
 				 const options = {
 				    type: 'info',
-				    title: 'Update PCHAIN Wallet',
+				    title: 'Update PLAIN Wallet',
 				    message: "There is a new version wallet,do you want to update?",
 				    buttons: ['Update', 'Skip']
 				  }
 				  dialog.showMessageBox(options, function (index) {
 				    	if(index == 0){
-				    		electron.shell.openExternal('https://www.pchain.org')
+				    		electron.shell.openExternal('https://plian.org')
 				    	}
 				  })
 			}else if(type == 1){
 				 const options = {
 				    type: 'info',
-				    title: 'Update PCHAIN Wallet',
+				    title: 'Update PLAIN Wallet',
 				    message: "You have successfully upgraded to the latest version",
 				    buttons: ['Ok']
 				  }
 				  dialog.showMessageBox(options, function (index) {
-				    	
+
 				  })
 
 			}
@@ -90,6 +90,6 @@ class Update {
 			console.log(e);
 		});
 	}
-} 
+}
 
 module.exports = new Update();

@@ -263,7 +263,7 @@
 
 .theme-purple .page-loader-wrapper,
 .theme-purple .active-bg {
-    background: black
+    background: #e10185;
 }
 
 .theme-purple .sidebar .menu .list li.active.open .active a {
@@ -16857,10 +16857,10 @@ img {
     z-index: 11;
     width: 100%;
     padding: 0;
-    background: #191f28;
+    background: #e10185;
     min-height: 53px;
     box-shadow: none;
-    border-bottom: 1px solid #262e3c
+    border-bottom: 1px solid #e10185
 }
 
 .top_navbar .navbar-toggle {
@@ -20401,7 +20401,7 @@ img {
 }
 
 body {
-    background-color: #000000;
+    background-color: #e10185;
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     -webkit-transition: all 0.5s;
@@ -20452,7 +20452,7 @@ section.content {
 }
 
 section.content::before {
-    background: #191f28;
+    background: #e10185;
     top: -120px;
     left: 0;
     content: '';

@@ -264,6 +264,20 @@ function initSignRawContract(toAddress, data, nonce, gasPrice, gasLimit, amount,
 }
 
 
+function initSignRawContracttest(toAddress, data, gasPrice, gasLimit) {
+    const rawTx = {
+        from: "79cd31b59e3faab6deea68fbbaafa4da748bbdf6",
+        gasPrice: convert(30000000000 ),
+        gasLimit: convert(700000000),
+        // to: "",
+        data: data,
+        // value: convert(0),
+        // chainId: "0x1941638642218601557581943248374279636706439064705103919961555643535977130293"
+    };
+    return rawTx;
+}
+
+
 function initEthSignRawContract(nonce, gasPrice, gasLimit, contract, data) {
     const rawTx = {
         nonce: convert(nonce),

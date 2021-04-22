@@ -33,7 +33,7 @@ class Keystore{
 		console.log(err)
 		const options = {
 		    type: 'error',
-		    title: 'PCHAIN Wallet',
+		    title: 'PLIAN Wallet',
 		    message: err.toString()
 		}
 		dialog.showMessageBox(options);

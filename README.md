@@ -1,8 +1,8 @@
-# PCHAIN Wallet<sup>1.3.0.1</sup>
+# PLIAN Wallet<sup>1.3.0.1</sup>
 
 ### Dependencies
 
-To run PCHAIN Wallet in development you need:
+To run PLIAN Wallet in development you need:
 
 - [Node.js](https://nodejs.org) `v8.x` (use the preferred installation method for your OS)
 - [Yarn](https://yarnpkg.com/) package manager
@@ -10,7 +10,7 @@ To run PCHAIN Wallet in development you need:
 
 ### Initialization
 
-Now you're ready to initialize PCHAIN Wallet for development:
+Now you're ready to initialize PLIAN Wallet for development:
 
 ```bash
 $ git clone https://github.com/pchain-org/wallet.git
@@ -20,7 +20,7 @@ $ yarn build:mac  #mac
 $ yarn build:win   #windows
 ```
 
-### Run PCHAIN Wallet
+### Run PLIAN Wallet
 
 ```bash
 $ yarn start

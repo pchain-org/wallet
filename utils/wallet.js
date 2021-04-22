@@ -66,7 +66,7 @@ class Wallet {
 	    }).catch((err)=>{
 	    	self.errorDialog(err);
 	    })
-		    
+
 	}
 
 	recoveryWallet(p){
@@ -84,11 +84,11 @@ class Wallet {
 					let err = "Incorrect wallet format";
 					self.errorDialog(err);
 				}
-				
+
 			}else{
 				self.errorDialog(err);
 			}
-		})	
+		})
 	}
 
 	isWalletFileValid(walletJson){
@@ -122,7 +122,7 @@ class Wallet {
 				console.log(err);
 				reject(err);
 			});
-		}); 
+		});
 	}
 
 	addAccount(privateKey,address) {
@@ -167,12 +167,12 @@ class Wallet {
 		console.log(err)
 		const options = {
 		    type: 'error',
-		    title: 'PCHAIN Wallet',
+		    title: 'PLIAN Wallet',
 		    message: err.toString()
 		}
 		dialog.showMessageBox(options);
 	}
 
-} 
+}
 
 module.exports = new Wallet();

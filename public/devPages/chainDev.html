@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="The Pchain wallet">
-    <title>PCHAIN Wallet</title>
+    <title>PLIAN Wallet</title>
     <link rel="icon" href="../img/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/bootstrap-select.min.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
@@ -21,7 +21,7 @@
 <body class="theme-purple" ng-app="myApp" ng-controller="myCtrl">
     <div class="page-loader-wrapper">
         <div class="loader">
-            <div class="m-t-30"><img class="zmdi-hc-spin" src="../img/logo.png" width="48" height="48" alt="PCHAIN"></div>
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="../img/plian.png" width="48" height="48" alt="PLIAN"></div>
                 <p>Please wait...</p>
             </div>
         </div>
@@ -166,7 +166,7 @@
                         </div>
                         <div class="input-group" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'has-danger':( createChainForm.minDepositAmount.$valid?'has-success':'') ">
                             <span class="input-group-addon">MinDepositAmount</span>
-                            <input type="number" min="100000" placeholder="minDepositAmount" class="form-control" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'form-control-danger':(createChainForm.minDepositAmount.$valid?'form-control-success':'') " name="minDepositAmount" ng-model="minDepositAmount" required>
+                            <input type="number"  placeholder="minDepositAmount" class="form-control" ng-class="(createChainForm.minDepositAmount.$invalid && createChainForm.minDepositAmount.$dirty)?'form-control-danger':(createChainForm.minDepositAmount.$valid?'form-control-success':'') " name="minDepositAmount" ng-model="minDepositAmount" required>
                         </div>
                         <div class="input-group" ng-class="(createChainForm.startBlock.$invalid && createChainForm.startBlock.$dirty)?'has-danger':( createChainForm.startBlock.$valid?'has-success':'') ">
                             <span class="input-group-addon">StartBlock</span>
@@ -212,7 +212,7 @@
                         </div>
                         <div class="input-group" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'has-danger':( joinChainForm.depositAmount.$valid?'has-success':'') ">
                             <span class="input-group-addon">DepositAmount</span>
-                            <input type="number" min="100000" placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
+                            <input type="number"  placeholder="depositAmount" class="form-control" ng-class="(joinChainForm.depositAmount.$invalid && joinChainForm.depositAmount.$dirty)?'form-control-danger':(joinChainForm.depositAmount.$valid?'form-control-success':'') " name="depositAmount" ng-model="depositAmount" required>
                         </div>
                         <div class="input-group" ng-class="(joinChainForm.pubkey.$invalid && joinChainForm.pubkey.$dirty)?'has-danger':( joinChainForm.pubkey.$valid?'has-success':'') ">
                             <span class="input-group-addon">Pubkey</span>

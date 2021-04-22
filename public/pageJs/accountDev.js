@@ -1,11 +1,11 @@
- angularApp.controller('myCtrl', function($scope, $http) { 
+ angularApp.controller('myCtrl', function($scope, $http) {
      $scope.gasLimit = 21000;
      $scope.gasPrice = 0;
      $scope.nonce = 0;
      $scope.balance = 0;
      $scope.maxSendAmount = 0;
 
-     let web3Util = new Web3();     
+     let web3Util = new Web3();
 
      $scope.accountList = new Array();
 
@@ -38,7 +38,7 @@
             if(!err){
                 $scope.accountList = result;
                 if(result.length > 0){
-                    $scope.account = $scope.accountList[0];  
+                    $scope.account = $scope.accountList[0];
                     $scope.getBalance();
                 }
                 // $scope.$apply();
@@ -155,7 +155,7 @@
             txObj.data = $scope.data;
 
         web3Util.eth.sendTransaction(txObj,(err,result)=>{
-            
+
             if(!err){
                 jQuery("#transaction").modal("hide");
                 swal({title:"Transaction",text:result,icon:"success"});
