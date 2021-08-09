@@ -321,30 +321,30 @@
                  obj.chainId = $scope.chain.id;
                  obj.signData = signData;
 
-                 // var url = APIHost + "/sendTx";
-                 // loading();
-                 // $http({
-                 //     method: 'POST',
-                 //     url: url,
-                 //     data: obj
-                 // }).then(function successCallback(res) {
-                 //     console.log(res);
-                 //     removeLoading();
-                 //     if (res.data.result == "success") {
-                 //
-                 //         $('#transaction').modal('hide');
-                 //         var hash = res.data.data;
-                 //         var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
-                 //         var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
-                 //         successNotify(html);
-                 //         $scope.checkRecipt(hash, $scope.chain.id);
-                 //     } else {
-                 //         swal(res.data.error);
-                 //     }
-                 //
-                 // }, function errorCallback(res) {
-                 //     showPopup("Internet error, please refresh the page");
-                 // });
+                 var url = APIHost + "/sendTx";
+                 loading();
+                 $http({
+                     method: 'POST',
+                     url: url,
+                     data: obj
+                 }).then(function successCallback(res) {
+                     console.log(res);
+                     removeLoading();
+                     if (res.data.result == "success") {
+
+                         $('#transaction').modal('hide');
+                         var hash = res.data.data;
+                         var url = "index.html?key=" + hash + "&chain=" + $scope.chain.id;
+                         var html = '<a href="' + url + '" >Transaction hash:' + hash + '</a>';
+                         successNotify(html);
+                         $scope.checkRecipt(hash, $scope.chain.id);
+                     } else {
+                         swal(res.data.error);
+                     }
+
+                 }, function errorCallback(res) {
+                     showPopup("Internet error, please refresh the page");
+                 });
              } catch (e) {
                  console.log(e);
                  swal(e.toString());
