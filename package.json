@@ -38,7 +38,7 @@
     "txdata": "^1.0.3"
   },
   "devDependencies": {
-    "electron": "3.0.0",
+    "electron": "22.3.25",
     "electron-packager": "^13.0.1"
   }
 }
